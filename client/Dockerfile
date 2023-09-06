@@ -6,7 +6,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm i
 
-
 COPY tsconfig.json tsconfig.json
 COPY public public
 COPY codegen.yml codegen.yml

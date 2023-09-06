@@ -1,9 +1,14 @@
 import React from 'react';
+import {useUsersQuery} from "./gql/generated/schema";
 
 function App() {
+    const {data, error} = useUsersQuery();
+
+    console.log(data, error)
+
     return (
         <div>
-            My app
+            users: {data?.users}
         </div>
     );
 }
