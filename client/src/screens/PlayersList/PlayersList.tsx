@@ -5,6 +5,7 @@ import {useCreateUserMutation, useDeleteUserMutation, useUsersQuery} from "../..
 
 export default function PlayersList() {
     const [newPlayer, setNewPlayer] = useState({name: ""},)
+    const [errorMessage, setErrorMessage] = useState(""); // État pour stocker le message d'erreur
 
     const {data, refetch} = useUsersQuery();
 
@@ -19,25 +20,32 @@ export default function PlayersList() {
         setNewPlayer({ name: "" });
     };
 
-    const onClickDeletelayer:MouseEventHandler<HTMLButtonElement> = (event) => {
+    const onClickDeletePlayer: MouseEventHandler<HTMLButtonElement> = (event) => {
         const playerId = event.currentTarget.getAttribute("data-player-id");
-        console.log(playerId)
         if (playerId) {
-            deletePlayer({variables: {deleteUserId: parseInt(playerId)}});
+            deletePlayer({ variables: { deleteUserId: parseInt(playerId) } })
+                .then(({ data }) => {
+                        refetch();
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
+                });
         }
-        console.log('clic')
     };
 
     return (
         <div className={styles.players_list_container}>
             {data?.users.map((user, index) => {
                 return (
-                    <div className={styles.player_wrapper}>
-                        <h1 key={index}>{user.name}</h1>;
-                        <button onClick={onClickDeletelayer} data-player-id={user.id}>Supprimer</button>
+                    <div key={index} className={styles.player_wrapper}>
+                        <h1>{user.name}</h1>;
+                        <button onClick={onClickDeletePlayer} data-player-id={user.id}>Supprimer</button>
                     </div>
                 )
             })}
+            {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+
             <div>
                 <input
                     type="text"
