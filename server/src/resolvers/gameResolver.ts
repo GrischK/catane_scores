@@ -1,4 +1,4 @@
-import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
+import {Arg, Mutation, Query, Resolver} from "type-graphql";
 import Game, {GameInput} from "../entities/Games";
 import db from "../db";
 import {ApolloError} from "apollo-server-errors";
@@ -17,7 +17,7 @@ export default class gameResolver {
         const players = await db.getRepository(User).findByIds(playerIds);
 
         if (players.length !== playerIds.length) {
-            throw new Error("Certains utilisateurs n'ont pas été trouvés.");
+            throw new ApolloError("Certains utilisateurs n'ont pas été trouvés.");
         }
 
         const game = new Game();

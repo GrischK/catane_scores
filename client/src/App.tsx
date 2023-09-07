@@ -1,5 +1,4 @@
 import React from 'react';
-import {useUsersQuery} from "./gql/generated/schema";
 import HomePage from "./screens/HomePage/HomePage";
 import {Route, Routes, useLocation} from "react-router-dom";
 import PlayersList from "./screens/PlayersList/PlayersList";
