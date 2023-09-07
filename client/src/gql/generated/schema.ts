@@ -15,20 +15,45 @@ export type Scalars = {
   Float: number;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  createUser: User;
+};
+
+
+export type MutationCreateUserArgs = {
+  data: UserInput;
+};
+
 export type Query = {
   __typename?: 'Query';
-  users: Scalars['Boolean'];
+  users: Array<User>;
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  picture?: Maybe<Scalars['String']>;
+};
+
+export type UserInput = {
+  name: Scalars['String'];
+  picture?: InputMaybe<Scalars['String']>;
 };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: boolean };
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, name: string }> };
 
 
 export const UsersDocument = gql`
-    query users {
-  users
+    query Users {
+  users {
+    id
+    name
+  }
 }
     `;
 

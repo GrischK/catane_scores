@@ -1,16 +1,21 @@
 import React from 'react';
 import {useUsersQuery} from "./gql/generated/schema";
+import HomePage from "./screens/HomePage/HomePage";
+import {Route, Routes, useLocation} from "react-router-dom";
+import PlayersList from "./screens/PlayersList/PlayersList";
 
 function App() {
-    const {data, error} = useUsersQuery();
-
-    console.log(data, error)
+    const location = useLocation();
 
     return (
-        <div>
-            users: {data?.users}
-        </div>
-    );
+        <>
+            <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<HomePage/>}/>
+                <Route path="/players_list" element={<PlayersList/>}/>
+            </Routes>
+
+        </>
+);
 }
 
 export default App;
