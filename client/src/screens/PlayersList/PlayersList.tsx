@@ -67,6 +67,9 @@ export default function PlayersList() {
                 <Button variant="contained" onClick={onClickCreateNewPlayer} endIcon={<SendIcon />}>
                     Ajouter
                 </Button>
+
+
+
                 {/*<button*/}
                 {/*    onClick={onClickCreateNewPlayer}>*/}
                 {/*    Ajouter*/}
