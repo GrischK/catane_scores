@@ -1,0 +1,25 @@
+.card {
+    width: 20vh;
+    height: 30vh;
+    background-color: #EECF8E;
+    border-radius: 2vh;
+    padding: 1vh 2vh;
+}
+
+.card_image_wrapper {
+    background-color: #909DCA;
+    height: 50%;
+    padding: 1vh;
+}
+
+.card_image_wrapper img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+h1 {
+    text-align: center;
+    font-size: 3vh;
+    padding-bottom: 1vh;
+}

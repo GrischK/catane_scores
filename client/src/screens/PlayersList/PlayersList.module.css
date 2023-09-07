@@ -4,8 +4,30 @@
     background-attachment: fixed;
     background-size: cover;
     height: 100vh;
+    padding: 10vh;
 }
 
 .player_wrapper {
     display: flex;
+    background-color: wheat;
+    padding: 1vh;
+    border-radius: 0.5vh;
+}
+
+.players_list, .add_player_container {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    align-items: center;
+}
+
+.add_player_container {
+    margin-top: 10vh;
+}
+
+.add_player_container input {
+    background-color: white;
+    padding: 1vh;
+    border-radius: 0.5vh;
+    border: none;
 }

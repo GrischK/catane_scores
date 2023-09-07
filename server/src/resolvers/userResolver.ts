@@ -2,7 +2,6 @@ import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
 import User, {UserInput} from "../entities/Users";
 import db from "../db";
 import {ApolloError} from "apollo-server-errors";
-import {getRepository} from "typeorm";
 import Game from "../entities/Games";
 
 @Resolver()
