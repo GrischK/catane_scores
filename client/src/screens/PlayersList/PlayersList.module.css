@@ -5,3 +5,7 @@
     background-size: cover;
     height: 100vh;
 }
+
+.player_wrapper {
+    display: flex;
+}

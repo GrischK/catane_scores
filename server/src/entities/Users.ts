@@ -18,7 +18,7 @@ class User {
     picture?: string;
 
     @Field(() => [Game])
-    @ManyToMany(() => Game, (game) => game.players, {nullable: true})
+    @ManyToMany(() => Game, (game) => game.players, {nullable: true} )
     games: Game[] | null;
 }
 
