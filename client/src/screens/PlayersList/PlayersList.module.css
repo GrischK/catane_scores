@@ -5,6 +5,9 @@
     background-size: cover;
     min-height: 100vh;
     padding: 10vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
 }
 
 .player_wrapper {
@@ -14,7 +17,17 @@
     border-radius: 0.5vh;
 }
 
-.players_list, .add_player_container {
+.players_list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2vh;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 4vh;
+    border-bottom: solid 1px #FDF3AB;
+}
+
+.add_player_container {
     display: flex;
     flex-direction: column;
     gap: 2vh;

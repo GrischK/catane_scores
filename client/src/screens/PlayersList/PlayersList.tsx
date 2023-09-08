@@ -60,6 +60,7 @@ export default function PlayersList() {
 
     return (
         <div className={styles.players_list_container}>
+            <h1>Liste des Cataneurs</h1>
             <div className={styles.players_list}>
                 {data?.users.map((user, index) => {
                     return (
@@ -77,6 +78,7 @@ export default function PlayersList() {
             {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
             <div className={styles.add_player_container}>
+                <h1>Ajouter un Cataneur</h1>
                 <input
                     required={true}
                     type="text"
