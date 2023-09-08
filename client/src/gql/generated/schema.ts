@@ -94,7 +94,7 @@ export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: string }
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, name: string }> };
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null }> };
 
 
 export const CreateUserDocument = gql`
@@ -168,6 +168,7 @@ export const UsersDocument = gql`
   users {
     id
     name
+    picture
   }
 }
     `;

@@ -13,12 +13,12 @@ class User {
     @Field()
     name: string;
 
-    @Column({nullable: true})
+    @Column({nullable: true, type: "text"})
     @Field({nullable: true})
     picture?: string;
 
     @Field(() => [Game])
-    @ManyToMany(() => Game, (game) => game.players, {nullable: true} )
+    @ManyToMany(() => Game, (game) => game.players, {nullable: true})
     games: Game[] | null;
 }
 

@@ -1,14 +1,30 @@
-import React, {MouseEventHandler, useState} from "react";
+import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './PlayersList.module.css';
 import {useCreateUserMutation, useDeleteUserMutation, useUsersQuery} from "../../gql/generated/schema";
-import {Button, IconButton} from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import {Button} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import Card from "../../components/Card";
+import Card from "../../components/Card/Card";
+import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
+
+interface PlayerInterface {
+    name: string;
+    picture?: string | null;
+}
 
 export default function PlayersList() {
-    const [newPlayer, setNewPlayer] = useState({name: ""},)
+    const [newPlayerAvatar, setNewPlayerAvatar] = useState("");
+    const [newPlayer, setNewPlayer] = useState<PlayerInterface>({
+        name: "",
+        picture: "",
+    },)
     const [errorMessage, setErrorMessage] = useState(""); // État pour stocker le message d'erreur
+
+    console.log(newPlayerAvatar)
+    console.log(newPlayer)
+
+    useEffect(() => {
+        setNewPlayer((prevState) => ({...prevState, picture: newPlayerAvatar || ""}));
+    }, [newPlayerAvatar]);
 
     const {data, refetch} = useUsersQuery();
 
@@ -19,9 +35,14 @@ export default function PlayersList() {
     const [deletePlayer] = useDeleteUserMutation({onCompleted: () => refetch()})
 
     const onClickCreateNewPlayer = () => {
-        createNewPlayer({variables: {data: newPlayer}});
-        setNewPlayer({name: ""});
+        if (newPlayer.name.trim() !== "") { // Vérifie si le nom n'est pas vide ou composé uniquement d'espaces
+            createNewPlayer({variables: {data: newPlayer}});
+            setNewPlayer({name: ""});
+        } else {
+            setErrorMessage("Le nom du joueur ne peut pas être vide.");
+        }
     };
+
 
     const onClickDeletePlayer: MouseEventHandler<HTMLButtonElement> = (event) => {
         const playerId = event.currentTarget.getAttribute("data-player-id");
@@ -49,8 +70,7 @@ export default function PlayersList() {
                         //     </IconButton>
                         //     {/*<button onClick={onClickDeletePlayer} data-player-id={user.id}>Supprimer</button>*/}
                         // </div>
-                        <Card/>
-
+                        <Card key={index} playerName={user.name} playerAvatar={user.picture}/>
                     )
                 })}
             </div>
@@ -58,13 +78,21 @@ export default function PlayersList() {
 
             <div className={styles.add_player_container}>
                 <input
+                    required={true}
                     type="text"
                     placeholder="Nom du joueur"
                     value={newPlayer.name}
-                    onChange={(e) => setNewPlayer({name: e.target.value})}
+                    onChange={(e) =>
+                        setNewPlayer((prevState) => ({
+                                ...prevState,
+                                name: e.target.value,
+                            })
+                        )
+                    }
                 />
+                <RandomAvatar onChange={setNewPlayerAvatar}/>
 
-                <Button variant="contained" onClick={onClickCreateNewPlayer} endIcon={<SendIcon />}>
+                <Button variant="contained" onClick={onClickCreateNewPlayer} endIcon={<SendIcon/>}>
                     Ajouter
                 </Button>
                 {/*<button*/}

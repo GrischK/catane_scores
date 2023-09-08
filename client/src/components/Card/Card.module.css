@@ -10,12 +10,13 @@
     background-color: #909DCA;
     height: 50%;
     padding: 1vh;
+    border-radius: 2vh;
 }
 
 .card_image_wrapper img{
     height: 100%;
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 h1 {
