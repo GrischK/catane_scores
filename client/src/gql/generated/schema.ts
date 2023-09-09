@@ -13,12 +13,11 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  DateTime: any;
 };
 
 export type Game = {
   __typename?: 'Game';
-  date?: Maybe<Scalars['DateTime']>;
+  date?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   picture?: Maybe<Scalars['String']>;
   place?: Maybe<Scalars['String']>;
@@ -26,7 +25,7 @@ export type Game = {
 };
 
 export type GameInput = {
-  date?: InputMaybe<Scalars['DateTime']>;
+  date?: InputMaybe<Scalars['String']>;
   picture?: InputMaybe<Scalars['String']>;
   place?: InputMaybe<Scalars['String']>;
   players: Array<UserId>;
@@ -62,7 +61,7 @@ export type Query = {
 
 export type User = {
   __typename?: 'User';
-  games: Array<Game>;
+  games?: Maybe<Array<Game>>;
   id: Scalars['Int'];
   name: Scalars['String'];
   picture?: Maybe<Scalars['String']>;
@@ -91,10 +90,15 @@ export type DeleteUserMutationVariables = Exact<{
 
 export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: string };
 
+export type QueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type QueryQuery = { __typename?: 'Query', games: Array<{ __typename?: 'Game', id: number, place?: string | null, date?: string | null, players: Array<{ __typename?: 'User', name: string }> }> };
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null }> };
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null, games?: Array<{ __typename?: 'Game', id: number }> | null }> };
 
 
 export const CreateUserDocument = gql`
@@ -163,12 +167,54 @@ export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
 export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
 export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
+export const QueryDocument = gql`
+    query Query {
+  games {
+    id
+    place
+    players {
+      name
+    }
+    date
+  }
+}
+    `;
+
+/**
+ * __useQueryQuery__
+ *
+ * To run a query within a React component, call `useQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQueryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useQueryQuery(baseOptions?: Apollo.QueryHookOptions<QueryQuery, QueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options);
+      }
+export function useQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryQuery, QueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options);
+        }
+export type QueryQueryHookResult = ReturnType<typeof useQueryQuery>;
+export type QueryLazyQueryHookResult = ReturnType<typeof useQueryLazyQuery>;
+export type QueryQueryResult = Apollo.QueryResult<QueryQuery, QueryQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {
     id
     name
     picture
+    games {
+      id
+    }
   }
 }
     `;

@@ -1,7 +1,10 @@
 query Users {
-  users {
+ users {
     id
     name
     picture
-  }
+    games {
+      id
+    }
+ }
 }

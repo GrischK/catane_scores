@@ -9,9 +9,9 @@ class Game {
     @Field(() => Int)
     id: number;
 
-    @Column({nullable: true, type: 'date'})
+    @Column({nullable: true})
     @Field({nullable: true})
-    date?: Date;
+    date?: string;
 
     @Field(() => [User])
     @ManyToMany(() => User, (user) => user.games)
@@ -30,7 +30,7 @@ class Game {
 @InputType()
 export class GameInput {
     @Field({nullable: true})
-    date?: Date;
+    date?: string;
 
     @Field(() => [UserId])
     players: UserId[];

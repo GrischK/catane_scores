@@ -1,0 +1,10 @@
+query Query {
+  games {
+    id
+    place
+    players {
+      name
+    }
+    date
+  }
+}

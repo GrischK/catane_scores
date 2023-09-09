@@ -83,8 +83,12 @@ export default function PlayersList() {
                         //     </IconButton>
                         //     {/*<button onClick={onClickDeletePlayer} data-player-id={user.id}>Supprimer</button>*/}
                         // </div>
-                        <Card key={index} playerName={user.name} playerAvatar={user.picture}
-                              onClickFunction={onClickDeletePlayer} userId={user.id}/>
+                        <Card key={index}
+                              playerName={user.name}
+                              playerAvatar={user.picture}
+                              gamesCounter={user.games?.length}
+                              userId={user.id}
+                              onClickFunction={onClickDeletePlayer} />
                     )
                 })}
             </div>

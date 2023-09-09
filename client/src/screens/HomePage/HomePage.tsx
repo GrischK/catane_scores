@@ -10,7 +10,9 @@ export default function HomePage() {
             <img src={CatanLogo} alt="Catan Logo"/>
             <button className={styles.new_game_button}>Nouvelle partie</button>
             <button className={styles.ranking_button}>Classement</button>
-            <button className={styles.ranking_button}>Liste des parties</button>
+            <NavLink to="/games_list">
+                <button className={styles.ranking_button}>Liste des parties</button>
+            </NavLink>
             <NavLink to="/players_list">
                 <button className={styles.ranking_button}>Liste des joueurs</button>
             </NavLink>
