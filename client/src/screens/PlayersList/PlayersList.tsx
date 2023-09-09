@@ -1,7 +1,7 @@
 import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './PlayersList.module.css';
 import {useCreateUserMutation, useDeleteUserMutation, useUsersQuery} from "../../gql/generated/schema";
-import {Button} from "@mui/material";
+import {Alert, Button, Snackbar} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import Card from "../../components/Card/Card";
 import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
@@ -18,9 +18,10 @@ export default function PlayersList() {
         picture: "",
     },)
     const [errorMessage, setErrorMessage] = useState(""); // État pour stocker le message d'erreur
+    const [open, setOpen] = React.useState(false);
 
-    console.log(newPlayerAvatar)
-    console.log(newPlayer)
+    // console.log(newPlayerAvatar)
+    // console.log(newPlayer)
 
     useEffect(() => {
         setNewPlayer((prevState) => ({...prevState, picture: newPlayerAvatar || ""}));
@@ -39,10 +40,12 @@ export default function PlayersList() {
             createNewPlayer({variables: {data: newPlayer}});
             setNewPlayer({name: ""});
         } else {
+            setOpen(true)
             setErrorMessage("Le nom du joueur ne peut pas être vide.");
         }
     };
 
+    console.log(open)
 
     const onClickDeletePlayer: MouseEventHandler<HTMLButtonElement> = (event) => {
         const playerId = event.currentTarget.getAttribute("data-player-id");
@@ -53,9 +56,18 @@ export default function PlayersList() {
                 })
                 .catch((error) => {
                     console.error(error);
+                    setOpen(true)
                     setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
                 });
         }
+    };
+
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
     };
 
     return (
@@ -71,11 +83,18 @@ export default function PlayersList() {
                         //     </IconButton>
                         //     {/*<button onClick={onClickDeletePlayer} data-player-id={user.id}>Supprimer</button>*/}
                         // </div>
-                        <Card key={index} playerName={user.name} playerAvatar={user.picture} onClickFunction={onClickDeletePlayer} userId={user.id}/>
+                        <Card key={index} playerName={user.name} playerAvatar={user.picture}
+                              onClickFunction={onClickDeletePlayer} userId={user.id}/>
                     )
                 })}
             </div>
-            {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+            {errorMessage &&
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+                        {errorMessage}
+                    </Alert>
+                </Snackbar>
+            }
 
             <div className={styles.add_player_container}>
                 <h1>Ajouter un Cataneur</h1>
