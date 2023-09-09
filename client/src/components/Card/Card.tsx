@@ -19,6 +19,8 @@ export default function Card({playerName, playerAvatar, onClickFunction, userId}
                 {playerAvatar ? <img src={playerAvatar} alt="user picture"/> :
                     <img src={defaultAvatar} alt="user picture"/>}
             </div>
+            <h2>Nombre de Catanes</h2>
+            <p></p>
             <IconButton aria-label="delete" onClick={onClickFunction} data-player-id={userId}>
                 <DeleteIcon/>
             </IconButton>

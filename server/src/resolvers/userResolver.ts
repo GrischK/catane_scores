@@ -8,7 +8,7 @@ import Game from "../entities/Games";
 export default class userResolver {
     @Query(() => [User])
     async users(): Promise<User[]> {
-        return await db.getRepository(User).find();
+        return await db.getRepository(User).find({relations: ["games", "games.players"]});
     }
 
     @Mutation(() => User)
