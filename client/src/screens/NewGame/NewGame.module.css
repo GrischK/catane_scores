@@ -5,3 +5,7 @@
     background-size: cover;
     min-height: 100vh;
 }
+
+.new_game_input > div {
+    background-color: white;
+}

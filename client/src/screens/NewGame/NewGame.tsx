@@ -58,6 +58,7 @@
             <div className={styles.new_game_container}>
                 <h1>Ajouter une partie</h1>
                 <TextField
+                    className={styles.new_game_input}
                     label="Date"
                     type="text"
                     value={newGame.date}
@@ -69,6 +70,7 @@
                     }
                 />
                 <TextField
+                    className={styles.new_game_input}
                     label="Place"
                     type="text"
                     value={newGame.place}
@@ -81,6 +83,7 @@
                 />
                 <Autocomplete
                     multiple
+                    className={styles.new_game_input}
                     id="players"
                     options={userNames}
                     getOptionLabel={(userName) => userName}
