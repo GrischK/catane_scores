@@ -81,8 +81,10 @@ export default function NewGame() {
     useEffect(() => {
         if (userData) {
             setGamePlayers(userData.usersByNames || []);
+        } else {
+            setGamePlayers([]);
         }
-    }, [userData]);
+    }, [userData, newGame.players]);
 
     return (
         <div className={styles.new_game_container}>
@@ -119,10 +121,10 @@ export default function NewGame() {
                 getOptionLabel={(userName) => userName}
                 value={newGame.players.map((user) => String(user.id))}
                 onChange={(_, newValue) => {
-                    const selectedUserObjects = newValue.map((id) => ({id} as unknown as UserId));
+                    const selectedUserObjects = newValue.map((id) => ({ id } as unknown as UserId));
                     setNewGame((prevState) => ({
                         ...prevState,
-                        players: selectedUserObjects,
+                        players: newValue.length === 0 ? [] : selectedUserObjects,
                     }));
                 }}
                 renderInput={(params) => (
