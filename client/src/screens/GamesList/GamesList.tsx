@@ -4,7 +4,7 @@ import styles from './GamesList.module.css';
 export default function GamesList() {
 
     return (
-        <div>
+        <div className={styles.games_list_container}>
         </div>
     )
 }

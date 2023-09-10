@@ -1,0 +1,11 @@
+mutation CreateGame($data: GameInput!) {
+  createGame(data: $data) {
+    date
+    id
+    place
+    players {
+      id
+      name
+    }
+  }
+}

@@ -4,6 +4,7 @@
     background-color: #EECF8E;
     border-radius: 2vh;
     padding: 1vh 2vh;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
 .card_image_wrapper {
