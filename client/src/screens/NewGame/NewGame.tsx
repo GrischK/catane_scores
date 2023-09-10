@@ -92,7 +92,7 @@
                 />
                 <Autocomplete
                     multiple
-                    className={styles.new_game_input}
+                    className={styles.new_game_multiselect}
                     id="players"
                     options={userNames}
                     getOptionLabel={(userName) => userName}

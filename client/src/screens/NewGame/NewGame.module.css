@@ -4,8 +4,17 @@
     background-attachment: fixed;
     background-size: cover;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    padding: 10vh;
+    align-items: center;
 }
 
-.new_game_input > div {
+.new_game_input > div, .new_game_multiselect > div > div {
     background-color: white;
+}
+
+.new_game_multiselect {
+    min-width: 30%;
 }
