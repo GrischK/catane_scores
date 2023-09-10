@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import styles from './NewGame.module.css';
-import {Autocomplete, Button, TextField} from "@mui/material";
+import {Alert, Autocomplete, Button, Snackbar, TextField} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {
     useCreateGameMutation, User,
@@ -27,6 +27,10 @@ export default function NewGame() {
     },)
 
     const [gamePlayers, setGamePlayers] = useState<User[] | null>(null);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [open, setOpen] = React.useState(false);
+    const [successOpen, setSuccessOpen] = React.useState(false);
 
     const {data} = useUsersQuery();
     const userNames = (data?.users || []).map((user) => user.name);
@@ -37,7 +41,8 @@ export default function NewGame() {
         const isGameNotFilledWithPlayers =
             newGame.players.length < 2;
         if (isGameNotFilledWithPlayers) {
-            console.error("Sélectionne au moins 2 joueurs");
+            setOpen(true)
+            setErrorMessage("Sélectionne au moins 2 joueurs");
             return;
         }
 
@@ -50,7 +55,6 @@ export default function NewGame() {
 
         console.log(playerIds);
 
-
         try {
             await createNewGame({
                 variables: {
@@ -61,7 +65,8 @@ export default function NewGame() {
                     },
                 },
             });
-            console.log("Partie créée");
+            setSuccessOpen(true)
+            setSuccessMessage("Partie créée");
             setNewGame({
                 date: "",
                 place: "",
@@ -86,6 +91,15 @@ export default function NewGame() {
             setGamePlayers([]);
         }
     }, [userData, newGame.players]);
+
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+        setSuccessOpen(false)
+    };
 
     return (
         <div className={styles.new_game_container}>
@@ -146,6 +160,20 @@ export default function NewGame() {
                     }
                 </div>
             ))}
+            {errorMessage &&
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+                        {errorMessage}
+                    </Alert>
+                </Snackbar>
+            }
+            {successMessage &&
+                <Snackbar open={successOpen} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
+                        {successMessage}
+                    </Alert>
+                </Snackbar>
+            }
         </div>
     )
 }

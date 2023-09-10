@@ -45,8 +45,6 @@ export default function PlayersList() {
         }
     };
 
-    console.log(open)
-
     const onClickDeletePlayer: MouseEventHandler<HTMLButtonElement> = (event) => {
         const playerId = event.currentTarget.getAttribute("data-player-id");
         if (playerId) {
