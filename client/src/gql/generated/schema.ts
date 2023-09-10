@@ -57,6 +57,12 @@ export type Query = {
   __typename?: 'Query';
   games: Array<Game>;
   users: Array<User>;
+  usersByNames?: Maybe<Array<User>>;
+};
+
+
+export type QueryUsersByNamesArgs = {
+  names: Array<Scalars['String']>;
 };
 
 export type User = {
@@ -97,15 +103,22 @@ export type DeleteUserMutationVariables = Exact<{
 
 export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: string };
 
-export type QueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type GamesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type QueryQuery = { __typename?: 'Query', games: Array<{ __typename?: 'Game', id: number, place?: string | null, date?: string | null, players: Array<{ __typename?: 'User', name: string }> }> };
+export type GamesQuery = { __typename?: 'Query', games: Array<{ __typename?: 'Game', id: number, place?: string | null, date?: string | null, players: Array<{ __typename?: 'User', name: string }> }> };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null, games?: Array<{ __typename?: 'Game', id: number }> | null }> };
+
+export type UsersByNamesQueryVariables = Exact<{
+  names: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type UsersByNamesQuery = { __typename?: 'Query', usersByNames?: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null }> | null };
 
 
 export const CreateGameDocument = gql`
@@ -213,8 +226,8 @@ export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
 export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
 export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
-export const QueryDocument = gql`
-    query Query {
+export const GamesDocument = gql`
+    query Games {
   games {
     id
     place
@@ -227,31 +240,31 @@ export const QueryDocument = gql`
     `;
 
 /**
- * __useQueryQuery__
+ * __useGamesQuery__
  *
- * To run a query within a React component, call `useQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGamesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGamesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useQueryQuery({
+ * const { data, loading, error } = useGamesQuery({
  *   variables: {
  *   },
  * });
  */
-export function useQueryQuery(baseOptions?: Apollo.QueryHookOptions<QueryQuery, QueryQueryVariables>) {
+export function useGamesQuery(baseOptions?: Apollo.QueryHookOptions<GamesQuery, GamesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options);
+        return Apollo.useQuery<GamesQuery, GamesQueryVariables>(GamesDocument, options);
       }
-export function useQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<QueryQuery, QueryQueryVariables>) {
+export function useGamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GamesQuery, GamesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<QueryQuery, QueryQueryVariables>(QueryDocument, options);
+          return Apollo.useLazyQuery<GamesQuery, GamesQueryVariables>(GamesDocument, options);
         }
-export type QueryQueryHookResult = ReturnType<typeof useQueryQuery>;
-export type QueryLazyQueryHookResult = ReturnType<typeof useQueryLazyQuery>;
-export type QueryQueryResult = Apollo.QueryResult<QueryQuery, QueryQueryVariables>;
+export type GamesQueryHookResult = ReturnType<typeof useGamesQuery>;
+export type GamesLazyQueryHookResult = ReturnType<typeof useGamesLazyQuery>;
+export type GamesQueryResult = Apollo.QueryResult<GamesQuery, GamesQueryVariables>;
 export const UsersDocument = gql`
     query Users {
   users {
@@ -291,3 +304,40 @@ export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<User
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
+export const UsersByNamesDocument = gql`
+    query UsersByNames($names: [String!]!) {
+  usersByNames(names: $names) {
+    id
+    name
+    picture
+  }
+}
+    `;
+
+/**
+ * __useUsersByNamesQuery__
+ *
+ * To run a query within a React component, call `useUsersByNamesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersByNamesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersByNamesQuery({
+ *   variables: {
+ *      names: // value for 'names'
+ *   },
+ * });
+ */
+export function useUsersByNamesQuery(baseOptions: Apollo.QueryHookOptions<UsersByNamesQuery, UsersByNamesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UsersByNamesQuery, UsersByNamesQueryVariables>(UsersByNamesDocument, options);
+      }
+export function useUsersByNamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersByNamesQuery, UsersByNamesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UsersByNamesQuery, UsersByNamesQueryVariables>(UsersByNamesDocument, options);
+        }
+export type UsersByNamesQueryHookResult = ReturnType<typeof useUsersByNamesQuery>;
+export type UsersByNamesLazyQueryHookResult = ReturnType<typeof useUsersByNamesLazyQuery>;
+export type UsersByNamesQueryResult = Apollo.QueryResult<UsersByNamesQuery, UsersByNamesQueryVariables>;

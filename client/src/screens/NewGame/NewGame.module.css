@@ -18,3 +18,8 @@
 .new_game_multiselect {
     min-width: 30%;
 }
+
+.new_game_players_list img{
+    width: 60px;
+    height: 60px;
+}

@@ -88,7 +88,8 @@ export default function PlayersList() {
                               playerAvatar={user.picture}
                               gamesCounter={user.games?.length}
                               userId={user.id}
-                              onClickFunction={onClickDeletePlayer} />
+                              onClickFunction={onClickDeletePlayer}
+                        />
                     )
                 })}
             </div>

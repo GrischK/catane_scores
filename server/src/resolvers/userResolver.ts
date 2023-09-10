@@ -1,14 +1,35 @@
-import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
+import {Arg, Args, ArgsType, Field, Int, Mutation, Query, Resolver} from "type-graphql";
 import User, {UserInput} from "../entities/Users";
 import db from "../db";
 import {ApolloError} from "apollo-server-errors";
 import Game from "../entities/Games";
+
+@ArgsType()
+class UsersByIdsArgs {
+    @Field(() => [String])
+    names: string[];
+}
 
 @Resolver()
 export default class userResolver {
     @Query(() => [User])
     async users(): Promise<User[]> {
         return await db.getRepository(User).find({relations: ["games", "games.players"]});
+    }
+
+    @Query(() => [User], { nullable: true })
+    async usersByNames(@Args() args: UsersByIdsArgs): Promise<User[]> {
+        const { names } = args;
+        if (!names || names.length === 0) {
+            return [];
+        }
+
+        return await db.getRepository(User)
+            .createQueryBuilder("user")
+            .where("user.name IN (:...names)", { names })
+            .leftJoinAndSelect("user.games", "games")
+            .leftJoinAndSelect("games.players", "players")
+            .getMany();
     }
 
     @Mutation(() => User)
