@@ -27,7 +27,9 @@ export default function NewGame() {
         players: [],
     },)
 
-    const [newGamePlayers, setNewGamePlayers] = useState<UserId[]>([]);
+    // console.log(newGame.players)
+
+    const [newGamePlayers, setNewGamePlayers] = useState<Number[]>([]);
     const [gamePlayers, setGamePlayers] = useState<User[] | null>(null);
 
     const {data} = useUsersQuery();
@@ -36,36 +38,41 @@ export default function NewGame() {
     const [createNewGame] = useCreateGameMutation();
 
     const onClickCreateNewGame = async () => {
-        if (newGame.players.length >= 2) {
-            const playerIds = newGame.players.map((playerName) => {
-                // @ts-ignore
-                const player = data?.users.find((user) => user.name === playerName);
-                return player ? player.id : null;
-            });
-
-            const filteredPlayerIds = playerIds.filter((id) => id !== null);
-
-            try {
-                await createNewGame({
-                    variables: {
-                        data: {
-                            date: newGame.date,
-                            place: newGame.place,
-                            players: filteredPlayerIds.map((id) => ({id} as UserId)),
-                        },
-                    },
-                });
-                console.log("Partie créée");
-                setNewGame({
-                    date: "",
-                    place: "",
-                    players: [],
-                });
-            } catch (error) {
-                console.error("Erreur lors de la création de la partie :", error);
-            }
-        } else {
+        const isGameNotFilledWithPlayers =
+            newGame.players.length < 2;
+        if (isGameNotFilledWithPlayers) {
             console.error("Sélectionne au moins 2 joueurs");
+            return;
+        }
+
+        const playerIds = newGame.players
+            .map((player) => {
+                const user = data?.users.find((user) => user.name === String(player.id));
+                return user ? { id: user.id } : null;
+            })
+            .filter((id) => id !== null) as UserId[];
+
+        console.log(playerIds);
+
+
+        try {
+            await createNewGame({
+                variables: {
+                    data: {
+                        date: newGame.date,
+                        place: newGame.place,
+                        players: playerIds,
+                    },
+                },
+            });
+            console.log("Partie créée");
+            setNewGame({
+                date: "",
+                place: "",
+                players: [],
+            });
+        } catch (error) {
+            console.error("Erreur lors de la création de la partie :", error);
         }
     };
 
@@ -76,7 +83,7 @@ export default function NewGame() {
         skip: newGame.players.length === 0,
     });
 
-    console.log(userData)
+    // console.log(userData)
 
     useEffect(() => {
         if (userData) {

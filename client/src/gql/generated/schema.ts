@@ -106,7 +106,7 @@ export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: string }
 export type GamesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GamesQuery = { __typename?: 'Query', games: Array<{ __typename?: 'Game', id: number, place?: string | null, date?: string | null, players: Array<{ __typename?: 'User', name: string }> }> };
+export type GamesQuery = { __typename?: 'Query', games: Array<{ __typename?: 'Game', id: number, date?: string | null, picture?: string | null, place?: string | null, players: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null }> }> };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -230,11 +230,14 @@ export const GamesDocument = gql`
     query Games {
   games {
     id
+    date
+    picture
     place
     players {
+      id
       name
+      picture
     }
-    date
   }
 }
     `;

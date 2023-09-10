@@ -1,10 +1,13 @@
 query Games {
   games {
     id
+    date
+    picture
     place
     players {
+      id
       name
+      picture
     }
-    date
   }
 }
