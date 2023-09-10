@@ -31,7 +31,13 @@
 
         const onClickCreateNewGame = async () => {
             if (newGame.players.length >= 2) {
-                const playerIds = newGame.players.map((player) => player.id);
+                const playerIds = newGame.players.map((playerName) => {
+                    // @ts-ignore
+                    const player = data?.users.find((user) => user.name === playerName);
+                    return player ? player.id : null;
+                });
+
+                const filteredPlayerIds = playerIds.filter((id) => id !== null);
 
                 try {
                     await createNewGame({
@@ -39,10 +45,11 @@
                             data: {
                                 date: newGame.date,
                                 place: newGame.place,
-                                players: playerIds.map(id => ({ id } as UserId)),
+                                players: filteredPlayerIds.map((id) => ({ id } as UserId)),
                             },
                         },
                     });
+                    console.log("Partie créée");
                     setNewGame({
                         date: "",
                         place: "",
@@ -51,6 +58,8 @@
                 } catch (error) {
                     console.error("Erreur lors de la création de la partie :", error);
                 }
+            }else{
+                console.error("Sélectionne au moins 2 joueurs");
             }
         };
 
