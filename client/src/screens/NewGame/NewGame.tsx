@@ -19,7 +19,6 @@ interface GameInterface {
     players: UserId[];
 }
 
-
 export default function NewGame() {
     const [newGame, setNewGame] = useState<GameInterface>({
         date: "",
@@ -27,9 +26,6 @@ export default function NewGame() {
         players: [],
     },)
 
-    // console.log(newGame.players)
-
-    const [newGamePlayers, setNewGamePlayers] = useState<Number[]>([]);
     const [gamePlayers, setGamePlayers] = useState<User[] | null>(null);
 
     const {data} = useUsersQuery();
@@ -82,8 +78,6 @@ export default function NewGame() {
         },
         skip: newGame.players.length === 0,
     });
-
-    // console.log(userData)
 
     useEffect(() => {
         if (userData) {
