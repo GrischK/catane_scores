@@ -14,9 +14,11 @@ export default function HomePage() {
                     Nouvelle partie
                 </Button>
             </NavLink>
-            <Button variant="contained">
-                Classement
-            </Button>
+            <NavLink to="/ranking">
+                <Button variant="contained">
+                    Classement
+                </Button>
+            </NavLink>
             <NavLink to="/games_list">
                 <Button variant="contained">
                     Liste des parties

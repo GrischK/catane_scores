@@ -64,7 +64,6 @@ export default function GamesList() {
                         ))}
 
                     </div>
-
                 </div>
             ))}
         </div>

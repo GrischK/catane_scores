@@ -4,8 +4,9 @@
     justify-content: start;
     gap: 3vh;
     align-items: center;
-    background-image: url("../../assets/images/catane_wallpaper.jpg");
+    background-image: url("../../assets/images/poing.jpg");
     background-repeat: no-repeat;
+    background-position: center;
     background-size: cover;
     height: 100vh;
 }
