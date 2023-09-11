@@ -12,6 +12,8 @@ import db from "./db";
 import {env} from "./env";
 import userResolver from "./resolvers/userResolver";
 import gameResolver from "./resolvers/gameResolver";
+import path from "path";
+
 
 const start = async (): Promise<void> => {
     await db.initialize();
@@ -29,6 +31,12 @@ const start = async (): Promise<void> => {
             },
         })
     );
+
+    const imagePath = path.join(__dirname, "src/assets/images");
+
+    app.use('/images', express.static(imagePath, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+    }));
 
     const schema = await buildSchema({
         resolvers: [userResolver, gameResolver],

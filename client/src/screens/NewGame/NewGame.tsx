@@ -1,6 +1,17 @@
 import React, {useEffect, useState} from "react";
 import styles from './NewGame.module.css';
-import {Alert, Autocomplete, Button, Snackbar, TextField} from "@mui/material";
+import {
+    Alert,
+    Autocomplete,
+    Box,
+    Button,
+    Chip,
+    MenuItem,
+    OutlinedInput,
+    Select,
+    Snackbar,
+    TextField
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {
     useCreateGameMutation, User,
@@ -146,6 +157,39 @@ export default function NewGame() {
                     <TextField {...params} label="Joueurs" variant="outlined"/>
                 )}
             />
+
+            <Select
+                labelId="demo-multiple-chip-label"
+                id="demo-multiple-chip"
+                multiple
+                value={newGame.players.map((user) => String(user.id))}
+                onChange={(event) => {
+                    const newValue = event.target.value as string[];
+                    const selectedUserObjects = newValue.map((id) => ({ id } as unknown as UserId));
+                    setNewGame((prevState) => ({
+                        ...prevState,
+                        players: newValue.length === 0 ? [] : selectedUserObjects,
+                    }));
+                }}
+                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((value) => (
+                            <Chip key={value} label={value} />
+                        ))}
+                    </Box>
+                )}
+            >
+                {userNames.map((name) => (
+                    <MenuItem
+                        key={name}
+                        value={name}
+                    >
+                        {name}
+                    </MenuItem>
+                ))}
+            </Select>
+
             <Button variant="contained" onClick={onClickCreateNewGame} endIcon={<SendIcon/>}>
                 Ajouter
             </Button>
