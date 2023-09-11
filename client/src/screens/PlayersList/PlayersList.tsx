@@ -20,9 +20,6 @@ export default function PlayersList() {
     const [errorMessage, setErrorMessage] = useState(""); // État pour stocker le message d'erreur
     const [open, setOpen] = React.useState(false);
 
-    // console.log(newPlayerAvatar)
-    // console.log(newPlayer)
-
     useEffect(() => {
         setNewPlayer((prevState) => ({...prevState, picture: newPlayerAvatar || ""}));
     }, [newPlayerAvatar]);

@@ -1,4 +1,4 @@
-import {Arg, Mutation, Query, Resolver} from "type-graphql";
+import {Arg, Int, Mutation, Query, Resolver} from "type-graphql";
 import Game, {GameInput} from "../entities/Games";
 import db from "../db";
 import {ApolloError} from "apollo-server-errors";
@@ -31,11 +31,11 @@ export default class gameResolver {
         await db.getRepository(Game).save(game);
         return game;
     }
-    //
-    // @Mutation(() => String)
-    // async deleteUser(@Arg("id", () => Int) id: number): Promise<boolean> {
-    //     const {affected} = await db.getRepository(User).delete(id);
-    //     if (affected === 0) throw new ApolloError("user not found", "NOT_FOUND");
-    //     return true
-    // }
+
+    @Mutation(() => String)
+    async deleteGame(@Arg("id", () => Int) id: number): Promise<boolean> {
+        const {affected} = await db.getRepository(Game).delete(id);
+        if (affected === 0) throw new ApolloError("game not found", "NOT_FOUND");
+        return true
+    }
 }

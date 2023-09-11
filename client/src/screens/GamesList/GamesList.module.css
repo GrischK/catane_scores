@@ -4,5 +4,50 @@
     background-attachment: fixed;
     background-size: cover;
     min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2vh;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10vh;
 }
 
+.games_details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2vh;
+    background: white;
+    width: fit-content;
+    padding: 1vh;
+    border-radius: 0.5vh;
+    min-height: 130px;
+}
+
+.player_cards {
+    display: flex;
+}
+
+.player_details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player_details img {
+    width: 60px;
+    height: 60px;
+}
+
+.games_infos {
+    display: flex;
+    flex-direction: column;
+}
+
+.games_infos_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}

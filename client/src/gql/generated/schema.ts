@@ -35,6 +35,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createGame: Game;
   createUser: User;
+  deleteGame: Scalars['String'];
   deleteUser: Scalars['String'];
 };
 
@@ -46,6 +47,11 @@ export type MutationCreateGameArgs = {
 
 export type MutationCreateUserArgs = {
   data: UserInput;
+};
+
+
+export type MutationDeleteGameArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -95,6 +101,13 @@ export type CreateUserMutationVariables = Exact<{
 
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: number, name: string, picture?: string | null } };
+
+export type DeleteGameMutationVariables = Exact<{
+  deleteGameId: Scalars['Int'];
+}>;
+
+
+export type DeleteGameMutation = { __typename?: 'Mutation', deleteGame: string };
 
 export type DeleteUserMutationVariables = Exact<{
   deleteUserId: Scalars['Int'];
@@ -195,6 +208,37 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const DeleteGameDocument = gql`
+    mutation DeleteGame($deleteGameId: Int!) {
+  deleteGame(id: $deleteGameId)
+}
+    `;
+export type DeleteGameMutationFn = Apollo.MutationFunction<DeleteGameMutation, DeleteGameMutationVariables>;
+
+/**
+ * __useDeleteGameMutation__
+ *
+ * To run a mutation, you first call `useDeleteGameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteGameMutation, { data, loading, error }] = useDeleteGameMutation({
+ *   variables: {
+ *      deleteGameId: // value for 'deleteGameId'
+ *   },
+ * });
+ */
+export function useDeleteGameMutation(baseOptions?: Apollo.MutationHookOptions<DeleteGameMutation, DeleteGameMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteGameMutation, DeleteGameMutationVariables>(DeleteGameDocument, options);
+      }
+export type DeleteGameMutationHookResult = ReturnType<typeof useDeleteGameMutation>;
+export type DeleteGameMutationResult = Apollo.MutationResult<DeleteGameMutation>;
+export type DeleteGameMutationOptions = Apollo.BaseMutationOptions<DeleteGameMutation, DeleteGameMutationVariables>;
 export const DeleteUserDocument = gql`
     mutation DeleteUser($deleteUserId: Int!) {
   deleteUser(id: $deleteUserId)
