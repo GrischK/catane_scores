@@ -36,4 +36,11 @@ export class UserInput {
     picture?: string;
 }
 
+
+@InputType()
+export class UserId {
+    @Field()
+    id: number;
+}
+
 export default User;

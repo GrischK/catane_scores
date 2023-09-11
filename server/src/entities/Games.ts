@@ -1,6 +1,6 @@
 import {Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Field, InputType, Int, ObjectType} from "type-graphql";
-import User from "./Users";
+import User, {UserId} from "./Users";
 import Points from "./Points";
 
 @Entity()
@@ -46,12 +46,6 @@ export class GameInput {
 
     @Field({nullable: true})
     place?: string;
-}
-
-@InputType()
-export class UserId {
-    @Field()
-    id: number;
 }
 
 export default Game;
