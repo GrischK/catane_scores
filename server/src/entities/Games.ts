@@ -1,6 +1,7 @@
 import {Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Field, InputType, Int, ObjectType} from "type-graphql";
 import User from "./Users";
+import Points from "./Points";
 
 @Entity()
 @ObjectType()
@@ -25,6 +26,11 @@ class Game {
     @Column({nullable: true})
     @Field({nullable: true})
     picture?: string;
+
+    @Field(() => [Points], { nullable: true })
+    @ManyToMany(() => Points, (points) => points.games, {nullable: true})
+    @JoinTable()
+    points?: Points[] | null;
 }
 
 @InputType()
