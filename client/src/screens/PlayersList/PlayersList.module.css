@@ -45,3 +45,10 @@
     border-radius: 0.5vh;
     border: none;
 }
+
+.title {
+    -webkit-text-stroke: 1px black;
+    font-family: 'Calistoga', cursive;
+    font-weight: 400;
+    color: #FFCC00;
+}

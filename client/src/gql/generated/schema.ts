@@ -22,6 +22,7 @@ export type Game = {
   picture?: Maybe<Scalars['String']>;
   place?: Maybe<Scalars['String']>;
   players: Array<User>;
+  points?: Maybe<Array<Point>>;
 };
 
 export type GameInput = {
@@ -37,6 +38,7 @@ export type Mutation = {
   createUser: User;
   deleteGame: Scalars['String'];
   deleteUser: Scalars['String'];
+  updateUser: User;
 };
 
 
@@ -59,6 +61,20 @@ export type MutationDeleteUserArgs = {
   id: Scalars['Int'];
 };
 
+
+export type MutationUpdateUserArgs = {
+  data: UserInput;
+  id: Scalars['Int'];
+};
+
+export type Point = {
+  __typename?: 'Point';
+  games: Game;
+  id: Scalars['Int'];
+  score: Scalars['Float'];
+  users: User;
+};
+
 export type Query = {
   __typename?: 'Query';
   games: Array<Game>;
@@ -77,6 +93,7 @@ export type User = {
   id: Scalars['Int'];
   name: Scalars['String'];
   picture?: Maybe<Scalars['String']>;
+  points?: Maybe<Array<Point>>;
 };
 
 export type UserId = {
@@ -132,6 +149,14 @@ export type UsersByNamesQueryVariables = Exact<{
 
 
 export type UsersByNamesQuery = { __typename?: 'Query', usersByNames?: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null }> | null };
+
+export type UpdateUserMutationVariables = Exact<{
+  updateUserId: Scalars['Int'];
+  data: UserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: number, picture?: string | null, name: string, games?: Array<{ __typename?: 'Game', id: number }> | null } };
 
 
 export const CreateGameDocument = gql`
@@ -388,3 +413,42 @@ export function useUsersByNamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type UsersByNamesQueryHookResult = ReturnType<typeof useUsersByNamesQuery>;
 export type UsersByNamesLazyQueryHookResult = ReturnType<typeof useUsersByNamesLazyQuery>;
 export type UsersByNamesQueryResult = Apollo.QueryResult<UsersByNamesQuery, UsersByNamesQueryVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($updateUserId: Int!, $data: UserInput!) {
+  updateUser(id: $updateUserId, data: $data) {
+    id
+    picture
+    name
+    games {
+      id
+    }
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      updateUserId: // value for 'updateUserId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;

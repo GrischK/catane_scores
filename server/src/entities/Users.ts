@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Field, InputType, Int, ObjectType} from "type-graphql";
 import Game from "./Games";
 import Points from "./Points";
@@ -23,7 +23,7 @@ class User {
     games?: Game[] | null;
 
     @Field(() => [Points], { nullable: true })
-    @ManyToMany(() => Points, (points) => points.users, {nullable: true})
+    @OneToMany(() => Points, (points) => points.users, {nullable: true})
     points?: Points[] | null;
 }
 
@@ -35,7 +35,6 @@ export class UserInput {
     @Field({nullable: true})
     picture?: string;
 }
-
 
 @InputType()
 export class UserId {

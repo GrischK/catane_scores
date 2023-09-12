@@ -14,15 +14,15 @@ class Point {
     @Field()
     score: number;
 
-    @ManyToMany(() => User, (user) => user.points)
-    @Field(() => [User])
+    @ManyToOne(() => User, (user) => user.points)
+    @Field(() => User)
     @JoinTable()
-    users: User[];
+    users: User;
 
-    @ManyToMany(() => Game, (game) => game.points)
-    @Field(() => [Game])
+    @ManyToOne(() => Game, (game) => game.points)
+    @Field(() => Game)
     @JoinTable()
-    games: Game[];
+    games: Game;
 }
 
 export default Point;

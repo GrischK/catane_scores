@@ -60,7 +60,7 @@ export default function NewGame() {
         const playerIds = newGame.players
             .map((player) => {
                 const user = data?.users.find((user) => user.name === String(player.id));
-                return user ? { id: user.id } : null;
+                return user ? {id: user.id} : null;
             })
             .filter((id) => id !== null) as UserId[];
 
@@ -114,7 +114,7 @@ export default function NewGame() {
 
     return (
         <div className={styles.new_game_container}>
-            <h1>Ajouter une partie</h1>
+            <h1 className={styles.title}>Ajouter une partie</h1>
             <TextField
                 className={styles.new_game_input}
                 label="Date"
@@ -147,7 +147,7 @@ export default function NewGame() {
                 getOptionLabel={(userName) => userName}
                 value={newGame.players.map((user) => String(user.id))}
                 onChange={(_, newValue) => {
-                    const selectedUserObjects = newValue.map((id) => ({ id } as unknown as UserId));
+                    const selectedUserObjects = newValue.map((id) => ({id} as unknown as UserId));
                     setNewGame((prevState) => ({
                         ...prevState,
                         players: newValue.length === 0 ? [] : selectedUserObjects,
@@ -165,17 +165,18 @@ export default function NewGame() {
                 value={newGame.players.map((user) => String(user.id))}
                 onChange={(event) => {
                     const newValue = event.target.value as string[];
-                    const selectedUserObjects = newValue.map((id) => ({ id } as unknown as UserId));
+                    const selectedUserObjects = newValue.map((id) => ({id} as unknown as UserId));
                     setNewGame((prevState) => ({
                         ...prevState,
                         players: newValue.length === 0 ? [] : selectedUserObjects,
                     }));
                 }}
-                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                MenuProps={{disableScrollLock: true}}
+                input={<OutlinedInput id="select-multiple-chip" label="Chip"/>}
                 renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
                         {selected.map((value) => (
-                            <Chip key={value} label={value} />
+                            <Chip key={value} label={value}/>
                         ))}
                     </Box>
                 )}

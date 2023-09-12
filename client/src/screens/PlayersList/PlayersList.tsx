@@ -1,6 +1,11 @@
 import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './PlayersList.module.css';
-import {useCreateUserMutation, useDeleteUserMutation, useUsersQuery} from "../../gql/generated/schema";
+import {
+    useCreateUserMutation,
+    useDeleteUserMutation,
+    useUpdateUserMutation,
+    useUsersQuery
+} from "../../gql/generated/schema";
 import {Alert, Button, Snackbar} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import Card from "../../components/Card/Card";
@@ -19,6 +24,9 @@ export default function PlayersList() {
     },)
     const [errorMessage, setErrorMessage] = useState(""); // État pour stocker le message d'erreur
     const [open, setOpen] = React.useState(false);
+    const [playerToUpdateData, setPlayerToUpdateData] = useState<PlayerInterface>({
+        name: ""
+    })
 
     useEffect(() => {
         setNewPlayer((prevState) => ({...prevState, picture: newPlayerAvatar || ""}));
@@ -29,6 +37,8 @@ export default function PlayersList() {
     const [createNewPlayer] = useCreateUserMutation({
         onCompleted: () => refetch()
     });
+
+    const [updatePlayer] = useUpdateUserMutation({onCompleted: () => refetch()})
 
     const [deletePlayer] = useDeleteUserMutation({onCompleted: () => refetch()})
 
@@ -57,6 +67,21 @@ export default function PlayersList() {
         }
     };
 
+    const onClickUpdatePlayer: MouseEventHandler<HTMLButtonElement> = (event) => {
+        const playerToUpdateId = event.currentTarget.getAttribute("data-player-id");
+        if (playerToUpdateId && playerToUpdateData.name !== "") {
+            updatePlayer({variables: {updateUserId: parseInt(playerToUpdateId), data: playerToUpdateData}})
+                .then(({data}) => {
+                    refetch();
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setOpen(true)
+                    setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
+                });
+        }
+    }
+
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
@@ -66,8 +91,8 @@ export default function PlayersList() {
     };
 
     return (
-        <div className={styles.players_list_container}>
-            <h1>Liste des Cataneurs</h1>
+        <div className={styles.players_list_container} id="players_list">
+            <h1 className={styles.title}>Liste des Cataneurs</h1>
             <div className={styles.players_list}>
                 {data?.users.map((user, index) => {
                     return (
@@ -83,7 +108,8 @@ export default function PlayersList() {
                               playerAvatar={user.picture}
                               gamesCounter={user.games?.length}
                               userId={user.id}
-                              onClickFunction={onClickDeletePlayer}
+                              onClickDeleteFunction={onClickDeletePlayer}
+                              onClickUpdateFunction={onClickUpdatePlayer}
                         />
                     )
                 })}
@@ -97,7 +123,7 @@ export default function PlayersList() {
             }
 
             <div className={styles.add_player_container}>
-                <h1>Ajouter un Cataneur</h1>
+                <h1 className={styles.title}>Ajouter un Cataneur</h1>
                 <input
                     required={true}
                     type="text"

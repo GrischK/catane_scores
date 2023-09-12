@@ -1,0 +1,10 @@
+mutation UpdateUser($updateUserId: Int!, $data: UserInput!) {
+  updateUser(id: $updateUserId, data: $data) {
+    id
+    picture
+    name
+    games {
+      id
+    }
+  }
+}
