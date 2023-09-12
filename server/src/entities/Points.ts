@@ -1,5 +1,5 @@
-import {Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {Field, InputType, Int, ObjectType} from "type-graphql";
+import {Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Field, Int, ObjectType} from "type-graphql";
 import Game from "./Games";
 import User from "./Users";
 

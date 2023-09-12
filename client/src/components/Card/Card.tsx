@@ -1,6 +1,6 @@
 import styles from './Card.module.css';
 import defaultAvatar from '../../assets/images/default_avatar.png';
-import {Box, Button, IconButton, Modal, Typography} from "@mui/material";
+import {Box, IconButton, Modal, Typography} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {MouseEventHandler} from "react";

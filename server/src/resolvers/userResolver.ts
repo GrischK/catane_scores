@@ -3,7 +3,6 @@ import User, {UserInput} from "../entities/Users";
 import db from "../db";
 import {ApolloError} from "apollo-server-errors";
 import Game from "../entities/Games";
-import games from "../entities/Games";
 
 @ArgsType()
 class UsersByIdsArgs {
