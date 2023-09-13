@@ -3,7 +3,7 @@ import Game, {GameInput, GameInputWithScore} from "../entities/Games";
 import db from "../db";
 import {ApolloError} from "apollo-server-errors";
 import User from "../entities/Users";
-import Point from "../entities/Points";
+import Point from "../entities/Scores";
 
 @Resolver()
 export default class gameResolver {
@@ -21,6 +21,10 @@ export default class gameResolver {
             throw new ApolloError("Certains utilisateurs n'ont pas été trouvés.");
         }
 
+        if (players.length < 2 ) {
+            throw new ApolloError("Il faut au moins 2 joueurs.");
+        }
+
         // Création du jeu
         const game = new Game();
         game.date = data.date;
@@ -33,22 +37,22 @@ export default class gameResolver {
         const pointsToSave = []; // Tableau pour stocker les points
 
         for (const playerData of data.playersData) {
-            const player = players.find(p => p.id === playerData.player.id);
+            const player = players.find(p => p.id === playerData.player);
 
             if (player) {
-                const point = new Point();
-                point.score = playerData.score;
-                point.users = player;
-                point.games = game;
+                const scoreData = new Point();
+                scoreData.score = playerData.score;
+                scoreData.player = player;
+                scoreData.game = game;
 
-                pointsToSave.push(point);
+                pointsToSave.push(scoreData);
             }
         }
 
         await db.getRepository(Point).save(pointsToSave);
 
         // Ajout des points au jeu
-        game.points = pointsToSave;
+        game.scores = pointsToSave;
 
         return game;
     }

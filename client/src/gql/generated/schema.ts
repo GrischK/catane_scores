@@ -22,7 +22,7 @@ export type Game = {
   picture?: Maybe<Scalars['String']>;
   place?: Maybe<Scalars['String']>;
   players: Array<User>;
-  points?: Maybe<Array<Point>>;
+  scores?: Maybe<Array<Score>>;
 };
 
 export type GameInput = {
@@ -81,16 +81,8 @@ export type MutationUpdateUserArgs = {
 };
 
 export type PlayerData = {
-  player: UserId;
+  player: Scalars['Int'];
   score: Scalars['Int'];
-};
-
-export type Point = {
-  __typename?: 'Point';
-  games: Game;
-  id: Scalars['Int'];
-  score: Scalars['Float'];
-  users: User;
 };
 
 export type Query = {
@@ -111,13 +103,21 @@ export type QueryUsersByNamesArgs = {
   names: Array<Scalars['String']>;
 };
 
+export type Score = {
+  __typename?: 'Score';
+  game: Game;
+  id: Scalars['Int'];
+  player: User;
+  score: Scalars['Float'];
+};
+
 export type User = {
   __typename?: 'User';
   games?: Maybe<Array<Game>>;
   id: Scalars['Int'];
   name: Scalars['String'];
   picture?: Maybe<Scalars['String']>;
-  points?: Maybe<Array<Point>>;
+  scores?: Maybe<Array<Score>>;
 };
 
 export type UserId = {
@@ -141,7 +141,7 @@ export type CreateGameWithScoresMutationVariables = Exact<{
 }>;
 
 
-export type CreateGameWithScoresMutation = { __typename?: 'Mutation', createGameWithScores: { __typename?: 'Game', id: number, points?: Array<{ __typename?: 'Point', score: number, users: { __typename?: 'User', name: string, picture?: string | null } }> | null } };
+export type CreateGameWithScoresMutation = { __typename?: 'Mutation', createGameWithScores: { __typename?: 'Game', id: number, date?: string | null, place?: string | null, picture?: string | null, scores?: Array<{ __typename?: 'Score', score: number, player: { __typename?: 'User', name: string } }> | null } };
 
 export type CreateUserMutationVariables = Exact<{
   data: UserInput;
@@ -240,11 +240,13 @@ export const CreateGameWithScoresDocument = gql`
     mutation CreateGameWithScores($data: GameInputWithScore!) {
   createGameWithScores(data: $data) {
     id
-    points {
+    date
+    place
+    picture
+    scores {
       score
-      users {
+      player {
         name
-        picture
       }
     }
   }

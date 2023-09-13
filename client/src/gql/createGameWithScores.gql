@@ -1,11 +1,13 @@
 mutation CreateGameWithScores($data: GameInputWithScore!) {
   createGameWithScores(data: $data) {
     id
-    points {
+    date
+    place
+    picture
+    scores {
       score
-      users {
+      player {
         name
-        picture
       }
     }
   }
