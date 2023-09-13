@@ -13,6 +13,7 @@
 
 .new_game_input > div, .new_game_multiselect > div > div {
     background-color: white;
+    min-width: 2vw;
 }
 
 .new_game_multiselect {

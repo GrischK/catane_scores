@@ -32,9 +32,17 @@ export type GameInput = {
   players: Array<UserId>;
 };
 
+export type GameInputWithScore = {
+  date?: InputMaybe<Scalars['String']>;
+  picture?: InputMaybe<Scalars['String']>;
+  place?: InputMaybe<Scalars['String']>;
+  playersData: Array<PlayerData>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createGame: Game;
+  createGameWithScores: Game;
   createUser: User;
   deleteGame: Scalars['String'];
   deleteUser: Scalars['String'];
@@ -44,6 +52,11 @@ export type Mutation = {
 
 export type MutationCreateGameArgs = {
   data: GameInput;
+};
+
+
+export type MutationCreateGameWithScoresArgs = {
+  data: GameInputWithScore;
 };
 
 
@@ -65,6 +78,11 @@ export type MutationDeleteUserArgs = {
 export type MutationUpdateUserArgs = {
   data: UserInput;
   id: Scalars['Int'];
+};
+
+export type PlayerData = {
+  player: UserId;
+  score: Scalars['Int'];
 };
 
 export type Point = {
@@ -111,6 +129,13 @@ export type CreateGameMutationVariables = Exact<{
 
 
 export type CreateGameMutation = { __typename?: 'Mutation', createGame: { __typename?: 'Game', date?: string | null, id: number, place?: string | null, players: Array<{ __typename?: 'User', id: number, name: string }> } };
+
+export type CreateGameWithScoresMutationVariables = Exact<{
+  data: GameInputWithScore;
+}>;
+
+
+export type CreateGameWithScoresMutation = { __typename?: 'Mutation', createGameWithScores: { __typename?: 'Game', id: number, points?: Array<{ __typename?: 'Point', score: number, users: { __typename?: 'User', name: string, picture?: string | null } }> | null } };
 
 export type CreateUserMutationVariables = Exact<{
   data: UserInput;
@@ -198,6 +223,46 @@ export function useCreateGameMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateGameMutationHookResult = ReturnType<typeof useCreateGameMutation>;
 export type CreateGameMutationResult = Apollo.MutationResult<CreateGameMutation>;
 export type CreateGameMutationOptions = Apollo.BaseMutationOptions<CreateGameMutation, CreateGameMutationVariables>;
+export const CreateGameWithScoresDocument = gql`
+    mutation CreateGameWithScores($data: GameInputWithScore!) {
+  createGameWithScores(data: $data) {
+    id
+    points {
+      score
+      users {
+        name
+        picture
+      }
+    }
+  }
+}
+    `;
+export type CreateGameWithScoresMutationFn = Apollo.MutationFunction<CreateGameWithScoresMutation, CreateGameWithScoresMutationVariables>;
+
+/**
+ * __useCreateGameWithScoresMutation__
+ *
+ * To run a mutation, you first call `useCreateGameWithScoresMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGameWithScoresMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGameWithScoresMutation, { data, loading, error }] = useCreateGameWithScoresMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateGameWithScoresMutation(baseOptions?: Apollo.MutationHookOptions<CreateGameWithScoresMutation, CreateGameWithScoresMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateGameWithScoresMutation, CreateGameWithScoresMutationVariables>(CreateGameWithScoresDocument, options);
+      }
+export type CreateGameWithScoresMutationHookResult = ReturnType<typeof useCreateGameWithScoresMutation>;
+export type CreateGameWithScoresMutationResult = Apollo.MutationResult<CreateGameWithScoresMutation>;
+export type CreateGameWithScoresMutationOptions = Apollo.BaseMutationOptions<CreateGameWithScoresMutation, CreateGameWithScoresMutationVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($data: UserInput!) {
   createUser(data: $data) {

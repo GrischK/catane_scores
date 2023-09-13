@@ -1,0 +1,12 @@
+mutation CreateGameWithScores($data: GameInputWithScore!) {
+  createGameWithScores(data: $data) {
+    id
+    points {
+      score
+      users {
+        name
+        picture
+      }
+    }
+  }
+}
