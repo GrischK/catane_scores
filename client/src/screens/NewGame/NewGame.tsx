@@ -95,20 +95,20 @@ export default function NewGame() {
     };
 
 
-    const {data: userData} = useUsersByNamesQuery({
-        variables: {
-            names: newGame.players.map((player) => player.id),
-        },
-        skip: newGame.players.length === 0,
-    });
-
-    useEffect(() => {
-        if (userData) {
-            setGamePlayers(userData.usersByNames || []);
-        } else {
-            setGamePlayers([]);
-        }
-    }, [userData, newGame.players]);
+    // const {data: userData} = useUsersByNamesQuery({
+    //     variables: {
+    //         names: newGame.players.map((player) => player.id),
+    //     },
+    //     skip: newGame.players.length === 0,
+    // });
+    //
+    // useEffect(() => {
+    //     if (userData) {
+    //         setGamePlayers(userData.usersByNames || []);
+    //     } else {
+    //         setGamePlayers([]);
+    //     }
+    // }, [userData, newGame.players]);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
