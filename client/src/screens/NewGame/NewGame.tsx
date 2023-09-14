@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {
-    useCreateGameMutation, User, UserId,
+    useCreateGameMutation, useCreateGameWithScoresMutation, User, UserId, useUsersByIdsQuery,
     useUsersByNamesQuery,
     useUsersQuery
 } from "../../gql/generated/schema";
@@ -28,87 +28,88 @@ interface PlayerData {
 interface GameInterface {
     date?: string | null;
     place?: string | null;
-    players: PlayerData[];
+    playersData: PlayerData[];
 }
 
 export default function NewGame() {
+    const {data} = useUsersQuery();
+
     const [newGame, setNewGame] = useState<GameInterface>({
         date: "",
         place: "",
-        players: [],
+        playersData: [],
     },)
 
     const [gamePlayers, setGamePlayers] = useState<User[] | null>(null);
+    const [playerScores, setPlayerScores] = useState<{ [playerId: number]: number }>({});
+    const userNames = (data?.users || []).map((user) => user);
+
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [open, setOpen] = React.useState(false);
     const [successOpen, setSuccessOpen] = React.useState(false);
-    const [playerScores, setPlayerScores] = useState<{ [playerId: number]: number }>({});
 
-    const {data} = useUsersQuery();
-    const userNames = (data?.users || []).map((user) => user);
-
-    const [createNewGame] = useCreateGameMutation();
+    const [createNewGame] = useCreateGameWithScoresMutation();
     console.log(newGame)
 
-    const onClickCreateNewGame = async () => {
-        const isGameNotFilledWithPlayers = newGame.players.length < 2;
-        if (isGameNotFilledWithPlayers) {
-            setOpen(true);
-            setErrorMessage("Sélectionne au moins 2 joueurs");
-            return;
-        }
+    // const onClickCreateNewGame = async () => {
+    //     const isGameNotFilledWithPlayers = newGame.playersData.length < 2;
+    //     if (isGameNotFilledWithPlayers) {
+    //         setOpen(true);
+    //         setErrorMessage("Sélectionne au moins 2 joueurs");
+    //         return;
+    //     }
 
         // const playerIds = newGame.players.map((player) => ({
         //     id: player.id,
         //     score: playerScores[player.id] || 0, // Utilise le score du joueur ou 0 par défaut
         // }));
-
-        const playerIds = newGame.players
-            .map((player) => {
-                const user = data?.users.find((user) => user.name === String(player.id));
-                return user ? { id: user.id } : null;
-            })
-            .filter((player) => player !== null) as UserId[];
-
-        try {
-            await createNewGame({
-                variables: {
-                    data: {
-                        date: newGame.date,
-                        place: newGame.place,
-                        players: playerIds, // Utilise le tableau de joueurs avec leurs scores
-                    },
-                },
-            });
-            setSuccessOpen(true);
-            setSuccessMessage("Partie créée");
-            setNewGame({
-                date: "",
-                place: "",
-                players: [],
-            });
-            setPlayerScores({}); // Réinitialise les scores après la création de la partie
-        } catch (error) {
-            console.error("Erreur lors de la création de la partie :", error);
-        }
-    };
-
-
-    // const {data: userData} = useUsersByNamesQuery({
-    //     variables: {
-    //         names: newGame.players.map((player) => player.id),
-    //     },
-    //     skip: newGame.players.length === 0,
-    // });
     //
-    // useEffect(() => {
-    //     if (userData) {
-    //         setGamePlayers(userData.usersByNames || []);
-    //     } else {
-    //         setGamePlayers([]);
+    //     const playerIds = newGame.playersData
+    //         .map((player) => {
+    //             const user = data?.users.find((user) => user.name === String(player.id));
+    //             return user ? { id: user.id } : null;
+    //         })
+    //         .filter((player) => player !== null) as UserId[];
+    //
+    //     try {
+    //         await createNewGame({
+    //             variables: {
+    //                 data: {
+    //                     date: newGame.date,
+    //                     place: newGame.place,
+    //                     playersData: playerIds, // Utilise le tableau de joueurs avec leurs scores
+    //                 },
+    //             },
+    //         });
+    //         setSuccessOpen(true);
+    //         setSuccessMessage("Partie créée");
+    //         setNewGame({
+    //             date: "",
+    //             place: "",
+    //             playersData: [],
+    //         });
+    //         setPlayerScores({}); // Réinitialise les scores après la création de la partie
+    //     } catch (error) {
+    //         console.error("Erreur lors de la création de la partie :", error);
     //     }
-    // }, [userData, newGame.players]);
+    // };
+    //
+
+    const {data: userData} = useUsersByIdsQuery({
+        variables: {
+            ids: newGame.playersData.map((player) => player.id),
+        },
+        skip: newGame.playersData.length === 0,
+    });
+
+    useEffect(() => {
+        if (userData) {
+            setGamePlayers(userData.usersByIds || []);
+        } else {
+            setGamePlayers([]);
+        }
+    }, [userData, newGame.playersData]);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -150,27 +151,30 @@ export default function NewGame() {
                 multiple
                 className={styles.new_game_multiselect}
                 id="players"
-                options={userNames}
-                getOptionLabel={(option) => (option ? option.name : "")}
-                value={newGame.players.map((userId) => {
-                    const user = userNames.find((user) => user.id === userId.id);
-                    return user || null;
-                })}
+                options={userNames.map((user) => user.name)}
+                getOptionLabel={(option) => option}
                 onChange={(_, newValue) => {
-                    const selectedUserIds = newValue.map((user) => user?.id).filter((id) => id !== null && id !== undefined);
+                    const selectedUserNames = newValue.filter((name) => {
+                        const user = userNames.find((u) => u.name === name);
+                        return user !== undefined;
+                    });
                     setNewGame((prevState) => ({
                         ...prevState,
-                        players: newValue.length === 0 ? [] : selectedUserIds.map((id) => ({
-                            id: typeof id === "number" ? id : 0, // Convertit id en nombre ou 0 par défaut si id n'est pas un nombre
-                            score: id !== undefined ? playerScores[id] || 0 : 0, // Utilise le score du joueur ou 0 par défaut si id est défini
+                        playersData: selectedUserNames.map((name) => ({
+                            id: userNames.find((u) => u.name === name)?.id || 0, // Remplacez 0 par la valeur par défaut souhaitée
+                            score: 0, // Vous pouvez définir le score par défaut ici
                         })),
                     }));
                 }}
-
+                value={newGame.playersData.map((player) => {
+                    const user = userNames.find((u) => u.id === player.id);
+                    return user ? user.name : "";
+                })}
                 renderInput={(params) => (
                     <TextField {...params} label="Joueurs" variant="outlined"/>
                 )}
             />
+
 
             {/*<Select*/}
             {/*    labelId="demo-multiple-chip-label"*/}
@@ -205,7 +209,10 @@ export default function NewGame() {
             {/*    ))}*/}
             {/*</Select>*/}
 
-            <Button variant="contained" onClick={onClickCreateNewGame} endIcon={<SendIcon/>}>
+            <Button
+                variant="contained"
+                // onClick={onClickCreateNewGame}
+                endIcon={<SendIcon/>}>
                 Ajouter
             </Button>
             {gamePlayers &&
@@ -221,12 +228,18 @@ export default function NewGame() {
                             className={styles.new_game_input}
                             label="Score"
                             type="text"
-                            value={playerScores[e.id] || ""}
+                            value={newGame.playersData.find(player => player.id === e.id)?.score || ""}
                             onChange={(event) => {
                                 const score = event.target.value;
-                                setPlayerScores((prevScores) => ({
-                                    ...prevScores,
-                                    [e.id]: score === "" ? 0 : parseInt(score, 10),
+                                setNewGame((prevState) => ({
+                                    ...prevState,
+                                    playersData: prevState.playersData.map(player => {
+                                        if (player.id === e.id) {
+                                            return { ...player, score: score === "" ? 0 : parseInt(score, 10) };
+                                        } else {
+                                            return player;
+                                        }
+                                    }),
                                 }));
                             }}
                         />
