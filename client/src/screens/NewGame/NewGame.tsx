@@ -21,7 +21,7 @@ import {
 import defaultAvatar from "../../assets/images/default_avatar.png";
 
 interface PlayerData {
-    id: number;
+    player: number;
     score: number;
 }
 
@@ -52,53 +52,60 @@ export default function NewGame() {
     const [createNewGame] = useCreateGameWithScoresMutation();
     console.log(newGame)
 
-    // const onClickCreateNewGame = async () => {
-    //     const isGameNotFilledWithPlayers = newGame.playersData.length < 2;
-    //     if (isGameNotFilledWithPlayers) {
-    //         setOpen(true);
-    //         setErrorMessage("Sélectionne au moins 2 joueurs");
-    //         return;
-    //     }
+    const onClickCreateNewGame = async () => {
+        const isGameNotFilledWithPlayers = newGame.playersData.length < 2 || newGame.playersData.length > 6;
+        if (isGameNotFilledWithPlayers) {
+            setOpen(true);
+            setErrorMessage("Sélectionne entre 2 à 6 joueurs");
+            return;
+        }
 
+        const areAllScoresFilled = newGame.playersData.every((player) => player.score !== 0);
+
+        if (!areAllScoresFilled) {
+            setOpen(true);
+            setErrorMessage("Indique le score pour chaque joueur");
+            return;
+        }
         // const playerIds = newGame.players.map((player) => ({
         //     id: player.id,
         //     score: playerScores[player.id] || 0, // Utilise le score du joueur ou 0 par défaut
         // }));
-    //
-    //     const playerIds = newGame.playersData
-    //         .map((player) => {
-    //             const user = data?.users.find((user) => user.name === String(player.id));
-    //             return user ? { id: user.id } : null;
-    //         })
-    //         .filter((player) => player !== null) as UserId[];
-    //
-    //     try {
-    //         await createNewGame({
-    //             variables: {
-    //                 data: {
-    //                     date: newGame.date,
-    //                     place: newGame.place,
-    //                     playersData: playerIds, // Utilise le tableau de joueurs avec leurs scores
-    //                 },
-    //             },
-    //         });
-    //         setSuccessOpen(true);
-    //         setSuccessMessage("Partie créée");
-    //         setNewGame({
-    //             date: "",
-    //             place: "",
-    //             playersData: [],
-    //         });
-    //         setPlayerScores({}); // Réinitialise les scores après la création de la partie
-    //     } catch (error) {
-    //         console.error("Erreur lors de la création de la partie :", error);
-    //     }
-    // };
-    //
+        //
+        // const playerIds = newGame.playersData
+        //     .map((player) => {
+        //         const user = data?.users.find((user) => user.name === String(player.id));
+        //         return user ? { id: user.id } : null;
+        //     })
+        //     .filter((player) => player !== null) as UserId[];
+
+        try {
+            await createNewGame({
+                variables: {
+                    data: {
+                        date: newGame.date,
+                        place: newGame.place,
+                        playersData: newGame.playersData,
+                    },
+                },
+            });
+            setSuccessOpen(true);
+            setSuccessMessage("Partie créée");
+            setNewGame({
+                date: "",
+                place: "",
+                playersData: [],
+            });
+            setPlayerScores({});
+        } catch (error) {
+            console.error("Erreur lors de la création de la partie :", error);
+        }
+    };
+
 
     const {data: userData} = useUsersByIdsQuery({
         variables: {
-            ids: newGame.playersData.map((player) => player.id),
+            ids: newGame.playersData.map((player) => player.player),
         },
         skip: newGame.playersData.length === 0,
     });
@@ -161,13 +168,13 @@ export default function NewGame() {
                     setNewGame((prevState) => ({
                         ...prevState,
                         playersData: selectedUserNames.map((name) => ({
-                            id: userNames.find((u) => u.name === name)?.id || 0, // Remplacez 0 par la valeur par défaut souhaitée
-                            score: 0, // Vous pouvez définir le score par défaut ici
+                            player: userNames.find((u) => u.name === name)?.id || 0,
+                            score: 0,
                         })),
                     }));
                 }}
                 value={newGame.playersData.map((player) => {
-                    const user = userNames.find((u) => u.id === player.id);
+                    const user = userNames.find((u) => u.id === player.player);
                     return user ? user.name : "";
                 })}
                 renderInput={(params) => (
@@ -209,42 +216,47 @@ export default function NewGame() {
             {/*    ))}*/}
             {/*</Select>*/}
 
+            {gamePlayers && gamePlayers?.length > 0 &&
+                <div className={styles.new_game_players}>
+                    {gamePlayers &&
+                        gamePlayers.map((e) => (
+                            <div className={styles.new_game_players_list} key={e.id}>
+                                <h1>{e.name}</h1>
+                                {e.picture ? (
+                                    <img src={e.picture} alt={`image de ${e.name}`}/>
+                                ) : (
+                                    <img src={defaultAvatar} alt="user picture"/>
+                                )}
+                                <TextField
+                                    className={styles.new_game_input}
+                                    label="Score"
+                                    type="text"
+                                    value={newGame.playersData.find(player => player.player === e.id)?.score || ""}
+                                    onChange={(event) => {
+                                        const score = event.target.value;
+                                        setNewGame((prevState) => ({
+                                            ...prevState,
+                                            playersData: prevState.playersData.map(player => {
+                                                if (player.player === e.id) {
+                                                    return {...player, score: score === "" ? 0 : parseInt(score, 10)};
+                                                } else {
+                                                    return player;
+                                                }
+                                            }),
+                                        }));
+                                    }}
+                                />
+                            </div>
+                        ))}
+                </div>
+            }
+
             <Button
                 variant="contained"
-                // onClick={onClickCreateNewGame}
+                onClick={onClickCreateNewGame}
                 endIcon={<SendIcon/>}>
-                Ajouter
+                Créer la partie
             </Button>
-            {gamePlayers &&
-                gamePlayers.map((e) => (
-                    <div className={styles.new_game_players_list} key={e.id}>
-                        <h1>{e.name}</h1>
-                        {e.picture ? (
-                            <img src={e.picture} alt={`image de ${e.name}`} />
-                        ) : (
-                            <img src={defaultAvatar} alt="user picture" />
-                        )}
-                        <TextField
-                            className={styles.new_game_input}
-                            label="Score"
-                            type="text"
-                            value={newGame.playersData.find(player => player.id === e.id)?.score || ""}
-                            onChange={(event) => {
-                                const score = event.target.value;
-                                setNewGame((prevState) => ({
-                                    ...prevState,
-                                    playersData: prevState.playersData.map(player => {
-                                        if (player.id === e.id) {
-                                            return { ...player, score: score === "" ? 0 : parseInt(score, 10) };
-                                        } else {
-                                            return player;
-                                        }
-                                    }),
-                                }));
-                            }}
-                        />
-                    </div>
-                ))}
             {errorMessage &&
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>

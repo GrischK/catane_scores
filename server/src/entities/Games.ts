@@ -28,7 +28,7 @@ class Game {
     picture?: string;
 
     @Field(() => [Point], { nullable: true })
-    @OneToMany(() => Point, (score) => score.game, {nullable: true})
+    @OneToMany(() => Point, (score) => score.game, {nullable: true, cascade: ["remove"]})
     @JoinTable()
     scores?: Point[] | null;
 }

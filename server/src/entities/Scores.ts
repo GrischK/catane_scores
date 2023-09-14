@@ -19,7 +19,7 @@ class Score {
     @JoinTable()
     player: User;
 
-    @ManyToOne(() => Game, (game) => game.scores)
+    @ManyToOne(() => Game, (game) => game.scores, {onDelete: "CASCADE"})
     @Field(() => Game)
     @JoinTable()
     game: Game;
