@@ -88,6 +88,7 @@ export type PlayerData = {
 export type Query = {
   __typename?: 'Query';
   games: Array<Game>;
+  scores: Array<Score>;
   users: Array<User>;
   usersByIds?: Maybe<Array<User>>;
   usersByNames?: Maybe<Array<User>>;
@@ -167,7 +168,7 @@ export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: string }
 export type GamesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GamesQuery = { __typename?: 'Query', games: Array<{ __typename?: 'Game', id: number, date?: string | null, picture?: string | null, place?: string | null, players: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null }> }> };
+export type GamesQuery = { __typename?: 'Query', games: Array<{ __typename?: 'Game', id: number, date?: string | null, picture?: string | null, place?: string | null, scores?: Array<{ __typename?: 'Score', score: number, player: { __typename?: 'User', id: number, name: string, picture?: string | null } }> | null }> };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -382,10 +383,13 @@ export const GamesDocument = gql`
     date
     picture
     place
-    players {
-      id
-      name
-      picture
+    scores {
+      player {
+        id
+        name
+        picture
+      }
+      score
     }
   }
 }

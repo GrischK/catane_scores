@@ -31,7 +31,7 @@ interface GameInterface {
     playersData: PlayerData[];
 }
 
-export default function NewGame() {
+export default function NewGame({refreshGamesList}: any) {
     const {data} = useUsersQuery();
 
     const [newGame, setNewGame] = useState<GameInterface>({
@@ -91,6 +91,7 @@ export default function NewGame() {
             });
             setSuccessOpen(true);
             setSuccessMessage("Partie créée");
+            refreshGamesList();
             setNewGame({
                 date: "",
                 place: "",
