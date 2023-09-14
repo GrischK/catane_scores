@@ -3,13 +3,13 @@ import Game, {GameInput, GameInputWithScore} from "../entities/Games";
 import db from "../db";
 import {ApolloError} from "apollo-server-errors";
 import User from "../entities/Users";
-import Point from "../entities/Scores";
+import Score from "../entities/Scores";
 
 @Resolver()
 export default class gameResolver {
     @Query(() => [Game])
     async games(): Promise<Game[]> {
-        return await db.getRepository(Game).find({relations: {players: true}});
+        return await db.getRepository(Game).find({relations: ["scores", "scores.player", "players"]});
     }
 
     @Mutation(() => Game)
@@ -40,7 +40,7 @@ export default class gameResolver {
             const player = players.find(p => p.id === playerData.player);
 
             if (player) {
-                const scoreData = new Point();
+                const scoreData = new Score();
                 scoreData.score = playerData.score;
                 scoreData.player = player;
                 scoreData.game = game;
@@ -49,7 +49,7 @@ export default class gameResolver {
             }
         }
 
-        await db.getRepository(Point).save(pointsToSave);
+        await db.getRepository(Score).save(pointsToSave);
 
         // Ajout des points au jeu
         game.scores = pointsToSave;

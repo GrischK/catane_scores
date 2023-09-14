@@ -1,7 +1,6 @@
 import {Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Field, InputType, Int, ObjectType} from "type-graphql";
 import Game from "./Games";
-import Points from "./Scores";
 import Score from "./Scores";
 
 @Entity()
@@ -25,7 +24,7 @@ class User {
 
     @Field(() => [Score], { nullable: true })
     @OneToMany(() => Score, (score) => score.player, {nullable: true})
-    scores?: Points[] | null;
+    scores?: Score[] | null;
 }
 
 @InputType()
