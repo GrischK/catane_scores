@@ -45,7 +45,9 @@ export default function GamesList({ gamesListRefreshed }:any) {
     };
 
     return (
-        <div className={styles.games_list_container}>
+        <div className={styles.games_list_wrapper}>
+            <h1 className={styles.title}>Liste des parties</h1>
+            <div className={styles.games_list_container}>
             {classedGames?.map((game, index) => (
                 <div key={index} className={styles.games_details}>
                     <div className={styles.games_infos_wrapper}>
@@ -83,6 +85,7 @@ export default function GamesList({ gamesListRefreshed }:any) {
                     </div>
                 </div>
             ))}
+        </div>
         </div>
     )
 }

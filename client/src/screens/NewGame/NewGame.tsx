@@ -130,7 +130,7 @@ export default function NewGame({refreshGamesList}: any) {
 
     return (
         <div className={styles.new_game_container}>
-            <h1 className={styles.title}>Ajouter une partie</h1>
+            <h1 className={styles.title}>Ajouter une Catanerie</h1>
             <TextField
                 className={styles.new_game_input}
                 label="Date"
@@ -145,7 +145,7 @@ export default function NewGame({refreshGamesList}: any) {
             />
             <TextField
                 className={styles.new_game_input}
-                label="Place"
+                label="Lieu"
                 type="text"
                 value={newGame.place}
                 onChange={(e) =>
@@ -179,7 +179,7 @@ export default function NewGame({refreshGamesList}: any) {
                     return user ? user.name : "";
                 })}
                 renderInput={(params) => (
-                    <TextField {...params} label="Joueurs" variant="outlined"/>
+                    <TextField {...params} label="Cataneurs" variant="outlined"/>
                 )}
             />
 

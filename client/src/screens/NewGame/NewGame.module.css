@@ -3,7 +3,7 @@
     background-image: url("../../assets/images/combat_chevaliers.jpg");
     background-attachment: fixed;
     background-size: cover;
-    min-height: 100vh;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     gap: 2vh;
@@ -30,6 +30,7 @@
     font-family: 'Calistoga', cursive;
     font-weight: 400;
     color: #FFCC00;
+    font-size: 3rem;
 }
 
 .new_game_players {
