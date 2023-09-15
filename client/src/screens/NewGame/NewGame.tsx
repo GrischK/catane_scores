@@ -14,9 +14,8 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {
-    useCreateGameMutation, useCreateGameWithScoresMutation, User, UserId, useUsersByIdsQuery,
-    useUsersByNamesQuery,
-    useUsersQuery
+     useCreateGameWithScoresMutation, User, useUsersByIdsQuery,
+        useUsersQuery
 } from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 
@@ -41,7 +40,6 @@ export default function NewGame({refreshGamesList}: any) {
     },)
 
     const [gamePlayers, setGamePlayers] = useState<User[] | null>(null);
-    const [playerScores, setPlayerScores] = useState<{ [playerId: number]: number }>({});
     const userNames = (data?.users || []).map((user) => user);
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -97,7 +95,6 @@ export default function NewGame({refreshGamesList}: any) {
                 place: "",
                 playersData: [],
             });
-            setPlayerScores({});
         } catch (error) {
             console.error("Erreur lors de la création de la partie :", error);
         }
