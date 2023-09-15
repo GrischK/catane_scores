@@ -12,6 +12,7 @@ import db from "./db";
 import {env} from "./env";
 import userResolver from "./resolvers/userResolver";
 import gameResolver from "./resolvers/gameResolver";
+import scoreResolver from "./resolvers/scoreResolver";
 import path from "path";
 
 
@@ -39,7 +40,7 @@ const start = async (): Promise<void> => {
     }));
 
     const schema = await buildSchema({
-        resolvers: [userResolver, gameResolver],
+        resolvers: [userResolver, gameResolver, scoreResolver],
     });
 
     const server = new ApolloServer({

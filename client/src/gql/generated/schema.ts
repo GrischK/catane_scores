@@ -22,7 +22,7 @@ export type Game = {
   picture?: Maybe<Scalars['String']>;
   place?: Maybe<Scalars['String']>;
   players: Array<User>;
-  points?: Maybe<Array<Point>>;
+  scores?: Maybe<Array<Score>>;
 };
 
 export type GameInput = {
@@ -32,9 +32,17 @@ export type GameInput = {
   players: Array<UserId>;
 };
 
+export type GameInputWithScore = {
+  date?: InputMaybe<Scalars['String']>;
+  picture?: InputMaybe<Scalars['String']>;
+  place?: InputMaybe<Scalars['String']>;
+  playersData: Array<PlayerData>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createGame: Game;
+  createGameWithScores: Game;
   createUser: User;
   deleteGame: Scalars['String'];
   deleteUser: Scalars['String'];
@@ -44,6 +52,11 @@ export type Mutation = {
 
 export type MutationCreateGameArgs = {
   data: GameInput;
+};
+
+
+export type MutationCreateGameWithScoresArgs = {
+  data: GameInputWithScore;
 };
 
 
@@ -67,24 +80,36 @@ export type MutationUpdateUserArgs = {
   id: Scalars['Int'];
 };
 
-export type Point = {
-  __typename?: 'Point';
-  games: Game;
-  id: Scalars['Int'];
-  score: Scalars['Float'];
-  users: User;
+export type PlayerData = {
+  player: Scalars['Int'];
+  score: Scalars['Int'];
 };
 
 export type Query = {
   __typename?: 'Query';
   games: Array<Game>;
+  scores: Array<Score>;
   users: Array<User>;
+  usersByIds?: Maybe<Array<User>>;
   usersByNames?: Maybe<Array<User>>;
+};
+
+
+export type QueryUsersByIdsArgs = {
+  ids: Array<Scalars['Int']>;
 };
 
 
 export type QueryUsersByNamesArgs = {
   names: Array<Scalars['String']>;
+};
+
+export type Score = {
+  __typename?: 'Score';
+  game: Game;
+  id: Scalars['Int'];
+  player: User;
+  score: Scalars['Float'];
 };
 
 export type User = {
@@ -93,7 +118,7 @@ export type User = {
   id: Scalars['Int'];
   name: Scalars['String'];
   picture?: Maybe<Scalars['String']>;
-  points?: Maybe<Array<Point>>;
+  scores?: Maybe<Array<Score>>;
 };
 
 export type UserId = {
@@ -111,6 +136,13 @@ export type CreateGameMutationVariables = Exact<{
 
 
 export type CreateGameMutation = { __typename?: 'Mutation', createGame: { __typename?: 'Game', date?: string | null, id: number, place?: string | null, players: Array<{ __typename?: 'User', id: number, name: string }> } };
+
+export type CreateGameWithScoresMutationVariables = Exact<{
+  data: GameInputWithScore;
+}>;
+
+
+export type CreateGameWithScoresMutation = { __typename?: 'Mutation', createGameWithScores: { __typename?: 'Game', id: number, date?: string | null, place?: string | null, picture?: string | null, scores?: Array<{ __typename?: 'Score', score: number, player: { __typename?: 'User', name: string } }> | null } };
 
 export type CreateUserMutationVariables = Exact<{
   data: UserInput;
@@ -136,12 +168,19 @@ export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: string }
 export type GamesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GamesQuery = { __typename?: 'Query', games: Array<{ __typename?: 'Game', id: number, date?: string | null, picture?: string | null, place?: string | null, players: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null }> }> };
+export type GamesQuery = { __typename?: 'Query', games: Array<{ __typename?: 'Game', id: number, date?: string | null, picture?: string | null, place?: string | null, scores?: Array<{ __typename?: 'Score', score: number, player: { __typename?: 'User', id: number, name: string, picture?: string | null } }> | null }> };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null, games?: Array<{ __typename?: 'Game', id: number }> | null }> };
+
+export type UsersByIdsQueryVariables = Exact<{
+  ids: Array<Scalars['Int']> | Scalars['Int'];
+}>;
+
+
+export type UsersByIdsQuery = { __typename?: 'Query', usersByIds?: Array<{ __typename?: 'User', id: number, name: string, picture?: string | null }> | null };
 
 export type UsersByNamesQueryVariables = Exact<{
   names: Array<Scalars['String']> | Scalars['String'];
@@ -198,6 +237,48 @@ export function useCreateGameMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateGameMutationHookResult = ReturnType<typeof useCreateGameMutation>;
 export type CreateGameMutationResult = Apollo.MutationResult<CreateGameMutation>;
 export type CreateGameMutationOptions = Apollo.BaseMutationOptions<CreateGameMutation, CreateGameMutationVariables>;
+export const CreateGameWithScoresDocument = gql`
+    mutation CreateGameWithScores($data: GameInputWithScore!) {
+  createGameWithScores(data: $data) {
+    id
+    date
+    place
+    picture
+    scores {
+      score
+      player {
+        name
+      }
+    }
+  }
+}
+    `;
+export type CreateGameWithScoresMutationFn = Apollo.MutationFunction<CreateGameWithScoresMutation, CreateGameWithScoresMutationVariables>;
+
+/**
+ * __useCreateGameWithScoresMutation__
+ *
+ * To run a mutation, you first call `useCreateGameWithScoresMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGameWithScoresMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGameWithScoresMutation, { data, loading, error }] = useCreateGameWithScoresMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateGameWithScoresMutation(baseOptions?: Apollo.MutationHookOptions<CreateGameWithScoresMutation, CreateGameWithScoresMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateGameWithScoresMutation, CreateGameWithScoresMutationVariables>(CreateGameWithScoresDocument, options);
+      }
+export type CreateGameWithScoresMutationHookResult = ReturnType<typeof useCreateGameWithScoresMutation>;
+export type CreateGameWithScoresMutationResult = Apollo.MutationResult<CreateGameWithScoresMutation>;
+export type CreateGameWithScoresMutationOptions = Apollo.BaseMutationOptions<CreateGameWithScoresMutation, CreateGameWithScoresMutationVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($data: UserInput!) {
   createUser(data: $data) {
@@ -302,10 +383,13 @@ export const GamesDocument = gql`
     date
     picture
     place
-    players {
-      id
-      name
-      picture
+    scores {
+      player {
+        id
+        name
+        picture
+      }
+      score
     }
   }
 }
@@ -376,6 +460,43 @@ export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<User
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
+export const UsersByIdsDocument = gql`
+    query UsersByIds($ids: [Int!]!) {
+  usersByIds(ids: $ids) {
+    id
+    name
+    picture
+  }
+}
+    `;
+
+/**
+ * __useUsersByIdsQuery__
+ *
+ * To run a query within a React component, call `useUsersByIdsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersByIdsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersByIdsQuery({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useUsersByIdsQuery(baseOptions: Apollo.QueryHookOptions<UsersByIdsQuery, UsersByIdsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UsersByIdsQuery, UsersByIdsQueryVariables>(UsersByIdsDocument, options);
+      }
+export function useUsersByIdsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersByIdsQuery, UsersByIdsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UsersByIdsQuery, UsersByIdsQueryVariables>(UsersByIdsDocument, options);
+        }
+export type UsersByIdsQueryHookResult = ReturnType<typeof useUsersByIdsQuery>;
+export type UsersByIdsLazyQueryHookResult = ReturnType<typeof useUsersByIdsLazyQuery>;
+export type UsersByIdsQueryResult = Apollo.QueryResult<UsersByIdsQuery, UsersByIdsQueryVariables>;
 export const UsersByNamesDocument = gql`
     query UsersByNames($names: [String!]!) {
   usersByNames(names: $names) {

@@ -1,0 +1,7 @@
+query UsersByIds($ids: [Int!]!) {
+  usersByIds(ids: $ids) {
+    id
+    name
+    picture
+  }
+}

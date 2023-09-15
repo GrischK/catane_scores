@@ -4,10 +4,13 @@ query Games {
     date
     picture
     place
-    players {
-      id
-      name
-      picture
+    scores {
+      player {
+        id
+        name
+        picture
+      }
+      score
     }
   }
 }

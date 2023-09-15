@@ -5,7 +5,7 @@ import User from "./Users";
 
 @Entity()
 @ObjectType()
-class Point {
+class Score {
     @PrimaryGeneratedColumn()
     @Field(() => Int)
     id: number;
@@ -14,15 +14,15 @@ class Point {
     @Field()
     score: number;
 
-    @ManyToOne(() => User, (user) => user.points)
+    @ManyToOne(() => User, (user) => user.scores)
     @Field(() => User)
     @JoinTable()
-    users: User;
+    player: User;
 
-    @ManyToOne(() => Game, (game) => game.points)
+    @ManyToOne(() => Game, (game) => game.scores, {onDelete: "CASCADE"})
     @Field(() => Game)
     @JoinTable()
-    games: Game;
+    game: Game;
 }
 
-export default Point;
+export default Score;

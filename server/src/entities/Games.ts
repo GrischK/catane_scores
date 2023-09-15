@@ -1,7 +1,7 @@
 import {Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Field, InputType, Int, ObjectType} from "type-graphql";
 import User, {UserId} from "./Users";
-import Points from "./Points";
+import Score from "./Scores";
 
 @Entity()
 @ObjectType()
@@ -27,10 +27,10 @@ class Game {
     @Field({nullable: true})
     picture?: string;
 
-    @Field(() => [Points], { nullable: true })
-    @OneToMany(() => Points, (points) => points.games, {nullable: true})
+    @Field(() => [Score], { nullable: true })
+    @OneToMany(() => Score, (score) => score.game, {nullable: true, cascade: ["remove"]})
     @JoinTable()
-    points?: Points[] | null;
+    scores?: Score[] | null;
 }
 
 @InputType()
@@ -46,6 +46,30 @@ export class GameInput {
 
     @Field({nullable: true})
     place?: string;
+}
+
+@InputType()
+class PlayerData {
+    @Field(() => Int)
+    player: number;
+
+    @Field(() => Int)
+    score: number;
+}
+
+@InputType()
+export class GameInputWithScore {
+    @Field({ nullable: true })
+    date?: string;
+
+    @Field({ nullable: true })
+    picture?: string;
+
+    @Field({ nullable: true })
+    place?: string;
+
+    @Field(() => [PlayerData])
+    playersData: PlayerData[];
 }
 
 @InputType()

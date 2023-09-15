@@ -1,7 +1,16 @@
 .ranking_container {
-    min-height: 100vh;
-    background-image: url("../../assets/images/podium.jpg");
+    background-image: url("../../assets/images/crown.jpg");
     background-attachment: fixed;
     background-size: cover;
     background-position: center;
+    min-height: 50vh;
+    padding-top: 50vh;
+}
+
+.title {
+    -webkit-text-stroke: 1px black;
+    font-family: 'Calistoga', cursive;
+    font-weight: 400;
+    color: #FFCC00;
+    font-size: 3rem;
 }
