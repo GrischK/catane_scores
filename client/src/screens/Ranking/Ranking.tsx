@@ -2,6 +2,7 @@ import styles from './Ranking.module.css';
 import React, {useEffect, useState} from "react";
 import {useGamesQuery, User} from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
+import ConfettiExplosion from 'react-confetti-explosion';
 
 interface PlayersPoints {
     player: User;
@@ -10,6 +11,7 @@ interface PlayersPoints {
 
 export default function Ranking() {
     const {data, refetch} = useGamesQuery()
+    const [isExploding, setIsExploding] = React.useState(true);
 
     console.log(data)
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
@@ -43,10 +45,20 @@ export default function Ranking() {
         }
     }, [data]);
 
-    console.log(playersPoints)
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsExploding(false)
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <div className={styles.ranking_container}>
+            {isExploding &&
+                <ConfettiExplosion
+                    height={"100vh"}
+                    width={2000}
+                />}
             <h1 className={styles.title}>Roi du Catan</h1>
             <div className={styles.king_of_catan}>
                 {playersPoints.length > 0 && (
@@ -65,7 +77,7 @@ export default function Ranking() {
                 {playersPoints.length > 0 && (
                     playersPoints.slice(1).map((p, index) =>
                         <div className={styles.player_info} key={p.player.id}>
-                            <span>{index+2}ème</span>
+                            <span>{index + 2}ème</span>
                             {p.player.picture ?
                                 <img src={p.player?.picture}
                                      alt={`avatar de ${p.player.name}`}/>
