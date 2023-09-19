@@ -1,18 +1,21 @@
 import styles from './Card.module.css';
 import defaultAvatar from '../../assets/images/default_avatar.png';
-import {Box, IconButton, Modal, Typography} from "@mui/material";
+import {Box, Button, IconButton, Modal, TextField, Typography} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {MouseEventHandler} from "react";
+import {MouseEventHandler, useState} from "react";
 import React from 'react';
+import {useUpdateUserMutation} from "../../gql/generated/schema";
+import SendIcon from "@mui/icons-material/Send";
+import RandomAvatar from "../RandomAvatar/RandomAvatar";
 
 interface CardProps {
     playerName: string,
     playerAvatar: string | null | undefined,
     onClickDeleteFunction: MouseEventHandler<HTMLButtonElement>,
-    onClickUpdateFunction: MouseEventHandler<HTMLButtonElement>,
     userId: number,
     gamesCounter: number | undefined,
+    refreshPlayersList: any
 }
 
 const style = {
@@ -27,18 +30,47 @@ const style = {
     p: 4,
 };
 
+interface PlayerInterface {
+    name: string;
+    picture?: string | null;
+}
+
 export default function Card({
                                  playerName,
                                  playerAvatar,
                                  onClickDeleteFunction,
-                                 onClickUpdateFunction,
                                  userId,
-                                 gamesCounter
+                                 gamesCounter,
+                                 refreshPlayersList
                              }: CardProps) {
 
     const [openModal, setOpenModal] = React.useState(false);
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
+    const [playerToUpdateData, setPlayerToUpdateData] = useState<PlayerInterface>({
+        name: playerName,
+        picture: playerAvatar
+    })
+
+    const [updatePlayer] = useUpdateUserMutation(
+        // {onCompleted: () => refetch()}
+    )
+
+    const onClickUpdatePlayer: MouseEventHandler<HTMLButtonElement> = (event) => {
+        const playerToUpdateId = event.currentTarget.getAttribute("data-player-id");
+        if (playerToUpdateId && playerToUpdateData.name !== "") {
+            updatePlayer({variables: {updateUserId: parseInt(playerToUpdateId), data: playerToUpdateData}})
+                .then(({data}) => {
+                    refreshPlayersList()
+                    setOpenModal(false)
+                })
+                .catch((error) => {
+                    console.error(error);
+                    // setOpen(true)
+                    // setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
+                });
+        }
+    }
 
     return (
         <div className={styles.card}>
@@ -64,13 +96,50 @@ export default function Card({
                 aria-describedby="modal-modal-description"
                 disableScrollLock={true}
             >
-                <Box sx={style}>
+                <Box id={styles.update_player_modal} sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Text in a modal
+                        Modifier {playerName}
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{mt: 2}}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    </Typography>
+                    {/*<input*/}
+                    {/*    required={true}*/}
+                    {/*    type="text"*/}
+                    {/*    placeholder="Nom du joueur"*/}
+                    {/*    value={playerToUpdateData.name}*/}
+                    {/*    onChange={(e) =>*/}
+                    {/*        setPlayerToUpdateData((prevState) => ({*/}
+                    {/*                ...prevState,*/}
+                    {/*                name: e.target.value,*/}
+                    {/*            })*/}
+                    {/*        )*/}
+                    {/*    }*/}
+                    {/*/>*/}
+
+                    <TextField
+                        required={true}
+                        className={styles.update_player_name_input}
+                        label="Nom"
+                        type="text"
+                        value={playerToUpdateData.name}
+                        onChange={(e) =>
+                            setPlayerToUpdateData((prevState) => ({
+                                    ...prevState,
+                                    name: e.target.value,
+                                })
+                            )
+                        }
+                    />
+                    <RandomAvatar
+                        onChange={(newAvatar:string) =>
+                        setPlayerToUpdateData((prevState) => ({
+                                ...prevState,
+                                picture: newAvatar,
+                            })
+                        )
+                    }/>
+                    <Button variant="contained" onClick={onClickUpdatePlayer} endIcon={<SendIcon/>}
+                            data-player-id={userId}>
+                        Modifier
+                    </Button>
                 </Box>
             </Modal>
         </div>
