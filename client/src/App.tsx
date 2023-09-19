@@ -15,6 +15,7 @@ function App() {
     const refreshGamesList = () => {
         setGamesListRefreshed(!gamesListRefreshed);
     };
+
     return (
         <>
             <Routes location={location} key={location.pathname}>

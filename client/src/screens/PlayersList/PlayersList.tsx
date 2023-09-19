@@ -3,7 +3,6 @@ import styles from './PlayersList.module.css';
 import {
     useCreateUserMutation,
     useDeleteUserMutation,
-    useUpdateUserMutation,
     useUsersQuery
 } from "../../gql/generated/schema";
 import {Alert, Button, Snackbar} from "@mui/material";
@@ -24,21 +23,26 @@ export default function PlayersList() {
     },)
     const [errorMessage, setErrorMessage] = useState(""); // État pour stocker le message d'erreur
     const [open, setOpen] = React.useState(false);
-    const [playerToUpdateData, setPlayerToUpdateData] = useState<PlayerInterface>({
-        name: ""
-    })
+    const [isPlayerUpdated, setIsPlayerUpdated] = useState(false)
 
     useEffect(() => {
         setNewPlayer((prevState) => ({...prevState, picture: newPlayerAvatar || ""}));
     }, [newPlayerAvatar]);
+
+    useEffect(() => {
+        refetch()
+        setIsPlayerUpdated(false)
+    }, [isPlayerUpdated]);
+
+    const refreshPlayersList = () => {
+        setIsPlayerUpdated(true)
+    };
 
     const {data, refetch} = useUsersQuery();
 
     const [createNewPlayer] = useCreateUserMutation({
         onCompleted: () => refetch()
     });
-
-    const [updatePlayer] = useUpdateUserMutation({onCompleted: () => refetch()})
 
     const [deletePlayer] = useDeleteUserMutation({onCompleted: () => refetch()})
 
@@ -67,21 +71,6 @@ export default function PlayersList() {
         }
     };
 
-    const onClickUpdatePlayer: MouseEventHandler<HTMLButtonElement> = (event) => {
-        const playerToUpdateId = event.currentTarget.getAttribute("data-player-id");
-        if (playerToUpdateId && playerToUpdateData.name !== "") {
-            updatePlayer({variables: {updateUserId: parseInt(playerToUpdateId), data: playerToUpdateData}})
-                .then(({data}) => {
-                    refetch();
-                })
-                .catch((error) => {
-                    console.error(error);
-                    setOpen(true)
-                    setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
-                });
-        }
-    }
-
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
@@ -94,25 +83,27 @@ export default function PlayersList() {
         <div className={styles.players_list_container} id="players_list">
             <h1 className={styles.title}>Liste des Cataneurs</h1>
             <div className={styles.players_list}>
-                {data?.users.map((user, index) => {
-                    return (
-                        // <div key={index} className={styles.player_wrapper}>
-                        //     <h1>{user.name}</h1>
-                        //     <IconButton aria-label="delete" onClick={onClickDeletePlayer} data-player-id={user.id} >
-                        //         <DeleteIcon />
-                        //     </IconButton>
-                        //     {/*<button onClick={onClickDeletePlayer} data-player-id={user.id}>Supprimer</button>*/}
-                        // </div>
-                        <Card key={index}
-                              playerName={user.name}
-                              playerAvatar={user.picture}
-                              gamesCounter={user.games?.length}
-                              userId={user.id}
-                              onClickDeleteFunction={onClickDeletePlayer}
-                              onClickUpdateFunction={onClickUpdatePlayer}
-                        />
-                    )
-                })}
+                {data?.users.slice()
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((user, index) => {
+                        return (
+                            // <div key={index} className={styles.player_wrapper}>
+                            //     <h1>{user.name}</h1>
+                            //     <IconButton aria-label="delete" onClick={onClickDeletePlayer} data-player-id={user.id} >
+                            //         <DeleteIcon />
+                            //     </IconButton>
+                            //     {/*<button onClick={onClickDeletePlayer} data-player-id={user.id}>Supprimer</button>*/}
+                            // </div>
+                            <Card key={index}
+                                  playerName={user.name}
+                                  playerAvatar={user.picture}
+                                  gamesCounter={user.games?.length}
+                                  userId={user.id}
+                                  onClickDeleteFunction={onClickDeletePlayer}
+                                  refreshPlayersList={refreshPlayersList}
+                            />
+                        )
+                    })}
             </div>
             {errorMessage &&
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
