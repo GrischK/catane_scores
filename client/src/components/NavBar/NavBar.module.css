@@ -1,0 +1,11 @@
+.navBar nav {
+    position: fixed;
+    background-color: transparent;
+    top: 0;
+    padding: 1vh;
+}
+
+.navBar nav a {
+    color: black;
+    text-decoration: none;
+}

@@ -5,6 +5,7 @@ import GamesList from "./screens/GamesList/GamesList";
 import PlayersList from "./screens/PlayersList/PlayersList";
 import NewGame from "./screens/NewGame/NewGame";
 import Ranking from "./screens/Ranking/Ranking";
+import NavBar from "./components/NavBar/NavBar";
 
 function App() {
     const location = useLocation();
@@ -20,14 +21,17 @@ function App() {
         <>
             <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<HomePage/>}/>
-                <Route path="/new_game" element={<NewGame refreshGamesList={refreshGamesList} />} />
-                <Route path="/games_list" element={<GamesList gamesListRefreshed={gamesListRefreshed} />} />
-                <Route path="/players_list" element={<PlayersList/>}/>
-                <Route path="/ranking" element={<Ranking/>}/>
+                <Route
+                    path="/new_game"
+                    element={<NavBar><NewGame refreshGamesList={refreshGamesList}/></NavBar>}
+                />
+                <Route path="/games_list" element={<NavBar><GamesList gamesListRefreshed={gamesListRefreshed}/></NavBar>}/>
+                <Route path="/players_list" element={<NavBar><PlayersList/></NavBar>}/>
+                <Route path="/ranking" element={<NavBar><Ranking/></NavBar>}/>
             </Routes>
 
         </>
-);
+    );
 }
 
 export default App;
