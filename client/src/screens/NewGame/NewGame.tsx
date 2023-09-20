@@ -167,7 +167,7 @@ export default function NewGame({refreshGamesList}: any) {
                         ...prevState,
                         playersData: selectedUserNames.map((name) => ({
                             player: userNames.find((u) => u.name === name)?.id || 0,
-                            score: 0,
+                            score: prevState.playersData.find((player) => player.player === userNames.find((u) => u.name === name)?.id)?.score || 0,
                         })),
                     }));
                 }}
