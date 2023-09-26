@@ -2,10 +2,10 @@ import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './PlayersList.module.css';
 import {
     useCreateUserMutation,
-    useDeleteUserMutation,
+    useDeleteUserMutation, useGamesQuery, User,
     useUsersQuery
 } from "../../gql/generated/schema";
-import {Alert, Button, Snackbar} from "@mui/material";
+import {Alert, Button, Snackbar, TextField} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import Card from "../../components/Card/Card";
 import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
@@ -13,6 +13,11 @@ import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
 interface PlayerInterface {
     name: string;
     picture?: string | null;
+}
+
+interface PlayersPoints {
+    player: User;
+    playerTotalPoints: number;
 }
 
 export default function PlayersList() {
@@ -24,6 +29,38 @@ export default function PlayersList() {
     const [errorMessage, setErrorMessage] = useState(""); // État pour stocker le message d'erreur
     const [open, setOpen] = React.useState(false);
     const [isPlayerUpdated, setIsPlayerUpdated] = useState(false)
+    const {data: gamesData} = useGamesQuery()
+
+    const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
+
+    useEffect(() => {
+        if (gamesData) {
+            const updatedPlayersPoints: PlayersPoints[] = [];
+            gamesData.games.forEach((game) => {
+                if (game.scores && game.scores.length > 0) {
+                    const sortedScores = [...game.scores];
+                    sortedScores.sort((a, b) => b.score - a.score);
+                    const firstPlayer = sortedScores[0].player;
+
+                    const playerIndex = updatedPlayersPoints.findIndex(
+                        (p) => p.player?.name === firstPlayer.name
+                    );
+
+                    if (playerIndex !== -1) {
+                        updatedPlayersPoints[playerIndex].playerTotalPoints += 1;
+                    } else {
+                        updatedPlayersPoints.push({
+                            player: firstPlayer,
+                            playerTotalPoints: 1,
+                        });
+                    }
+                }
+            });
+            updatedPlayersPoints.sort((a, b) => b.playerTotalPoints - a.playerTotalPoints);
+
+            setPlayersPoints(updatedPlayersPoints);
+        }
+    }, [gamesData]);
 
     useEffect(() => {
         setNewPlayer((prevState) => ({...prevState, picture: newPlayerAvatar || ""}));
@@ -87,20 +124,15 @@ export default function PlayersList() {
                     .sort((a, b) => a.name.localeCompare(b.name))
                     .map((user, index) => {
                         return (
-                            // <div key={index} className={styles.player_wrapper}>
-                            //     <h1>{user.name}</h1>
-                            //     <IconButton aria-label="delete" onClick={onClickDeletePlayer} data-player-id={user.id} >
-                            //         <DeleteIcon />
-                            //     </IconButton>
-                            //     {/*<button onClick={onClickDeletePlayer} data-player-id={user.id}>Supprimer</button>*/}
-                            // </div>
-                            <Card key={index}
-                                  playerName={user.name}
-                                  playerAvatar={user.picture}
-                                  gamesCounter={user.games?.length}
-                                  userId={user.id}
-                                  onClickDeleteFunction={onClickDeletePlayer}
-                                  refreshPlayersList={refreshPlayersList}
+                            <Card
+                                key={index}
+                                playerName={user.name}
+                                playerAvatar={user.picture}
+                                gamesCounter={user.games?.length}
+                                playerRank={(playersPoints.find((player) => player.player.name === user.name) || {}).playerTotalPoints || 0}
+                                userId={user.id}
+                                onClickDeleteFunction={onClickDeletePlayer}
+                                refreshPlayersList={refreshPlayersList}
                             />
                         )
                     })}
@@ -115,10 +147,11 @@ export default function PlayersList() {
 
             <div className={styles.add_player_container}>
                 <h1 className={styles.title}>Ajouter un Cataneur</h1>
-                <input
+                <TextField
                     required={true}
+                    className={styles.new_player_input}
+                    label="Nom du Cataneur"
                     type="text"
-                    placeholder="Nom du joueur"
                     value={newPlayer.name}
                     onChange={(e) =>
                         setNewPlayer((prevState) => ({
@@ -129,14 +162,9 @@ export default function PlayersList() {
                     }
                 />
                 <RandomAvatar onChange={setNewPlayerAvatar}/>
-
                 <Button variant="contained" onClick={onClickCreateNewPlayer} endIcon={<SendIcon/>}>
                     Ajouter
                 </Button>
-                {/*<button*/}
-                {/*    onClick={onClickCreateNewPlayer}>*/}
-                {/*    Ajouter*/}
-                {/*</button>*/}
             </div>
         </div>
     )

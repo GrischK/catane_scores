@@ -52,9 +52,30 @@ export default function GamesList({ gamesListRefreshed }:any) {
                 <div key={index} className={styles.games_details}>
                     <div className={styles.games_infos_wrapper}>
                         <div className={styles.games_infos}>
-                            {game.date && <span>{game.date}</span>}
+                            {game.date && <span className={styles.game_date}>{game.date}</span>}
                             {game.place && <span>{game.place}</span>}
                         </div>
+                        <div className={styles.player_cards}>
+                            {game.scores?.map((score, index) => (
+                                <div key={index} className={styles.player_details}>
+                                    <div className={styles.player_infos}>
+                                        {score.player.picture ?
+                                            <img src={score.player.picture}
+                                                 alt={`image de ${score.player.name}`}
+                                            />
+                                            :
+                                            <img src={defaultAvatar}
+                                                 alt={`image de ${score.player.name}`}
+                                            />
+                                        }
+                                        <span>{score.player.name}</span>
+                                    </div>
+                                    <span>{score.score}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className={styles.game_actions}>
                         <IconButton
                             aria-label="delete"
                             onClick={onClickDeleteGame}
@@ -64,25 +85,6 @@ export default function GamesList({ gamesListRefreshed }:any) {
                         </IconButton>
                     </div>
 
-
-                    <div className={styles.player_cards}>
-                        {game.scores?.map((score, index) => (
-                            <div key={index} className={styles.player_details}>
-                                {score.player.picture ?
-                                    <img src={score.player.picture}
-                                         alt={`image de ${score.player.name}`}
-                                    />
-                                    :
-                                    <img src={defaultAvatar}
-                                         alt={`image de ${score.player.name}`}
-                                    />
-                                }
-                                <span>{score.player.name}</span>
-                                <span>{score.score}</span>
-                            </div>
-                        ))}
-
-                    </div>
                 </div>
             ))}
         </div>

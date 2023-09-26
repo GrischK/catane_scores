@@ -15,7 +15,8 @@ interface CardProps {
     onClickDeleteFunction: MouseEventHandler<HTMLButtonElement>,
     userId: number,
     gamesCounter: number | undefined,
-    refreshPlayersList: any
+    refreshPlayersList: any,
+    playerRank: number | undefined
 }
 
 const style = {
@@ -41,7 +42,8 @@ export default function Card({
                                  onClickDeleteFunction,
                                  userId,
                                  gamesCounter,
-                                 refreshPlayersList
+                                 refreshPlayersList,
+                                 playerRank
                              }: CardProps) {
 
     const [openModal, setOpenModal] = React.useState(false);
@@ -82,6 +84,10 @@ export default function Card({
             <div className={styles.players_infos}>
                 <h2>Nombre de Catanes :</h2>
                 <p> {gamesCounter}</p>
+            </div>
+            <div className={styles.players_infos}>
+                <h2>Classement :</h2>
+                <p> {playerRank}</p>
             </div>
             <IconButton aria-label="delete" onClick={onClickDeleteFunction} data-player-id={userId}>
                 <DeleteIcon/>
