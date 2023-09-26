@@ -9,6 +9,8 @@ import {Alert, Button, Snackbar, TextField} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import Card from "../../components/Card/Card";
 import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 interface PlayerInterface {
     name: string;
@@ -75,7 +77,7 @@ export default function PlayersList() {
         setIsPlayerUpdated(true)
     };
 
-    const {data, refetch} = useUsersQuery();
+    const {data, refetch, loading} = useUsersQuery();
 
     const [createNewPlayer] = useCreateUserMutation({
         onCompleted: () => refetch()
@@ -118,54 +120,62 @@ export default function PlayersList() {
 
     return (
         <div className={styles.players_list_container} id="players_list">
-            <h1 className={styles.title}>Liste des Cataneurs</h1>
-            <div className={styles.players_list}>
-                {data?.users.slice()
-                    .sort((a, b) => a.name.localeCompare(b.name))
-                    .map((user, index) => {
-                        return (
-                            <Card
-                                key={index}
-                                playerName={user.name}
-                                playerAvatar={user.picture}
-                                gamesCounter={user.games?.length}
-                                playerRank={(playersPoints.find((player) => player.player.name === user.name) || {}).playerTotalPoints || 0}
-                                userId={user.id}
-                                onClickDeleteFunction={onClickDeletePlayer}
-                                refreshPlayersList={refreshPlayersList}
-                            />
-                        )
-                    })}
-            </div>
-            {errorMessage &&
-                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
-                        {errorMessage}
-                    </Alert>
-                </Snackbar>
-            }
-
-            <div className={styles.add_player_container}>
-                <h1 className={styles.title}>Ajouter un Cataneur</h1>
-                <TextField
-                    required={true}
-                    className={styles.new_player_input}
-                    label="Nom du Cataneur"
-                    type="text"
-                    value={newPlayer.name}
-                    onChange={(e) =>
-                        setNewPlayer((prevState) => ({
-                                ...prevState,
-                                name: e.target.value,
-                            })
-                        )
+            {loading ?
+                <Box sx={{display: 'flex', alignItem: 'center', height: '100vh', justifyContent:'center'}}>
+                    <CircularProgress/>
+                </Box>
+                :
+                <>
+                    <h1 className={styles.title}>Liste des Cataneurs</h1>
+                    <div className={styles.players_list}>
+                        {data?.users.slice()
+                            .sort((a, b) => a.name.localeCompare(b.name))
+                            .map((user, index) => {
+                                return (
+                                    <Card
+                                        key={index}
+                                        playerName={user.name}
+                                        playerAvatar={user.picture}
+                                        gamesCounter={user.games?.length}
+                                        playerRank={(playersPoints.find((player) => player.player.name === user.name) || {}).playerTotalPoints || 0}
+                                        userId={user.id}
+                                        onClickDeleteFunction={onClickDeletePlayer}
+                                        refreshPlayersList={refreshPlayersList}
+                                    />
+                                )
+                            })}
+                    </div>
+                    {errorMessage &&
+                        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                            <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+                                {errorMessage}
+                            </Alert>
+                        </Snackbar>
                     }
-                />
-                <RandomAvatar onChange={setNewPlayerAvatar}/>
-                <Button variant="contained" onClick={onClickCreateNewPlayer} endIcon={<SendIcon/>}>
-                    Ajouter
-                </Button>
-            </div>
+
+                    <div className={styles.add_player_container}>
+                        <h1 className={styles.title}>Ajouter un Cataneur</h1>
+                        <TextField
+                            required={true}
+                            className={styles.new_player_input}
+                            label="Nom du Cataneur"
+                            type="text"
+                            value={newPlayer.name}
+                            onChange={(e) =>
+                                setNewPlayer((prevState) => ({
+                                        ...prevState,
+                                        name: e.target.value,
+                                    })
+                                )
+                            }
+                        />
+                        <RandomAvatar onChange={setNewPlayerAvatar}/>
+                        <Button variant="contained" onClick={onClickCreateNewPlayer} endIcon={<SendIcon/>}>
+                            Ajouter
+                        </Button>
+                    </div>
+                </>
+            }
         </div>
     )
 }

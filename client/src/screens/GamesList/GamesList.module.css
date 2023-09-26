@@ -24,7 +24,7 @@
     justify-content: space-between;
     margin-bottom: 2vh;
     width: fit-content;
-    min-height: 400px;
+    min-height: 460px;
     padding: 1vh 5vh 1vh 5vh;
     border-radius: 0.5vh;
     /*min-height: 130px;*/
@@ -76,6 +76,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    gap: 2vh
 }
 
 .title {
@@ -90,12 +91,25 @@
 .game_date {
     font-family: 'Zeyada', cursive;
     font-size: 1.5rem;
+    border-bottom: 1px solid #FFCC00;
 }
 
 .game_actions {
     width: 100%;
     display: flex;
     justify-content: end;
+    border-top: 1px solid #FFCC00;
+}
+
+.player_score {
+    font-family: 'Zeyada', cursive;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.player_name {
+    font-family: 'Zeyada', cursive;
+    font-size: 1.5rem;
 }
 
 @media (max-width: 647px) {

@@ -68,9 +68,9 @@ export default function GamesList({ gamesListRefreshed }:any) {
                                                  alt={`image de ${score.player.name}`}
                                             />
                                         }
-                                        <span>{score.player.name}</span>
+                                        <span className={styles.player_name}>{score.player.name}</span>
                                     </div>
-                                    <span>{score.score}</span>
+                                    <span className={styles.player_score}>{score.score}</span>
                                 </div>
                             ))}
                         </div>
