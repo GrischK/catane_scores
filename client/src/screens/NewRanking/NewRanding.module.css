@@ -1,0 +1,123 @@
+.newRanking_container {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background-color: salmon;
+    transition: filter .3s ease-in;
+}
+
+.newRanking_container.darkBg {
+    filter: brightness(50%);
+}
+
+.thirdPlayer, .secondPlayer, .firstPlayer {
+    background: #fbf9f1;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    font-size: 40px;
+    position: absolute;
+    height: 0;
+    width: 18vw;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: height .5s ease-in-out, left 0.5s ease-in-out, width 0.5s ease-in-out, background-color 0.5s ease-in-out, font-size 0.5s ease-in-out;
+}
+
+.thirdPlayer.appear {
+    height: 50vh;
+    border: 1px solid #f4b30c;
+    overflow: visible;
+}
+
+.thirdPlayer.move {
+    left: 65%;
+    height: 40vh;
+    width: 15vw;
+    background: #fff7da;
+    font-size: 30px;
+}
+
+.secondPlayer.appear {
+    height: 60vh;
+    border: 1px solid #f4b30c;
+    overflow: visible;
+}
+
+.secondPlayer.move {
+    left: 35%;
+    height: 50vh;
+    width: 15vw;
+    background: #fff7da;
+    font-size: 30px;
+}
+
+.firstPlayer.appear {
+    height: 70vh;
+    border: 1px solid #f4b30c;
+    overflow: visible;
+}
+
+.firstPlayer.move {
+    width: 15vw;
+    height: 60vh;
+    background: #fff7da;
+    font-size: 30px;
+}
+
+.playerName {
+    position: absolute;
+    top: -28px;
+    scale: 0;
+    transition: scale 0.5s linear;
+    font-size: 30px;
+    text-align: center;
+}
+
+.playerNameIsShown {
+    scale: 1;
+    animation: bounce 0.35s ease infinite alternate;
+    animation-delay: 0.5s;
+}
+
+@keyframes bounce{
+    from {transform: translateY(0);}
+    to   {transform: translateY(-20px);}
+}
+
+.lightCircleOff {
+    width: 100vw;
+    height: 100vh;
+    transition: width 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.lightCircleOn {
+    position: absolute;
+    background-color: black;
+    filter: brightness(50%);
+    width: 100vw;
+    height: 100vh;
+    mask-image: radial-gradient(circle, transparent 30%, rgba(0, 0, 0, 0.5) 35%);
+    animation: clip-fade 3s infinite alternate;
+    mask-repeat: no-repeat;
+
+}
+
+@keyframes clip-fade {
+    0% {
+        -webkit-mask-position: -100% center;
+        mask-position: -100% center;
+    }
+    50% {
+        -webkit-mask-position: center center;
+        mask-position: center center;
+    }
+    100% {
+        -webkit-mask-position: center center;
+        mask-position: center center;
+    }
+}

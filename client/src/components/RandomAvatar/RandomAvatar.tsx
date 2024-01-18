@@ -4,9 +4,9 @@ import styles from "./RandomAvatar.module.css";
 import {Button} from "@mui/material";
 
 const generateRandomAvatar = () => {
-    return `https://avatars.dicebear.com/api/avataaars/:${Math.floor(
+    return `https://api.dicebear.com/7.x/avataaars/svg?seed=${Math.floor(
         Math.random() * 1000000
-    )}.svg`;
+    )}`;
 };
 
 function RandomAvatar({onChange}: any) {

@@ -6,6 +6,7 @@ import PlayersList from "./screens/PlayersList/PlayersList";
 import NewGame from "./screens/NewGame/NewGame";
 import Ranking from "./screens/Ranking/Ranking";
 import NavBar from "./components/NavBar/NavBar";
+import NewRanking from "./screens/NewRanking/NewRanking";
 
 function App() {
     const location = useLocation();
@@ -27,7 +28,7 @@ function App() {
                 />
                 <Route path="/games_list" element={<NavBar><GamesList gamesListRefreshed={gamesListRefreshed}/></NavBar>}/>
                 <Route path="/players_list" element={<NavBar><PlayersList/></NavBar>}/>
-                <Route path="/ranking" element={<NavBar><Ranking/></NavBar>}/>
+                <Route path="/ranking" element={<NavBar><NewRanking/></NavBar>}/>
             </Routes>
 
         </>
