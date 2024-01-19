@@ -1,6 +1,7 @@
 import styles from './NewRanding.module.css';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import MysteriousText from "../../components/MysteriousText";
+import ConfettiExplosion from 'react-confetti-explosion';
 
 export default function NewRanking() {
     const [thirdPlayerIsShown, setThirdPlayerIsShown] = useState(false)
@@ -17,6 +18,8 @@ export default function NewRanking() {
 
     const [darkBackground, setDarkBackground] = useState(false)
     const [spotLight, setSpotLight] = useState(false);
+
+    const [isExploding, setIsExploding] = useState(false);
 
     useEffect(() => {
         const timers: any[] = [];
@@ -60,18 +63,39 @@ export default function NewRanking() {
         const light = setTimeout(() => {
             setSpotLight(true);
         }, 13000);
+        const removeDarkBackground = setTimeout(() => {
+            setDarkBackground(false);
+        }, 14000);
         timers.push(secondPlayerTimer, moveSecondPlayerTimer, secondPlayerNameTimer, light);
+
+        const confettiTimer = setTimeout(() => {
+            setIsExploding(true)
+        }, 11000);
 
         return () => {
             timers.forEach(timer => clearTimeout(timer));
+            clearTimeout(confettiTimer);
             setSpotLight(false)
         }
+    }, []);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsExploding(false)
+        }, 3000);
+        return () => clearTimeout(timer);
     }, []);
 
     console.log(spotLight)
 
     return (
         <div className={styles.newRanking_container}>
+            {isExploding &&
+                <ConfettiExplosion
+                    className={`confetti`}
+                    height={"100vh"}
+                    width={2000}
+                />}
             <div
                 className={`${styles.thirdPlayer} ${thirdPlayerIsShown ? styles.appear : ''} ${moveThirdPlayer ? styles.move : ''}`}>
                 <span>3</span>

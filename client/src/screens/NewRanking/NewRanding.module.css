@@ -2,7 +2,7 @@
     position: relative;
     height: 100vh;
     overflow: hidden;
-    background-color: salmon;
+    background-color: #0892A5;
     transition: filter .3s ease-in;
 }
 
@@ -11,7 +11,7 @@
 }
 
 .thirdPlayer, .secondPlayer, .firstPlayer {
-    background: #fbf9f1;
+    background: #0CA4A5;
     border-radius: 20px 20px 0 0;
     display: flex;
     justify-content: center;
@@ -28,45 +28,43 @@
     transition: height .5s ease-in-out, left 0.5s ease-in-out, width 0.5s ease-in-out, background-color 0.5s ease-in-out, font-size 0.5s ease-in-out;
 }
 
-.thirdPlayer.appear {
-    height: 50vh;
-    border: 1px solid #f4b30c;
+.firstPlayer.appear, .secondPlayer.appear, .thirdPlayer.appear {
     overflow: visible;
+    box-shadow: 0px 16px 46px -2px rgba(0,0,0,0.75);
 }
 
-.thirdPlayer.move {
-    left: 65%;
-    height: 40vh;
-    width: 15vw;
-    background: #fff7da;
-    font-size: 30px;
+.firstPlayer.appear {
+    height: 70vh;
 }
 
 .secondPlayer.appear {
     height: 60vh;
-    border: 1px solid #f4b30c;
-    overflow: visible;
+}
+
+.thirdPlayer.appear {
+    height: 50vh;
+}
+
+.firstPlayer.move, .secondPlayer.move, .thirdPlayer.move {
+    background: #06908F;
+    font-size: 30px;
+}
+
+.firstPlayer.move {
+    width: 15vw;
+    height: 60vh;
 }
 
 .secondPlayer.move {
     left: 35%;
     height: 50vh;
     width: 15vw;
-    background: #fff7da;
-    font-size: 30px;
 }
 
-.firstPlayer.appear {
-    height: 70vh;
-    border: 1px solid #f4b30c;
-    overflow: visible;
-}
-
-.firstPlayer.move {
+.thirdPlayer.move {
+    left: 65%;
+    height: 40vh;
     width: 15vw;
-    height: 60vh;
-    background: #fff7da;
-    font-size: 30px;
 }
 
 .playerName {
@@ -84,9 +82,13 @@
     animation-delay: 0.5s;
 }
 
-@keyframes bounce{
-    from {transform: translateY(0);}
-    to   {transform: translateY(-20px);}
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-20px);
+    }
 }
 
 .lightCircleOff {
@@ -105,7 +107,7 @@
     mask-image: radial-gradient(circle, transparent 12%, rgba(0, 0, 0, 0.5) 20%);
     animation: clip-fade 3s infinite alternate;
     mask-repeat: no-repeat;
-    top:-40%;
+    top: -40%;
     opacity: 1;
 }
 
