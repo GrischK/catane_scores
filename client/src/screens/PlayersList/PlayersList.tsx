@@ -54,7 +54,7 @@ export default function PlayersList() {
                         updatedPlayersPoints.push({
                             player: firstPlayer,
                             playerTotalPoints: 1,
-                        });
+                        } as PlayersPoints);
                     }
                 }
             });
