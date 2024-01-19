@@ -92,7 +92,8 @@
 .lightCircleOff {
     width: 100vw;
     height: 100vh;
-    transition: width 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
 }
 
 .lightCircleOn {
@@ -100,11 +101,12 @@
     background-color: black;
     filter: brightness(50%);
     width: 100vw;
-    height: 100vh;
-    mask-image: radial-gradient(circle, transparent 30%, rgba(0, 0, 0, 0.5) 35%);
+    height: 150vh;
+    mask-image: radial-gradient(circle, transparent 12%, rgba(0, 0, 0, 0.5) 20%);
     animation: clip-fade 3s infinite alternate;
     mask-repeat: no-repeat;
-
+    top:-40%;
+    opacity: 1;
 }
 
 @keyframes clip-fade {

@@ -46,20 +46,20 @@ export default function NewRanking() {
         const firstPlayerTimer = setTimeout(() => {
             setFirstPlayerIsShown(true)
         }, 9000);
-        // const firstPlayerNameTimer = setTimeout(() => {
-        //     setFirstPlayerNameIsShown(true)
-        // }, 3000);
-        // const moveFirstPlayerTimer = setTimeout(() => {
-        //     setMoveFirstPlayer(true)
-        // }, 9000);
-        // timers.push(firstPlayerTimer, moveFirstPlayerTimer, firstPlayerNameTimer);
+        const firstPlayerNameTimer = setTimeout(() => {
+            setFirstPlayerNameIsShown(true)
+        }, 11000);
+        const moveFirstPlayerTimer = setTimeout(() => {
+            setMoveFirstPlayer(true)
+        }, 13000);
+        timers.push(firstPlayerTimer, moveFirstPlayerTimer, firstPlayerNameTimer);
 
         const darkBackground = setTimeout(() => {
             setDarkBackground(true)
         }, 10000);
         const light = setTimeout(() => {
             setSpotLight(true);
-        }, 12000);
+        }, 13000);
         timers.push(secondPlayerTimer, moveSecondPlayerTimer, secondPlayerNameTimer, light);
 
         return () => {
