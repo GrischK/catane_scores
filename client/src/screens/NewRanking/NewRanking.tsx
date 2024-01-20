@@ -2,6 +2,15 @@ import styles from './NewRanding.module.css';
 import React, {useEffect, useState} from "react";
 import MysteriousText from "../../components/MysteriousText";
 import ConfettiExplosion from 'react-confetti-explosion';
+import cheer from '../../assets/sounds/cheer.mp3'
+import trumpets from '../../assets/sounds/fanfare_trumpets.mp3'
+import {useGamesQuery, User} from "../../gql/generated/schema";
+import defaultAvatar from "../../assets/images/default_avatar.png";
+
+interface PlayersPoints {
+    player: User;
+    playerTotalPoints: number;
+}
 
 export default function NewRanking() {
     const [thirdPlayerIsShown, setThirdPlayerIsShown] = useState(false)
@@ -20,6 +29,41 @@ export default function NewRanking() {
     const [spotLight, setSpotLight] = useState(false);
 
     const [isExploding, setIsExploding] = useState(false);
+
+    const cheersSound = new Audio(cheer);
+    const trumpetsSound = new Audio(trumpets);
+
+    const {data, refetch} = useGamesQuery()
+    const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
+
+    useEffect(() => {
+        if (data) {
+            const updatedPlayersPoints: PlayersPoints[] = [];
+            data.games.forEach((game) => {
+                if (game.scores && game.scores.length > 0) {
+                    const sortedScores = [...game.scores];
+                    sortedScores.sort((a, b) => b.score - a.score);
+                    const firstPlayer = sortedScores[0].player;
+
+                    const playerIndex = updatedPlayersPoints.findIndex(
+                        (p) => p.player?.name === firstPlayer.name
+                    );
+
+                    if (playerIndex !== -1) {
+                        updatedPlayersPoints[playerIndex].playerTotalPoints += 1;
+                    } else {
+                        updatedPlayersPoints.push({
+                            player: firstPlayer,
+                            playerTotalPoints: 1,
+                        });
+                    }
+                }
+            });
+            updatedPlayersPoints.sort((a, b) => b.playerTotalPoints - a.playerTotalPoints);
+
+            setPlayersPoints(updatedPlayersPoints);
+        }
+    }, [data]);
 
     useEffect(() => {
         const timers: any[] = [];
@@ -69,24 +113,21 @@ export default function NewRanking() {
         timers.push(secondPlayerTimer, moveSecondPlayerTimer, secondPlayerNameTimer, light);
 
         const confettiTimer = setTimeout(() => {
-            setIsExploding(true)
+            setIsExploding(true);
         }, 11000);
+
+        const cheersPlay = setTimeout(() => {
+            trumpetsSound.play();
+            cheersSound.play();
+        }, 10700)
+
+        timers.push(cheersPlay, confettiTimer);
 
         return () => {
             timers.forEach(timer => clearTimeout(timer));
-            clearTimeout(confettiTimer);
             setSpotLight(false)
         }
     }, []);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsExploding(false)
-        }, 3000);
-        return () => clearTimeout(timer);
-    }, []);
-
-    console.log(spotLight)
 
     return (
         <div className={styles.newRanking_container}>
@@ -114,7 +155,17 @@ export default function NewRanking() {
                 className={`${styles.firstPlayer} ${firstPlayerIsShown ? styles.appear : ''} ${moveFirstPlayer ? styles.move : ''}`}>
                 <span>1</span>
                 <div className={`${styles.playerName} ${firstPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
-                    Mechmech
+                    {playersPoints.length > 0 && (
+                        <div className={styles.player_info}>
+                            {playersPoints[0].player.picture ?
+                                <img src={playersPoints[0].player?.picture}
+                                     alt={`avatar de ${playersPoints[0].player.name}`}/>
+                                :
+                                <img src={defaultAvatar} alt="user picture"/>
+                            }
+                            <h1>{playersPoints[0].player?.name}</h1>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className={`${styles.lightCircleOff} ${darkBackground ? styles.lightCircleOn : ''}`}>
