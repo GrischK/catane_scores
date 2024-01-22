@@ -1,0 +1,75 @@
+.red_button::before {
+  background: var(--bg-red) !important;
+}
+
+.blue_button::before {
+  background: var(--bg-blue) !important;
+}
+
+.green_button::before {
+  background: var(--bg-green) !important;
+}
+
+.yellow_button::before {
+  background: var(--bg-yellow) !important;
+}
+
+.colored_button {
+  position: relative;
+  margin: 25px;
+  width: 400px;
+  height: 100px;
+  background: transparent;
+  border: 5px solid #000000;
+  border-radius: 60px;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Calistoga', cursive;
+  font-size: 1.5em;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.colored_button::before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 100px;
+  background-size: 200px 200px;
+  z-index: -1;
+}
+
+.colored_button::after {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 50px;
+  background: #000000;
+  border: 5px solid #000;
+  border-radius: 100px;
+  box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.75);
+  z-index: -1;
+}
+
+.colored_button:hover {
+  color: #000;
+}
+
+.colored_button:hover::after {
+  background: #fff;
+}
+
+.colored_button:active {
+  color: #fff;
+}
+
+.colored_button:active::after {
+  background: #000;
+}
