@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {animated, useSprings} from "react-spring";
 import {ReactNode} from "react";
 
@@ -10,7 +10,6 @@ export default function MysteriousText({children, ...props}: MysteriousTextProps
     const childText = children && typeof children === "string" ? children : "";
     const colors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"];
 
-    // Créez un tableau de configurations d'animation pour chaque lettre avec un délai aléatoire
     const animations = useSprings(
         childText.length,
         childText.split("").map((_, index) => ({

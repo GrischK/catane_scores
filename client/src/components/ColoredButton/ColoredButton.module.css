@@ -22,7 +22,7 @@
   background: transparent;
   border: 5px solid #000000;
   border-radius: 60px;
-  color: #fff;
+  color: #000;
   cursor: pointer;
   font-family: 'Calistoga', cursive;
   font-size: 1.5em;
@@ -42,34 +42,10 @@
   z-index: -1;
 }
 
-.colored_button::after {
-  display: block;
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 250px;
-  height: 50px;
-  background: #000000;
-  border: 5px solid #000;
-  border-radius: 100px;
-  box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.75);
-  z-index: -1;
-}
-
 .colored_button:hover {
-  color: #000;
-}
-
-.colored_button:hover::after {
-  background: #fff;
-}
-
-.colored_button:active {
   color: #fff;
 }
 
-.colored_button:active::after {
-  background: #000;
+.colored_button:active {
+  color: #000;
 }
