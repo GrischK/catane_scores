@@ -111,12 +111,17 @@
     background-color: black;
     filter: brightness(50%);
     width: 100vw;
-    height: 150vh;
+    height: 140vh;
     mask-image: radial-gradient(circle, transparent 12%, rgba(0, 0, 0, 0.5) 20%);
     animation: clip-fade 3s infinite alternate;
     mask-repeat: no-repeat;
     top: -40%;
     opacity: 1;
+    transition: height 0.5s ease-in-out;
+}
+
+.lightCircleOn.move {
+    height: 150vh;
 }
 
 @keyframes clip-fade {

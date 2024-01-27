@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import ConfettiExplosion from 'react-confetti-explosion';
 import cheer from '../../assets/sounds/cheer.mp3'
 import trumpets from '../../assets/sounds/fanfare_trumpets.mp3'
+import tadaa from '../../assets/sounds/tadaa.mp3'
 import {useGamesQuery, User} from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import thirdMedal from "../../assets/images/medal_3.png"
@@ -34,6 +35,8 @@ export default function NewRanking() {
 
     const cheersSound = new Audio(cheer);
     const trumpetsSound = new Audio(trumpets);
+    const tadaaSound1 = new Audio(tadaa)
+    const tadaaSound2 = new Audio(tadaa)
 
     const {data, refetch} = useGamesQuery()
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
@@ -75,6 +78,7 @@ export default function NewRanking() {
 
             const thirdPlayerTimer = setTimeout(() => {
                 setThirdPlayerIsShown(true)
+                tadaaSound1.play();
             }, 1000);
             const thirdPlayerNameTimer = setTimeout(() => {
                 setThirdPlayerNameIsShown(true)
@@ -84,9 +88,10 @@ export default function NewRanking() {
             }, 5000);
 
             timers.push(thirdPlayerTimer, moveThirdPlayerTimer, thirdPlayerNameTimer);
-
             const secondPlayerTimer = setTimeout(() => {
                 setSecondPlayerIsShown(true)
+                tadaaSound1.currentTime = 0;
+                tadaaSound2.play();
             }, 5000);
             const secondPlayerNameTimer = setTimeout(() => {
                 setSecondPlayerNameIsShown(true)
@@ -97,6 +102,8 @@ export default function NewRanking() {
 
             const firstPlayerTimer = setTimeout(() => {
                 setFirstPlayerIsShown(true)
+                tadaaSound2.currentTime = 0;
+                tadaaSound1.play();
             }, 9000);
             const firstPlayerNameTimer = setTimeout(() => {
                 setFirstPlayerNameIsShown(true)
@@ -136,8 +143,6 @@ export default function NewRanking() {
         }
     }, [step]);
 
-    console.log(step)
-
     return (
         <div>
             {step === 1 && (<div>
@@ -155,7 +160,8 @@ export default function NewRanking() {
                     <div
                         className={`${styles.thirdPlayer} ${thirdPlayerIsShown ? styles.appear : ''} ${moveThirdPlayer ? styles.move : ''}`}>
                         <img src={thirdMedal} alt={"medal of third best player"} className={styles.podiumMedal}/>
-                        {playersPoints.length > 0 && <h1 className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}>{playersPoints[2].player?.name}</h1>
+                        {playersPoints.length > 0 &&
+                            <h1 className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}>{playersPoints[2].player?.name}</h1>
                         }
                         <div
                             className={`${styles.playerName} ${thirdPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
@@ -174,7 +180,8 @@ export default function NewRanking() {
                     <div
                         className={`${styles.secondPlayer} ${secondPlayerIsShown ? styles.appear : ''} ${moveSecondPlayer ? styles.move : ''}`}>
                         <img src={secondMedal} alt={"medal of second best player"} className={styles.podiumMedal}/>
-                        {playersPoints.length > 0 && <h1 className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}>{playersPoints[1].player?.name}</h1>
+                        {playersPoints.length > 0 &&
+                            <h1 className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}>{playersPoints[1].player?.name}</h1>
                         }
                         <div
                             className={`${styles.playerName} ${secondPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
@@ -193,7 +200,8 @@ export default function NewRanking() {
                     <div
                         className={`${styles.firstPlayer} ${firstPlayerIsShown ? styles.appear : ''} ${moveFirstPlayer ? styles.move : ''} `}>
                         <img src={cup} alt={"cup of the Catan king"} className={styles.podiumMedal}/>
-                        {playersPoints.length > 0 && <h1 className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}>{playersPoints[0].player?.name}</h1>
+                        {playersPoints.length > 0 &&
+                            <h1 className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}>{playersPoints[0].player?.name}</h1>
                         }
                         <div
                             className={`${styles.playerName} ${firstPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
@@ -210,8 +218,10 @@ export default function NewRanking() {
                         </div>
                     </div>
                     {spotLight ? (
-                        <div className={`${styles.lightCircleOff} ${darkBackground ? styles.lightCircleOn : ''}`}>
-                        </div>) : null}
+                        <div
+                            className={`${styles.lightCircleOff} ${darkBackground ? styles.lightCircleOn : ''} ${moveFirstPlayer ? styles.move : ""}`}>
+                        </div>) : null
+                    }
 
                 </div>
             )}
