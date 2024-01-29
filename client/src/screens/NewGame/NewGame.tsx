@@ -12,6 +12,8 @@ import {
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
+import {motion} from "framer-motion";
+import MysteriousText from "../../components/MysteriousText";
 
 interface PlayerData {
     player: number;
@@ -42,6 +44,7 @@ export default function NewGame({refreshGamesList}: any) {
     const [successMessage, setSuccessMessage] = useState("");
     const [open, setOpen] = React.useState(false);
     const [successOpen, setSuccessOpen] = React.useState(false);
+    const [mysteriousTextIsShown, setMysteriousTextIsShown] = React.useState(false);
 
     const [createNewGame] = useCreateGameWithScoresMutation();
 
@@ -104,10 +107,17 @@ export default function NewGame({refreshGamesList}: any) {
                 setShowPlayersList(false)
             }
         }
+
+        setTimeout(() => {
+            setMysteriousTextIsShown(true)
+        }, 450)
+
         document.addEventListener("click", handleClickOutside)
         return () => {
             document.removeEventListener("click", handleClickOutside);
         };
+
+
     }, [userData, newGame.playersData, newGame]);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -119,9 +129,32 @@ export default function NewGame({refreshGamesList}: any) {
         setSuccessOpen(false)
     };
 
+    const buttonTransition = {
+        duration: 0.3,
+        ease: [0, 0.71, 0.2, 1.01],
+        scale: {
+            type: "spring",
+            damping: 5,
+            stiffness: 100,
+            restDelta: 0.001
+        }
+    }
+
     return (
         <div className={styles.new_game_container}>
-            <h1 className={styles.title}>Ajouter une Catanerie</h1>
+            <motion.h1
+                initial={{x: '-100vw'}}
+                animate={{x: 1}}
+                transition={
+                    {delay: 0.5}
+                }
+
+                className={styles.title}
+            >
+                {mysteriousTextIsShown &&
+                    <MysteriousText>Ajouter une Catanerie</MysteriousText>
+                }
+            </motion.h1>
             <ColoredInput
                 bgColor={"blue"}
                 label={"date"}
@@ -153,6 +186,7 @@ export default function NewGame({refreshGamesList}: any) {
                     {userNames.map((user) => (
                         <div key={user.id}>
                             <input
+                                className={styles.players_check_input}
                                 type="checkbox"
                                 id={`playerCheckbox-${user.id}`}
                                 value={user.name}
@@ -211,12 +245,21 @@ export default function NewGame({refreshGamesList}: any) {
                         ))}
                 </div>
             }
-            <ColoredButton
-                bgColor={"yellow"}
-                onClick={onClickCreateNewGame}
+            <motion.div
+                whileHover={{scale: 1.05}}
+                onHoverStart={e => {
+                }}
+                onHoverEnd={e => {
+                }}
+                transition={buttonTransition}
             >
-                Créer la partie
-            </ColoredButton>
+                <ColoredButton
+                    bgColor={"yellow"}
+                    onClick={onClickCreateNewGame}
+                >
+                    Créer la partie
+                </ColoredButton>
+            </motion.div>
             {errorMessage &&
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>

@@ -11,6 +11,7 @@ interface ColoredInputProps {
 
 export default function ColoredInput({label, bgColor, onClick, value, onChange}: ColoredInputProps) {
     const coloredInputClassName = `${styles.colored_input} ${styles[`${bgColor}_input`]} ${styles[`${label}_input`]}`;
+    const formattedLabel = inputText(label);
 
 
     useEffect(() => {
@@ -18,6 +19,12 @@ export default function ColoredInput({label, bgColor, onClick, value, onChange}:
             console.log(value);
         }
     }, [value]);
+
+    function inputText(label: string) {
+        const textArray = label.split('')
+        textArray[0] = textArray[0].toUpperCase();
+        return textArray.join('')
+    }
 
     return (
         <div className={styles.input_container}>
@@ -32,7 +39,7 @@ export default function ColoredInput({label, bgColor, onClick, value, onChange}:
                 value={value || ""}
                 onChange={onChange}
             />
-            <label htmlFor={label} className={styles.input_label}>{label}</label>
+            <label htmlFor={label} className={styles.input_label}>{formattedLabel}</label>
         </div>
 
     )

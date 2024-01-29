@@ -1,5 +1,4 @@
 .new_game_container {
-  /*background-color: #909DCA;*/
   min-height: 80vh;
   display: flex;
   flex-direction: column;
@@ -28,6 +27,7 @@
   font-weight: 400;
   color: #FFCC00;
   font-size: 3rem;
+  height: 48px;
 }
 
 .new_game_players {
@@ -79,7 +79,7 @@
   transition: left 0.1s ease-in-out;
 }
 
-.players_list_label.players_selected{
+.players_list_label.players_selected {
   outline-width: 3px;
 }
 
@@ -91,4 +91,8 @@
   padding: 0.5rem;
   border-radius: 2rem;
   background: var(--bg-green);
+}
+
+.players_check_input:checked {
+  accent-color: var(--bg-green);
 }
