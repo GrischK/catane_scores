@@ -144,10 +144,11 @@ export default function NewGame({refreshGamesList}: any) {
                     }))
                 }
             />
-            <div ref={containerRef}>
+            <div ref={containerRef} className={styles.players_list_container}>
                 <label
                     className={`${styles.players_list_label} ${showPlayersList ? `${styles.players_selected}` : ''} ${gamePlayers && gamePlayers?.length > 0 ? `${styles.players_selected}` : ''}`}
-                    htmlFor="playersList" onClick={() => setShowPlayersList(true)}><span>Cataneurs</span></label>
+                    htmlFor="playersList" onClick={() => setShowPlayersList(true)}><span>Cataneurs</span>
+                </label>
                 {showPlayersList && <div>
                     {userNames.map((user) => (
                         <div key={user.id}>
@@ -188,10 +189,9 @@ export default function NewGame({refreshGamesList}: any) {
                                 ) : (
                                     <img src={defaultAvatar} alt="user picture"/>
                                 )}
-                                <TextField
-                                    className={styles.new_game_input}
-                                    label="Score"
-                                    type="text"
+                                <ColoredInput
+                                    bgColor={"yellow"}
+                                    label={"score"}
                                     value={newGame.playersData.find(player => player.player === e.id)?.score || ""}
                                     onChange={(event) => {
                                         const score = event.target.value;

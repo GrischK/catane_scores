@@ -65,3 +65,7 @@
 .lieu_input:focus + .input_label, .lieu_input.not_empty + .input_label  {
   background: var(--bg-red);
 }
+
+.score_input:focus + .input_label, .score_input.not_empty + .input_label  {
+  background: var(--bg-yellow);
+}

@@ -55,6 +55,12 @@
   background: inherit;
 }
 
+.players_list_container {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh
+}
+
 .players_list_label {
   position: relative;
   display: block;
@@ -62,7 +68,7 @@
   height: 32px;
   border: none;
   border-radius: 2rem;
-  outline: 3px solid #27AB0D;
+  outline: 2px solid #27AB0D;
 }
 
 .players_list_label > span {
@@ -71,6 +77,10 @@
   top: 0.5rem;
   left: 0.5rem;
   transition: left 0.1s ease-in-out;
+}
+
+.players_list_label.players_selected{
+  outline-width: 3px;
 }
 
 .players_list_label.players_selected > span {
