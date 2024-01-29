@@ -3,6 +3,7 @@
     background-color: transparent;
     top: 0;
     padding: 1vh;
+    z-index: 1;
 }
 
 .navBar nav a {

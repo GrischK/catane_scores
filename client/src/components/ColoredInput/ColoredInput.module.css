@@ -1,0 +1,67 @@
+.colored_input.red_input {
+  outline: 2px solid var(--bg-red);
+}
+
+.colored_input.blue_input {
+  outline: 2px solid var(--bg-blue);
+}
+
+.colored_input.green_input {
+  outline: 2px solid var(--bg-green);
+}
+
+.colored_input.yellow_input {
+  outline: 2px solid var(--bg-yellow);
+}
+
+.colored_input.yellow_input:focus {
+  outline: 3px solid #F5D000;
+}
+
+.colored_input.blue_input:focus {
+  outline: 3px solid #2380FB;
+}
+
+.colored_input.red_input:focus {
+  outline: 3px solid #EB1E1E;
+}
+
+.colored_input.green_input:focus {
+  outline: 3px solid #27AB0D;
+}
+
+.input_container {
+  position: relative;
+}
+
+.colored_input {
+  border: none;
+  border-radius: 2rem;
+  padding: 0.5rem;
+  padding-left: 4rem;
+}
+
+.input_label {
+  position: absolute;
+  z-index: 1;
+  top: 0.5rem;
+  left: 0.5rem;
+  transition: left 0.1s ease-in-out;
+}
+
+.colored_input:focus + .input_label, .not_empty + .input_label {
+  left: 0;
+  top: 0;
+  color: white;
+  outline: 2px solid black;
+  padding: 0.5rem;
+  border-radius: 2rem;
+}
+
+.date_input:focus + .input_label, .date_input.not_empty + .input_label  {
+  background: var(--bg-blue);
+}
+
+.lieu_input:focus + .input_label, .lieu_input.not_empty + .input_label  {
+  background: var(--bg-red);
+}
