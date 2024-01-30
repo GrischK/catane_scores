@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Calistoga&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Calistoga&family=Zeyada&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Calistoga&display=swap');
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -62,4 +63,12 @@ code {
 h1 {
   font-weight: bold;
   font-size: 2rem;
+}
+
+:root {
+  --bg-red: #f04d4d;
+  --bg-yellow: #ffd903;
+  --bg-blue: #5ba1fc;
+  --bg-green: #2dc40f;
+  --bg-white: #F8F2DC;
 }
