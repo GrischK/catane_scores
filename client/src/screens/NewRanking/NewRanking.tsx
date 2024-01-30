@@ -78,6 +78,7 @@ export default function NewRanking() {
 
             const thirdPlayerTimer = setTimeout(() => {
                 setThirdPlayerIsShown(true)
+                tadaaSound1.volume = 0.4
                 tadaaSound1.play();
             }, 1000);
             const thirdPlayerNameTimer = setTimeout(() => {
@@ -91,6 +92,7 @@ export default function NewRanking() {
             const secondPlayerTimer = setTimeout(() => {
                 setSecondPlayerIsShown(true)
                 tadaaSound1.currentTime = 0;
+                tadaaSound2.volume = 0.5
                 tadaaSound2.play();
             }, 5000);
             const secondPlayerNameTimer = setTimeout(() => {
@@ -103,6 +105,7 @@ export default function NewRanking() {
             const firstPlayerTimer = setTimeout(() => {
                 setFirstPlayerIsShown(true)
                 tadaaSound2.currentTime = 0;
+                tadaaSound1.volume = 0.6
                 tadaaSound1.play();
             }, 9000);
             const firstPlayerNameTimer = setTimeout(() => {

@@ -5,6 +5,8 @@
     gap: 2vh;
     padding: 10vh;
     align-items: center;
+    overflow: hidden;
+    background: var(--bg-white_light);
 }
 
 .new_game_input > div, .new_game_multiselect > div > div {
@@ -16,9 +18,19 @@
     min-width: 30%;
 }
 
-.new_game_players_list img {
+.new_game_players_item > .avatar_container {
+    display: flex;
+    min-height: 60px;
+}
+
+.new_game_players_item img {
     width: 60px;
     height: 60px;
+}
+
+.avatar_title{
+    display: flex;
+    align-items: center;
 }
 
 .title {
@@ -31,9 +43,10 @@
 }
 
 .new_game_players {
-    /*display: grid;*/
-    /*grid-template-columns: repeat(2, 1fr);*/
-    /*grid-column-gap: 2vh;*/
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 2vh;
+    grid-row-gap: 2vh;
     padding: 2vh;
     border-radius: 1vh;
     z-index: 1;
@@ -60,6 +73,10 @@
     flex-direction: column;
 }
 
+.players_list_label:hover {
+    cursor: pointer;
+}
+
 .players_list_label {
     position: relative;
     display: block;
@@ -68,6 +85,7 @@
     border: none;
     border-radius: 2rem;
     outline: 2px solid #27AB0D;
+    background: white;
 }
 
 .players_list_label > span {
@@ -97,9 +115,19 @@
 }
 
 .choosePlayers {
+    background: white;
     margin-top: 1rem;
     position: relative;
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
     border-radius: 1rem;
     padding: 1rem;
+}
+
+.input_container {
+    display: flex;
+    width: 40vw;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2vh;
+    padding: 2vh;
 }

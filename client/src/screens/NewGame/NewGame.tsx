@@ -141,6 +141,31 @@ export default function NewGame({refreshGamesList}: any) {
         }
     }
 
+    const createGameButtonVariants = {
+        hidden: {y: '100vh'},
+        visible: {
+            y: '5vh',
+            transition: {
+                delay: 1.5,
+                duration: 1,
+                type: "spring",
+                stiffness: 55,
+                damping: 9,
+            }
+        }
+    }
+
+    const inputVariants = {
+        hidden: {opacity: 0, scale: 0.5},
+        visible: {
+            opacity: 1, scale: 1, transition: {
+                duration: 0.7,
+                delay: 1.4,
+                ease: [0, 0.71, 0.2, 1.01]
+            }
+        }
+    }
+
     return (
         <div className={styles.new_game_container}>
             <motion.h1
@@ -156,101 +181,124 @@ export default function NewGame({refreshGamesList}: any) {
                     <MysteriousText>Ajouter une Catanerie</MysteriousText>
                 }
             </motion.h1>
-            <ColoredInput
-                bgColor={"blue"}
-                label={"date"}
-                value={newGame.date}
-                onChange={(e) =>
-                    setNewGame((prevState) => ({
-                        ...prevState,
-                        date: e.target.value,
-                    }))
-                }
-            />
-            <ColoredInput
-                bgColor={"red"}
-                label={"lieu"}
-                value={newGame.place}
-                onChange={(e) =>
-                    setNewGame((prevState) => ({
-                        ...prevState,
-                        place: e.target.value,
-                    }))
-                }
-            />
-            <div ref={containerRef} className={styles.players_list_container}>
-                <label
-                    className={`${styles.players_list_label} ${showPlayersList ? `${styles.players_selected}` : ''} ${gamePlayers && gamePlayers?.length > 0 ? `${styles.players_selected}` : ''}`}
-                    htmlFor="playersList" onClick={() => setShowPlayersList(true)}><span>Cataneurs</span>
-                </label>
-                <AnimatePresence>
-                    {showPlayersList && <motion.div
-                        className={styles.choosePlayers}
-                        initial={{
-                            width: 0,
-                            height: 0,
-                            opacity: 0,
-                        }}
-                        animate={{
-                            width: 'calc(100% - 2rem)',
-                            height: 'fit-content',
-                            opacity: 1
-                        }}
-                        transition={{
-                            type: "spring",
-                            bounce: 0,
-                            duration: 0.4
-                        }}
-                        exit={{
-                            width: 0,
-                            height: 0,
-                            opacity: 0,
-                            marginTop: 0,
-                            padding: 0
-                        }}
-
-                    >
-                        {userNames.map((user) => (
-                            <div key={user.id}>
-                                <input
-                                    className={styles.players_check_input}
-                                    type="checkbox"
-                                    id={`playerCheckbox-${user.id}`}
-                                    value={user.name}
-                                    checked={newGame.playersData.some((player) => player.player === user.id)}
-                                    onChange={(event) => {
-                                        const isChecked = event.target.checked;
-                                        setNewGame((prevState) => ({
-                                            ...prevState,
-                                            playersData: isChecked
-                                                ? [
-                                                    ...prevState.playersData,
-                                                    {
-                                                        player: user.id,
-                                                        score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
-                                                    },
-                                                ]
-                                                : prevState.playersData.filter((player) => player.player !== user.id),
-                                        }));
-                                    }}
-                                />
-                                <label htmlFor={`playerCheckbox-${user.id}`}>{user.name}</label>
-                            </div>
-                        ))}
-                    </motion.div>}
-                </AnimatePresence>
+            <div className={styles.input_container}>
+                <motion.div
+                    variants={inputVariants}
+                    initial='hidden'
+                    animate='visible'
+                >
+                    <ColoredInput
+                        bgColor={"blue"}
+                        label={"date"}
+                        value={newGame.date}
+                        onChange={(e) =>
+                            setNewGame((prevState) => ({
+                                ...prevState,
+                                date: e.target.value,
+                            }))
+                        }
+                    />
+                </motion.div>
+                <motion.div
+                    variants={inputVariants}
+                    initial='hidden'
+                    animate='visible'
+                >
+                    <ColoredInput
+                        bgColor={"red"}
+                        label={"lieu"}
+                        value={newGame.place}
+                        onChange={(e) =>
+                            setNewGame((prevState) => ({
+                                ...prevState,
+                                place: e.target.value,
+                            }))
+                        }
+                    />
+                </motion.div>
+                <motion.div
+                    variants={inputVariants}
+                    initial='hidden'
+                    animate='visible'
+                >
+                    <div ref={containerRef} className={styles.players_list_container}>
+                        <label
+                            className={`${styles.players_list_label} ${showPlayersList ? `${styles.players_selected}` : ''} ${gamePlayers && gamePlayers?.length > 0 ? `${styles.players_selected}` : ''}`}
+                            htmlFor="playersList" onClick={() => setShowPlayersList(true)}><span>Cataneurs</span>
+                        </label>
+                        <AnimatePresence>
+                            {showPlayersList && <motion.div
+                                className={styles.choosePlayers}
+                                initial={{
+                                    width: 0,
+                                    height: 0,
+                                    opacity: 0,
+                                }}
+                                animate={{
+                                    width: 'calc(100% - 2rem)',
+                                    height: 'fit-content',
+                                    opacity: 1
+                                }}
+                                transition={{
+                                    type: "spring",
+                                    bounce: 0,
+                                    duration: 0.4
+                                }}
+                                exit={{
+                                    width: 0,
+                                    height: 0,
+                                    opacity: 0,
+                                    marginTop: 0,
+                                    padding: 0
+                                }}
+                            >
+                                {userNames.map((user) => (
+                                    <div key={user.id}>
+                                        <input
+                                            className={styles.players_check_input}
+                                            type="checkbox"
+                                            id={`playerCheckbox-${user.id}`}
+                                            value={user.name}
+                                            checked={newGame.playersData.some((player) => player.player === user.id)}
+                                            onChange={(event) => {
+                                                const isChecked = event.target.checked;
+                                                setNewGame((prevState) => ({
+                                                    ...prevState,
+                                                    playersData: isChecked
+                                                        ? [
+                                                            ...prevState.playersData,
+                                                            {
+                                                                player: user.id,
+                                                                score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
+                                                            },
+                                                        ]
+                                                        : prevState.playersData.filter((player) => player.player !== user.id),
+                                                }));
+                                            }}
+                                        />
+                                        <label htmlFor={`playerCheckbox-${user.id}`}>{user.name}</label>
+                                    </div>
+                                ))}
+                            </motion.div>}
+                        </AnimatePresence>
+                    </div>
+                </motion.div>
             </div>
             {gamePlayers && gamePlayers?.length > 0 &&
                 <div className={styles.new_game_players}>
                     {gamePlayers &&
                         gamePlayers.map((e) => (
-                            <div className={styles.new_game_players_list} key={e.id}>
-                                <h1>{e.name}</h1>
-                                {e.picture ? (
-                                    <img src={e.picture} alt={`image de ${e.name}`}/>
-                                ) : (
-                                    <img src={defaultAvatar} alt="user picture"/>
-                                )}
+                            <div className={styles.new_game_players_item} key={e.id}>
+                                <div className={styles.avatar_container}>
+                                    {e.picture ? (
+                                        <img src={e.picture} alt={`image de ${e.name}`}/>
+                                    ) : (
+                                        <img src={defaultAvatar} alt="user picture"/>
+                                    )}
+                                    <div className={styles.avatar_title}>
+                                        <h1>{e.name}</h1>
+                                    </div>
+                                </div>
                                 <ColoredInput
                                     bgColor={"yellow"}
                                     label={"score"}
@@ -274,6 +322,9 @@ export default function NewGame({refreshGamesList}: any) {
                 </div>
             }
             <motion.div
+                variants={createGameButtonVariants}
+                initial='hidden'
+                animate='visible'
                 whileHover={{scale: 1.05}}
                 onHoverStart={e => {
                 }}
@@ -285,7 +336,7 @@ export default function NewGame({refreshGamesList}: any) {
                     bgColor={"yellow"}
                     onClick={onClickCreateNewGame}
                 >
-                    Créer la partie
+                    Créer le Catanage
                 </ColoredButton>
             </motion.div>
             {errorMessage &&
