@@ -46,6 +46,7 @@ export default function HomePage() {
         }, 2000);
     }, []);
 
+    console.log(control1)
 
     return (
         <div className={styles.home_page_container}>

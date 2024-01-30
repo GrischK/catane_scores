@@ -2,7 +2,7 @@
     position: relative;
     height: 100vh;
     overflow: hidden;
-    background-color: salmon;
+    background-color: #01295F;
     transition: filter .3s ease-in;
 }
 
@@ -11,7 +11,7 @@
 }
 
 .thirdPlayer, .secondPlayer, .firstPlayer {
-    background: #fbf9f1;
+    background: #78A1BB;
     border-radius: 20px 20px 0 0;
     display: flex;
     justify-content: center;
@@ -28,54 +28,60 @@
     transition: height .5s ease-in-out, left 0.5s ease-in-out, width 0.5s ease-in-out, background-color 0.5s ease-in-out, font-size 0.5s ease-in-out;
 }
 
-.thirdPlayer.appear {
-    height: 50vh;
-    border: 1px solid #f4b30c;
+.firstPlayer.appear, .secondPlayer.appear, .thirdPlayer.appear {
     overflow: visible;
+    box-shadow: 0 16px 46px -2px rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.thirdPlayer.move {
-    left: 65%;
-    height: 40vh;
-    width: 15vw;
-    background: #fff7da;
-    font-size: 30px;
+.firstPlayer.appear {
+    height: 70vh;
 }
 
 .secondPlayer.appear {
     height: 60vh;
-    border: 1px solid #f4b30c;
-    overflow: visible;
+}
+
+.thirdPlayer.appear {
+    height: 50vh;
+}
+
+.firstPlayer.move, .secondPlayer.move, .thirdPlayer.move {
+    background: #55829D;
+    font-size: 30px;
+}
+
+.firstPlayer.move {
+    width: 15vw;
+    height: 60vh;
 }
 
 .secondPlayer.move {
     left: 35%;
     height: 50vh;
     width: 15vw;
-    background: #fff7da;
-    font-size: 30px;
 }
 
-.firstPlayer.appear {
-    height: 70vh;
-    border: 1px solid #f4b30c;
-    overflow: visible;
-}
-
-.firstPlayer.move {
+.thirdPlayer.move {
+    left: 65%;
+    height: 40vh;
     width: 15vw;
-    height: 60vh;
-    background: #fff7da;
-    font-size: 30px;
 }
 
 .playerName {
     position: absolute;
-    top: -28px;
+    top: -110px;
     scale: 0;
     transition: scale 0.5s linear;
     font-size: 30px;
     text-align: center;
+    width: 12vh;
+}
+
+.playerName img {
+    border-radius: 50%;
 }
 
 .playerNameIsShown {
@@ -84,15 +90,20 @@
     animation-delay: 0.5s;
 }
 
-@keyframes bounce{
-    from {transform: translateY(0);}
-    to   {transform: translateY(-20px);}
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-20px);
+    }
 }
 
 .lightCircleOff {
     width: 100vw;
     height: 100vh;
-    transition: width 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
 }
 
 .lightCircleOn {
@@ -100,11 +111,17 @@
     background-color: black;
     filter: brightness(50%);
     width: 100vw;
-    height: 100vh;
-    mask-image: radial-gradient(circle, transparent 30%, rgba(0, 0, 0, 0.5) 35%);
+    height: 140vh;
+    mask-image: radial-gradient(circle, transparent 12%, rgba(0, 0, 0, 0.5) 20%);
     animation: clip-fade 3s infinite alternate;
     mask-repeat: no-repeat;
+    top: -40%;
+    opacity: 1;
+    transition: height 0.5s ease-in-out;
+}
 
+.lightCircleOn.move {
+    height: 150vh;
 }
 
 @keyframes clip-fade {
@@ -120,4 +137,21 @@
         -webkit-mask-position: center center;
         mask-position: center center;
     }
+}
+
+.podiumMedal {
+    width: 6vh;
+}
+
+.firstPlayer .podiumMedal {
+    width: 10vh;
+}
+
+.playerNameTitle {
+    scale: 0;
+    transition: scale 0.5s linear;
+}
+
+.playerNameTitleIsShown {
+    scale: 1;
 }
