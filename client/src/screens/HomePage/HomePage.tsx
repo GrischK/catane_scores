@@ -55,6 +55,7 @@ export default function HomePage() {
             </div>
             <div className={styles.button_container}>
                 <motion.div
+                    className={styles.animated_button}
                     whileHover={{scale: 1.05}}
                     onHoverStart={e => {
                     }}
@@ -68,6 +69,7 @@ export default function HomePage() {
                     </NavLink>
                 </motion.div>
                 {control1 && (<motion.div
+                    className={styles.animated_button}
                     whileHover={{scale: 1.05}}
                     onHoverStart={e => {
                     }}
@@ -102,6 +104,7 @@ export default function HomePage() {
                 </motion.div>)}
 
                 {control2 && (<motion.div
+                    className={styles.animated_button}
                     whileHover={{scale: 1.05}}
                     onHoverStart={e => {
                     }}
@@ -116,6 +119,7 @@ export default function HomePage() {
                 </motion.div>)
                 }
                 {control3 && (<motion.div
+                    className={styles.animated_button}
                     whileHover={{scale: 1.05}}
                     onHoverStart={e => {
                     }}

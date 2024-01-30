@@ -1,23 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styles from './NewGame.module.css';
 import {
     Alert,
-    Autocomplete,
-    Box,
-    Button,
-    Chip,
-    MenuItem,
-    OutlinedInput,
-    Select,
     Snackbar,
     TextField
 } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
 import {
-     useCreateGameWithScoresMutation, User, useUsersByIdsQuery,
-        useUsersQuery
+    useCreateGameWithScoresMutation, User, useUsersByIdsQuery,
+    useUsersQuery
 } from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
+import ColoredButton from "../../components/ColoredButton/ColoredButton";
+import ColoredInput from "../../components/ColoredInput/ColoredInput";
+import {motion} from "framer-motion";
+import MysteriousText from "../../components/MysteriousText";
 
 interface PlayerData {
     player: number;
@@ -32,6 +28,8 @@ interface GameInterface {
 
 export default function NewGame({refreshGamesList}: any) {
     const {data} = useUsersQuery();
+    const [showPlayersList, setShowPlayersList] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const [newGame, setNewGame] = useState<GameInterface>({
         date: "",
@@ -46,9 +44,9 @@ export default function NewGame({refreshGamesList}: any) {
     const [successMessage, setSuccessMessage] = useState("");
     const [open, setOpen] = React.useState(false);
     const [successOpen, setSuccessOpen] = React.useState(false);
+    const [mysteriousTextIsShown, setMysteriousTextIsShown] = React.useState(false);
 
     const [createNewGame] = useCreateGameWithScoresMutation();
-    console.log(newGame)
 
     const onClickCreateNewGame = async () => {
         const isGameNotFilledWithPlayers = newGame.playersData.length < 2 || newGame.playersData.length > 6;
@@ -65,18 +63,6 @@ export default function NewGame({refreshGamesList}: any) {
             setErrorMessage("Indique le score pour chaque joueur");
             return;
         }
-        // const playerIds = newGame.players.map((player) => ({
-        //     id: player.id,
-        //     score: playerScores[player.id] || 0, // Utilise le score du joueur ou 0 par défaut
-        // }));
-        //
-        // const playerIds = newGame.playersData
-        //     .map((player) => {
-        //         const user = data?.users.find((user) => user.name === String(player.id));
-        //         return user ? { id: user.id } : null;
-        //     })
-        //     .filter((player) => player !== null) as UserId[];
-
         try {
             await createNewGame({
                 variables: {
@@ -87,6 +73,7 @@ export default function NewGame({refreshGamesList}: any) {
                     },
                 },
             });
+            console.log(newGame)
             setSuccessOpen(true);
             setSuccessMessage("Partie créée");
             refreshGamesList();
@@ -114,7 +101,24 @@ export default function NewGame({refreshGamesList}: any) {
         } else {
             setGamePlayers([]);
         }
-    }, [userData, newGame.playersData]);
+
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setShowPlayersList(false)
+            }
+        }
+
+        setTimeout(() => {
+            setMysteriousTextIsShown(true)
+        }, 450)
+
+        document.addEventListener("click", handleClickOutside)
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+
+
+    }, [userData, newGame.playersData, newGame]);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -125,13 +129,35 @@ export default function NewGame({refreshGamesList}: any) {
         setSuccessOpen(false)
     };
 
+    const buttonTransition = {
+        duration: 0.3,
+        ease: [0, 0.71, 0.2, 1.01],
+        scale: {
+            type: "spring",
+            damping: 5,
+            stiffness: 100,
+            restDelta: 0.001
+        }
+    }
+
     return (
         <div className={styles.new_game_container}>
-            <h1 className={styles.title}>Ajouter une Catanerie</h1>
-            <TextField
-                className={styles.new_game_input}
-                label="Date"
-                type="text"
+            <motion.h1
+                initial={{x: '-100vw'}}
+                animate={{x: 1}}
+                transition={
+                    {delay: 0.5}
+                }
+
+                className={styles.title}
+            >
+                {mysteriousTextIsShown &&
+                    <MysteriousText>Ajouter une Catanerie</MysteriousText>
+                }
+            </motion.h1>
+            <ColoredInput
+                bgColor={"blue"}
+                label={"date"}
                 value={newGame.date}
                 onChange={(e) =>
                     setNewGame((prevState) => ({
@@ -140,10 +166,9 @@ export default function NewGame({refreshGamesList}: any) {
                     }))
                 }
             />
-            <TextField
-                className={styles.new_game_input}
-                label="Lieu"
-                type="text"
+            <ColoredInput
+                bgColor={"red"}
+                label={"lieu"}
                 value={newGame.place}
                 onChange={(e) =>
                     setNewGame((prevState) => ({
@@ -152,68 +177,41 @@ export default function NewGame({refreshGamesList}: any) {
                     }))
                 }
             />
-            <Autocomplete
-                multiple
-                className={styles.new_game_multiselect}
-                id="players"
-                options={userNames.map((user) => user.name)}
-                getOptionLabel={(option) => option}
-                onChange={(_, newValue) => {
-                    const selectedUserNames = newValue.filter((name) => {
-                        const user = userNames.find((u) => u.name === name);
-                        return user !== undefined;
-                    });
-                    setNewGame((prevState) => ({
-                        ...prevState,
-                        playersData: selectedUserNames.map((name) => ({
-                            player: userNames.find((u) => u.name === name)?.id || 0,
-                            score: prevState.playersData.find((player) => player.player === userNames.find((u) => u.name === name)?.id)?.score || 0,
-                        })),
-                    }));
-                }}
-                value={newGame.playersData.map((player) => {
-                    const user = userNames.find((u) => u.id === player.player);
-                    return user ? user.name : "";
-                })}
-                renderInput={(params) => (
-                    <TextField {...params} label="Cataneurs" variant="outlined"/>
-                )}
-            />
-
-
-            {/*<Select*/}
-            {/*    labelId="demo-multiple-chip-label"*/}
-            {/*    id="demo-multiple-chip"*/}
-            {/*    multiple*/}
-            {/*    value={newGame.players.map((user) => String(user.id))}*/}
-            {/*    onChange={(event) => {*/}
-            {/*        const newValue = event.target.value as string[];*/}
-            {/*        const selectedUserObjects = newValue.map((id) => ({id} as unknown as UserId));*/}
-            {/*        setNewGame((prevState) => ({*/}
-            {/*            ...prevState,*/}
-            {/*            players: newValue.length === 0 ? [] : selectedUserObjects,*/}
-            {/*        }));*/}
-            {/*    }}*/}
-            {/*    MenuProps={{disableScrollLock: true}}*/}
-            {/*    input={<OutlinedInput id="select-multiple-chip" label="Chip"/>}*/}
-            {/*    renderValue={(selected) => (*/}
-            {/*        <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>*/}
-            {/*            {selected.map((value) => (*/}
-            {/*                <Chip key={value} label={value}/>*/}
-            {/*            ))}*/}
-            {/*        </Box>*/}
-            {/*    )}*/}
-            {/*>*/}
-            {/*    {userNames.map((name) => (*/}
-            {/*        <MenuItem*/}
-            {/*            key={name}*/}
-            {/*            value={name}*/}
-            {/*        >*/}
-            {/*            {name}*/}
-            {/*        </MenuItem>*/}
-            {/*    ))}*/}
-            {/*</Select>*/}
-
+            <div ref={containerRef} className={styles.players_list_container}>
+                <label
+                    className={`${styles.players_list_label} ${showPlayersList ? `${styles.players_selected}` : ''} ${gamePlayers && gamePlayers?.length > 0 ? `${styles.players_selected}` : ''}`}
+                    htmlFor="playersList" onClick={() => setShowPlayersList(true)}><span>Cataneurs</span>
+                </label>
+                {showPlayersList && <div>
+                    {userNames.map((user) => (
+                        <div key={user.id}>
+                            <input
+                                className={styles.players_check_input}
+                                type="checkbox"
+                                id={`playerCheckbox-${user.id}`}
+                                value={user.name}
+                                checked={newGame.playersData.some((player) => player.player === user.id)}
+                                onChange={(event) => {
+                                    const isChecked = event.target.checked;
+                                    setNewGame((prevState) => ({
+                                        ...prevState,
+                                        playersData: isChecked
+                                            ? [
+                                                ...prevState.playersData,
+                                                {
+                                                    player: user.id,
+                                                    score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
+                                                },
+                                            ]
+                                            : prevState.playersData.filter((player) => player.player !== user.id),
+                                    }));
+                                }}
+                            />
+                            <label htmlFor={`playerCheckbox-${user.id}`}>{user.name}</label>
+                        </div>
+                    ))}
+                </div>}
+            </div>
             {gamePlayers && gamePlayers?.length > 0 &&
                 <div className={styles.new_game_players}>
                     {gamePlayers &&
@@ -225,10 +223,9 @@ export default function NewGame({refreshGamesList}: any) {
                                 ) : (
                                     <img src={defaultAvatar} alt="user picture"/>
                                 )}
-                                <TextField
-                                    className={styles.new_game_input}
-                                    label="Score"
-                                    type="text"
+                                <ColoredInput
+                                    bgColor={"yellow"}
+                                    label={"score"}
                                     value={newGame.playersData.find(player => player.player === e.id)?.score || ""}
                                     onChange={(event) => {
                                         const score = event.target.value;
@@ -248,13 +245,21 @@ export default function NewGame({refreshGamesList}: any) {
                         ))}
                 </div>
             }
-
-            <Button
-                variant="contained"
-                onClick={onClickCreateNewGame}
-                endIcon={<SendIcon/>}>
-                Créer la partie
-            </Button>
+            <motion.div
+                whileHover={{scale: 1.05}}
+                onHoverStart={e => {
+                }}
+                onHoverEnd={e => {
+                }}
+                transition={buttonTransition}
+            >
+                <ColoredButton
+                    bgColor={"yellow"}
+                    onClick={onClickCreateNewGame}
+                >
+                    Créer la partie
+                </ColoredButton>
+            </motion.div>
             {errorMessage &&
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
