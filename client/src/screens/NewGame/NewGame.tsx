@@ -12,7 +12,7 @@ import {
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
-import {motion} from "framer-motion";
+import {animate, AnimatePresence, motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
 
 interface PlayerData {
@@ -112,7 +112,8 @@ export default function NewGame({refreshGamesList}: any) {
             setMysteriousTextIsShown(true)
         }, 450)
 
-        document.addEventListener("click", handleClickOutside)
+        document.addEventListener("click", handleClickOutside);
+
         return () => {
             document.removeEventListener("click", handleClickOutside);
         };
@@ -182,35 +183,62 @@ export default function NewGame({refreshGamesList}: any) {
                     className={`${styles.players_list_label} ${showPlayersList ? `${styles.players_selected}` : ''} ${gamePlayers && gamePlayers?.length > 0 ? `${styles.players_selected}` : ''}`}
                     htmlFor="playersList" onClick={() => setShowPlayersList(true)}><span>Cataneurs</span>
                 </label>
-                {showPlayersList && <div>
-                    {userNames.map((user) => (
-                        <div key={user.id}>
-                            <input
-                                className={styles.players_check_input}
-                                type="checkbox"
-                                id={`playerCheckbox-${user.id}`}
-                                value={user.name}
-                                checked={newGame.playersData.some((player) => player.player === user.id)}
-                                onChange={(event) => {
-                                    const isChecked = event.target.checked;
-                                    setNewGame((prevState) => ({
-                                        ...prevState,
-                                        playersData: isChecked
-                                            ? [
-                                                ...prevState.playersData,
-                                                {
-                                                    player: user.id,
-                                                    score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
-                                                },
-                                            ]
-                                            : prevState.playersData.filter((player) => player.player !== user.id),
-                                    }));
-                                }}
-                            />
-                            <label htmlFor={`playerCheckbox-${user.id}`}>{user.name}</label>
-                        </div>
-                    ))}
-                </div>}
+                <AnimatePresence>
+                    {showPlayersList && <motion.div
+                        className={styles.choosePlayers}
+                        initial={{
+                            width: 0,
+                            height: 0,
+                            opacity: 0,
+                        }}
+                        animate={{
+                            width: 'calc(100% - 2rem)',
+                            height: 'fit-content',
+                            opacity: 1
+                        }}
+                        transition={{
+                            type: "spring",
+                            bounce: 0,
+                            duration: 0.4
+                        }}
+                        exit={{
+                            width: 0,
+                            height: 0,
+                            opacity: 0,
+                            marginTop: 0,
+                            padding: 0
+                        }}
+
+                    >
+                        {userNames.map((user) => (
+                            <div key={user.id}>
+                                <input
+                                    className={styles.players_check_input}
+                                    type="checkbox"
+                                    id={`playerCheckbox-${user.id}`}
+                                    value={user.name}
+                                    checked={newGame.playersData.some((player) => player.player === user.id)}
+                                    onChange={(event) => {
+                                        const isChecked = event.target.checked;
+                                        setNewGame((prevState) => ({
+                                            ...prevState,
+                                            playersData: isChecked
+                                                ? [
+                                                    ...prevState.playersData,
+                                                    {
+                                                        player: user.id,
+                                                        score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
+                                                    },
+                                                ]
+                                                : prevState.playersData.filter((player) => player.player !== user.id),
+                                        }));
+                                    }}
+                                />
+                                <label htmlFor={`playerCheckbox-${user.id}`}>{user.name}</label>
+                            </div>
+                        ))}
+                    </motion.div>}
+                </AnimatePresence>
             </div>
             {gamePlayers && gamePlayers?.length > 0 &&
                 <div className={styles.new_game_players}>
