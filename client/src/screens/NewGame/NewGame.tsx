@@ -2,8 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import styles from './NewGame.module.css';
 import {
     Alert,
-    Snackbar,
-    TextField
+    Snackbar
 } from "@mui/material";
 import {
     useCreateGameWithScoresMutation, User, useUsersByIdsQuery,
@@ -12,7 +11,7 @@ import {
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
-import {animate, AnimatePresence, motion} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
 
 interface PlayerData {
@@ -326,10 +325,6 @@ export default function NewGame({refreshGamesList}: any) {
                 initial='hidden'
                 animate='visible'
                 whileHover={{scale: 1.05}}
-                onHoverStart={e => {
-                }}
-                onHoverEnd={e => {
-                }}
                 transition={buttonTransition}
             >
                 <ColoredButton

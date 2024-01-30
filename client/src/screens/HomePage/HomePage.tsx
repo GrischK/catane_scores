@@ -3,7 +3,7 @@ import styles from './HomePage.module.css';
 import {NavLink} from "react-router-dom";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import MysteriousText from "../../components/MysteriousText";
-import {delay, motion} from "framer-motion"
+import {motion} from "framer-motion"
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 
 export default function HomePage() {
@@ -57,10 +57,6 @@ export default function HomePage() {
                 <motion.div
                     className={styles.animated_button}
                     whileHover={{scale: 1.05}}
-                    onHoverStart={e => {
-                    }}
-                    onHoverEnd={e => {
-                    }}
                     initial={{opacity: 0, scale: 0.5}}
                     animate={{opacity: 1, scale: 1}}
                     transition={buttonTransition}>
@@ -71,10 +67,6 @@ export default function HomePage() {
                 {control1 && (<motion.div
                     className={styles.animated_button}
                     whileHover={{scale: 1.05}}
-                    onHoverStart={e => {
-                    }}
-                    onHoverEnd={e => {
-                    }}
                     initial={{opacity: 0, scale: 0.5}}
                     animate={{opacity: 1, scale: 1}}
                     transition={buttonTransition}>
@@ -104,10 +96,6 @@ export default function HomePage() {
                 {control2 && (<motion.div
                     className={styles.animated_button}
                     whileHover={{scale: 1.05}}
-                    onHoverStart={e => {
-                    }}
-                    onHoverEnd={e => {
-                    }}
                     initial={{opacity: 0, scale: 0.5}}
                     animate={{opacity: 1, scale: 1}}
                     transition={buttonTransition}>
@@ -119,10 +107,6 @@ export default function HomePage() {
                 {control3 && (<motion.div
                     className={styles.animated_button}
                     whileHover={{scale: 1.05}}
-                    onHoverStart={e => {
-                    }}
-                    onHoverEnd={e => {
-                    }}
                     initial={{opacity: 0, scale: 0.5}}
                     animate={{opacity: 1, scale: 1}}
                     transition={buttonTransition}>
