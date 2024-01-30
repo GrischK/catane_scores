@@ -1,51 +1,40 @@
-.red_button::before {
-  background: var(--bg-red) !important;
+.red_button {
+    background: var(--bg-red) !important;
 }
 
-.blue_button::before {
-  background: var(--bg-blue) !important;
+.blue_button {
+    background: var(--bg-blue) !important;
 }
 
-.green_button::before {
-  background: var(--bg-green) !important;
+.green_button {
+    background: var(--bg-green) !important;
 }
 
-.yellow_button::before {
-  background: var(--bg-yellow) !important;
+.yellow_button {
+    background: var(--bg-yellow) !important;
 }
 
 .colored_button {
-  position: relative;
-  margin: 25px;
-  width: 400px;
-  height: 100px;
-  background: transparent;
-  border: 5px solid #000000;
-  border-radius: 60px;
-  color: #000;
-  cursor: pointer;
-  font-family: 'Calistoga', cursive;
-  font-size: 1.5em;
-  font-weight: bold;
-  overflow: hidden;
-}
-
-.colored_button::before {
-  display: block;
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 400px;
-  height: 100px;
-  background-size: 200px 200px;
-  z-index: -1;
+    position: relative;
+    margin: 25px;
+    width: 22vw;
+    height: 8vh;
+    min-width: 200px;
+    background: transparent;
+    border: 5px solid #000000;
+    border-radius: 60px;
+    color: #000;
+    cursor: pointer;
+    font-family: 'Calistoga', cursive;
+    font-size: 1.5em;
+    font-weight: bold;
+    overflow: hidden;
 }
 
 .colored_button:hover {
-  color: #fff;
+    color: #fff;
 }
 
 .colored_button:active {
-  color: #000;
+    color: #000;
 }

@@ -3,7 +3,7 @@ import styles from './HomePage.module.css';
 import {NavLink} from "react-router-dom";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import MysteriousText from "../../components/MysteriousText";
-import {motion} from "framer-motion"
+import {delay, motion} from "framer-motion"
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 
 export default function HomePage() {
@@ -21,7 +21,16 @@ export default function HomePage() {
             restDelta: 0.001
         }
     }
-
+    const crownTransition = {
+        duration: 0.3,
+        ease: [0, 0.71, 0.2, 1.01],
+        type: "spring",
+        damping: 11,
+        stiffness: 100,
+        mass: 0.5,
+        restDelta: 0.001,
+        delay: 3
+    }
     useEffect(() => {
         setTimeout(() => {
             setControl1(true)
@@ -67,20 +76,27 @@ export default function HomePage() {
                     animate={{opacity: 1, scale: 1}}
                     transition={buttonTransition}>
 
-                    <NavLink to="/ranking" style={{position:"relative"}}>
+                    <NavLink to="/ranking" style={{position: "relative"}}>
                         <ColoredButton bgColor={'blue'}>
                             Classement
                         </ColoredButton>
-                        <Crown style={{
-                            position: "absolute",
-                            width: "80px",
-                            height: "80px",
-                            zIndex: "100",
-                            top: "-90px",
-                            right: "0",
-                            rotate: "30deg",
-                            fill:"#ffd903"
-                        }}/>
+                        <motion.div
+                            initial={{top: -1000, left: 268}}
+                            animate={{top: -146, left: 268}}
+                            transition={
+                                crownTransition
+                            }>
+                            <Crown style={{
+                                position: "absolute",
+                                width: "80px",
+                                height: "80px",
+                                zIndex: "100",
+                                // top: "-73px",
+                                // right: "-4px",
+                                rotate: "30deg",
+                                fill: "#ffd903"
+                            }}/>
+                        </motion.div>
                     </NavLink>
                 </motion.div>)}
 
