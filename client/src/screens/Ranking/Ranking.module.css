@@ -1,11 +1,8 @@
 .ranking_container {
-    background-image: url("../../assets/images/crown.jpg");
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
     min-height: 95vh;
     padding-top: 5vh;
-
+    background: rgb(255, 255, 255);
+    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-blue));
     display: flex;
     flex-direction: column;
     align-items: center;
