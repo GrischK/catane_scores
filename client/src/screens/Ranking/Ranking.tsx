@@ -144,10 +144,18 @@ export default function Ranking() {
                 {playersPoints.length > 0 && (
                     playersPoints.slice(1).map((p, index) =>
                         <motion.div
-                            style={{
-                                transform: isInView ? "none" : "translateY(200px)",
-                                opacity: isInView ? 1 : 0,
-                                transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s"
+                            initial={{
+                                opacity: 0,
+                                y: isInView ? 0 : 500, // décalage initial uniquement si dans la vue
+                            }}
+                            animate={{
+                                opacity: 1,
+                                y: isInView ? 0 : 500, // décalage d'animation uniquement si dans la vue
+                            }}
+                            transition={{
+                                duration: 0.9,
+                                ease: [0.17, 0.55, 0.55, 1],
+                                delay: isInView ? index * 0.2 : 0, // délai seulement si dans la vue
                             }}
                             className={styles.player_info}
                             key={p.player.id}
