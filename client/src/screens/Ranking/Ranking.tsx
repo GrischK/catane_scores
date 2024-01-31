@@ -1,10 +1,11 @@
 import styles from './Ranking.module.css';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useGamesQuery, User} from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import ConfettiExplosion from 'react-confetti-explosion';
 import {motion} from 'framer-motion';
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
+import {useInView} from "framer-motion"
 
 interface PlayersPoints {
     player: User;
@@ -14,9 +15,12 @@ interface PlayersPoints {
 export default function Ranking() {
     const {data, refetch} = useGamesQuery()
     const [isExploding, setIsExploding] = React.useState(false);
+    const ref = useRef(null)
+    const isInView = useInView(ref)
 
-    console.log(data)
+    // console.log(data)
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
+    const [hasExploded, setHasExploded] = useState(false);
 
     useEffect(() => {
         if (data) {
@@ -49,20 +53,26 @@ export default function Ranking() {
 
     useEffect(() => {
         const timers: any[] = [];
-        const isExplodingTimer = setTimeout(() => {
-            setIsExploding(true)
-        }, 500);
 
-        const isNotExplodingTimer = setTimeout(() => {
-            setIsExploding(false)
-        }, 3000);
+        if (!hasExploded) {
+            const isExplodingTimer = setTimeout(() => {
+                setIsExploding(true);
+                setHasExploded(true);
+            }, 500);
 
-        timers.push(isExplodingTimer, isNotExplodingTimer)
+            const isNotExplodingTimer = setTimeout(() => {
+                setIsExploding(false);
+            }, 3000);
+
+            timers.push(isExplodingTimer, isNotExplodingTimer);
+        }
+
+        console.log("Element is in view: ", isInView);
 
         return () => {
-            timers.forEach(timer => clearTimeout(timer));
-        }
-    }, []);
+            timers.forEach((timer) => clearTimeout(timer));
+        };
+    }, [isInView, hasExploded]);
 
     return (
         <div className={styles.ranking_container}>
@@ -98,8 +108,8 @@ export default function Ranking() {
                     </div>
                 )}
                 <motion.div
-                    initial={{opacity: 0, scale: 0.3, y:'-1000%', x:'27%'}}
-                    animate={{opacity: 1, scale: 1, y:'-300%', x:'27%'}}
+                    initial={{opacity: 0, scale: 0.3, y: '-1000%', x: '27%'}}
+                    animate={{opacity: 1, scale: 1, y: '-300%', x: '27%'}}
                     transition={{
                         delay: 1,
                         duration: 0.7,
@@ -119,11 +129,24 @@ export default function Ranking() {
                         // left: "55px"
                     }}/>
                 </motion.div>
+                <button><a href={"#rest_of_players"}>Allez</a></button>
             </motion.div>
-            <div className={styles.ranking}>
+            <div
+                className={styles.ranking}
+                id={"rest_of_players"}
+                ref={ref}
+            >
                 {playersPoints.length > 0 && (
                     playersPoints.slice(1).map((p, index) =>
-                        <div className={styles.player_info} key={p.player.id}>
+                        <motion.div
+                            style={{
+                                transform: isInView ? "none" : "translateY(200px)",
+                                opacity: isInView ? 1 : 0,
+                                transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s"
+                            }}
+                            className={styles.player_info}
+                            key={p.player.id}
+                        >
                             <span>{index + 2}ème</span>
                             {p.player.picture ?
                                 <img src={p.player?.picture}
@@ -133,7 +156,7 @@ export default function Ranking() {
                             }
                             <h1>{p.player?.name}</h1>
                             <span>{`Points : ${p.playerTotalPoints}`}</span>
-                        </div>
+                        </motion.div>
                     )
                 )}
             </div>

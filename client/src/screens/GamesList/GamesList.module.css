@@ -7,7 +7,9 @@
 }
 
 .games_list_wrapper {
-    background-color: #fbf9f1;
+    /*background-color: #fbf9f1;*/
+    background: rgb(255, 255, 255);
+    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-green) 100%);
     min-height: 85vh;
     padding: 5vh 10vh 10vh 10vh;
 }
@@ -24,7 +26,6 @@
     border-radius: 0.5vh;
     /*min-height: 130px;*/
     background: rgb(255, 255, 255);
-    background-size: cover;
     box-shadow: rgba(0, 0, 0, 0.19) 0 5px 10px, rgba(0, 0, 0, 0.23) 0 3px 3px;
     transition: box-shadow 0.1s ease-in-out;
     border: 1px solid #f4b30c;

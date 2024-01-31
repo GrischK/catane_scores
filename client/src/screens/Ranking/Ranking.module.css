@@ -1,53 +1,58 @@
 .ranking_container {
-    min-height: 95vh;
-    padding-top: 5vh;
-    background: rgb(255, 255, 255);
-    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-blue));
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  min-height: 95vh;
+  padding-top: 5vh;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-blue));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 .title {
-    -webkit-text-stroke: 1px black;
-    font-family: 'Calistoga', cursive;
-    font-weight: 400;
-    color: #FFCC00;
-    font-size: 3rem;
+  -webkit-text-stroke: 1px black;
+  font-family: 'Calistoga', cursive;
+  font-weight: 400;
+  color: #FFCC00;
+  font-size: 3rem;
 }
 
 .player_info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .player_info img {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
 }
 
 .king_of_catan {
-    padding-top: 20vh;
-    padding-bottom: 20vh;
-    margin-bottom: 30vh;
-    position: relative;
+  padding-top: 20vh;
+  padding-bottom: 20vh;
+  margin-bottom: 30vh;
+  position: relative;
 }
 
 .king_of_catan::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    border-bottom: solid 1px #FDF3AB;
-    width: 50%;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom: solid 1px #FDF3AB;
+  width: 50%;
 }
 
 .ranking {
-    display: flex;
-    flex-direction: column;
-    gap: 5vh;
-    padding-bottom: 2vh;
+  display: flex;
+  /*flex-direction: column;*/
+  gap: 5vh;
+  padding-bottom: 2vh;
+  overflow: hidden;
 }

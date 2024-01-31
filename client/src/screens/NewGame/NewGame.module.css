@@ -6,7 +6,9 @@
     padding: 10vh;
     align-items: center;
     overflow: hidden;
-    background: var(--bg-white_light);
+    /*background: var(--bg-white_light);*/
+    background: rgb(255, 255, 255);
+    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-red));
 }
 
 .new_game_input > div, .new_game_multiselect > div > div {
@@ -51,7 +53,7 @@
     border-radius: 1vh;
     z-index: 1;
     position: relative;
-    background: inherit;
+    /*background: inherit;*/
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
 }
 

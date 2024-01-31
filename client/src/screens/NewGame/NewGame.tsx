@@ -204,7 +204,7 @@ export default function NewGame({refreshGamesList}: any) {
                     animate='visible'
                 >
                     <ColoredInput
-                        bgColor={"red"}
+                        bgColor={"yellow"}
                         label={"lieu"}
                         value={newGame.place}
                         onChange={(e) =>
@@ -328,7 +328,7 @@ export default function NewGame({refreshGamesList}: any) {
                 transition={buttonTransition}
             >
                 <ColoredButton
-                    bgColor={"yellow"}
+                    bgColor={"red"}
                     onClick={onClickCreateNewGame}
                 >
                     Créer le Catanage
