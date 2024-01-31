@@ -4,14 +4,15 @@ import {ReactNode} from "react";
 interface ColoredButtonProps {
     children: ReactNode;
     bgColor: string;
-    onClick?: any
+    onClick?: any;
+    style?: object;
 }
 
-export default function ColoredButton({children, bgColor, onClick}: ColoredButtonProps) {
+export default function ColoredButton({children, bgColor, onClick, style}: ColoredButtonProps) {
     const buttonClassName = `${styles.colored_button} ${styles[`${bgColor}_button`]}`;
 
     return (
-        <button className={buttonClassName} onClick={onClick}>
+        <button className={buttonClassName} onClick={onClick} style={style}>
             {children}
         </button>
     )

@@ -76,10 +76,12 @@ h1 {
     left: 50%;
     position: absolute;
 }
+
 :root {
-  --bg-red: #f04d4d;
-  --bg-yellow: #ffd903;
-  --bg-blue: #5ba1fc;
-  --bg-green: #2dc40f;
-  --bg-white: #F8F2DC;
+    --bg-red: #f04d4d;
+    --bg-yellow: #ffd903;
+    --bg-blue: #5ba1fc;
+    --bg-green: #2dc40f;
+    --bg-white: #F8F2DC;
+    --bg-white_light: #fffcf3;
 }

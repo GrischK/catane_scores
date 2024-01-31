@@ -3,7 +3,7 @@ import styles from './HomePage.module.css';
 import {NavLink} from "react-router-dom";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import MysteriousText from "../../components/MysteriousText";
-import {delay, motion} from "framer-motion"
+import {motion} from "framer-motion"
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 
 export default function HomePage() {
@@ -22,7 +22,7 @@ export default function HomePage() {
         }
     }
     const crownTransition = {
-        duration: 0.3,
+        duration: 4,
         ease: [0, 0.71, 0.2, 1.01],
         type: "spring",
         damping: 11,
@@ -57,10 +57,6 @@ export default function HomePage() {
                 <motion.div
                     className={styles.animated_button}
                     whileHover={{scale: 1.05}}
-                    onHoverStart={e => {
-                    }}
-                    onHoverEnd={e => {
-                    }}
                     initial={{opacity: 0, scale: 0.5}}
                     animate={{opacity: 1, scale: 1}}
                     transition={buttonTransition}>
@@ -71,31 +67,25 @@ export default function HomePage() {
                 {control1 && (<motion.div
                     className={styles.animated_button}
                     whileHover={{scale: 1.05}}
-                    onHoverStart={e => {
-                    }}
-                    onHoverEnd={e => {
-                    }}
                     initial={{opacity: 0, scale: 0.5}}
                     animate={{opacity: 1, scale: 1}}
                     transition={buttonTransition}>
 
-                    <NavLink to="/ranking" style={{position: "relative"}}>
-                        <ColoredButton bgColor={'blue'}>
+                    <NavLink to="/ranking">
+                        <ColoredButton bgColor={'blue'} style={{position: "relative"}}>
                             Classement
                         </ColoredButton>
                         <motion.div
-                            initial={{top: -1000, left: 268}}
-                            animate={{top: -146, left: 268}}
+                            style={{position: "absolute"}}
+                            initial={{top: '-100vh', right: -3}}
+                            animate={{top: -24, right: -3}}
                             transition={
                                 crownTransition
                             }>
                             <Crown style={{
-                                position: "absolute",
                                 width: "80px",
                                 height: "80px",
-                                zIndex: "100",
-                                // top: "-73px",
-                                // right: "-4px",
+                                zIndex: "1000",
                                 rotate: "30deg",
                                 fill: "#ffd903"
                             }}/>
@@ -106,10 +96,6 @@ export default function HomePage() {
                 {control2 && (<motion.div
                     className={styles.animated_button}
                     whileHover={{scale: 1.05}}
-                    onHoverStart={e => {
-                    }}
-                    onHoverEnd={e => {
-                    }}
                     initial={{opacity: 0, scale: 0.5}}
                     animate={{opacity: 1, scale: 1}}
                     transition={buttonTransition}>
@@ -121,10 +107,6 @@ export default function HomePage() {
                 {control3 && (<motion.div
                     className={styles.animated_button}
                     whileHover={{scale: 1.05}}
-                    onHoverStart={e => {
-                    }}
-                    onHoverEnd={e => {
-                    }}
                     initial={{opacity: 0, scale: 0.5}}
                     animate={{opacity: 1, scale: 1}}
                     transition={buttonTransition}>

@@ -1,5 +1,5 @@
-import styles from './NewRanding.module.css';
-import React, {useEffect, useState} from "react";
+import styles from './RankingPage.module.css';
+import React, {useEffect, useRef, useState} from "react";
 import ConfettiExplosion from 'react-confetti-explosion';
 import cheer from '../../assets/sounds/cheer.mp3'
 import trumpets from '../../assets/sounds/fanfare_trumpets.mp3'
@@ -9,13 +9,30 @@ import defaultAvatar from "../../assets/images/default_avatar.png";
 import thirdMedal from "../../assets/images/medal_3.png"
 import secondMedal from "../../assets/images/medal_2.png"
 import cup from "../../assets/images/cup.png"
+import Ranking from "../../components/Ranking/Ranking"
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import {IconButton} from "@mui/material";
+import {ThemeProvider, createTheme} from '@mui/material/styles';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#5ba1fc',
+        },
+        secondary: {
+            main: '#ffd903',
+        }
+    },
+});
 
 interface PlayersPoints {
     player: User;
     playerTotalPoints: number;
 }
 
-export default function NewRanking() {
+export default function RankingPage() {
     const [thirdPlayerIsShown, setThirdPlayerIsShown] = useState(false)
     const [moveThirdPlayer, setMoveThirdPlayer] = useState(false)
     const [thirdPlayerNameIsShown, setThirdPlayerNameIsShown] = useState(false)
@@ -33,10 +50,16 @@ export default function NewRanking() {
 
     const [isExploding, setIsExploding] = useState(false);
 
-    const cheersSound = new Audio(cheer);
-    const trumpetsSound = new Audio(trumpets);
-    const tadaaSound1 = new Audio(tadaa)
-    const tadaaSound2 = new Audio(tadaa)
+    const [mutedSounds, setMutedSounds] = useState(false);
+
+    const cheersSoundRef = useRef(new Audio(cheer));
+    const trumpetsSoundRef = useRef(new Audio(trumpets));
+    const tadaaSound1Ref = useRef(new Audio(tadaa));
+    const tadaaSound2Ref = useRef(new Audio(tadaa));
+    const tadaaSound3Ref = useRef(new Audio(tadaa));
+    tadaaSound1Ref.current.volume = 0.4
+    tadaaSound2Ref.current.volume = 0.5
+    tadaaSound3Ref.current.volume = 0.6
 
     const {data, refetch} = useGamesQuery()
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
@@ -78,7 +101,7 @@ export default function NewRanking() {
 
             const thirdPlayerTimer = setTimeout(() => {
                 setThirdPlayerIsShown(true)
-                tadaaSound1.play();
+                tadaaSound1Ref.current.play();
             }, 1000);
             const thirdPlayerNameTimer = setTimeout(() => {
                 setThirdPlayerNameIsShown(true)
@@ -90,8 +113,8 @@ export default function NewRanking() {
             timers.push(thirdPlayerTimer, moveThirdPlayerTimer, thirdPlayerNameTimer);
             const secondPlayerTimer = setTimeout(() => {
                 setSecondPlayerIsShown(true)
-                tadaaSound1.currentTime = 0;
-                tadaaSound2.play();
+                // tadaaSound1Ref.current.currentTime = 0;
+                tadaaSound2Ref.current.play();
             }, 5000);
             const secondPlayerNameTimer = setTimeout(() => {
                 setSecondPlayerNameIsShown(true)
@@ -102,8 +125,8 @@ export default function NewRanking() {
 
             const firstPlayerTimer = setTimeout(() => {
                 setFirstPlayerIsShown(true)
-                tadaaSound2.currentTime = 0;
-                tadaaSound1.play();
+                // tadaaSound2Ref.current.currentTime = 0;
+                tadaaSound3Ref.current.play();
             }, 9000);
             const firstPlayerNameTimer = setTimeout(() => {
                 setFirstPlayerNameIsShown(true)
@@ -130,8 +153,8 @@ export default function NewRanking() {
             }, 11000);
 
             const cheersPlay = setTimeout(() => {
-                trumpetsSound.play();
-                cheersSound.play();
+                trumpetsSoundRef.current.play();
+                cheersSoundRef.current.play();
             }, 10700)
 
             timers.push(cheersPlay, confettiTimer);
@@ -143,14 +166,71 @@ export default function NewRanking() {
         }
     }, [step]);
 
+    const muteSounds = () => {
+        if (mutedSounds) {
+            tadaaSound1Ref.current.muted = false;
+            tadaaSound2Ref.current.muted = false;
+            tadaaSound3Ref.current.muted = false;
+            cheersSoundRef.current.muted = false;
+            trumpetsSoundRef.current.muted = false;
+            setMutedSounds(false)
+        } else {
+            tadaaSound1Ref.current.muted = true;
+            tadaaSound2Ref.current.muted = true;
+            tadaaSound3Ref.current.muted = true;
+            cheersSoundRef.current.muted = true;
+            trumpetsSoundRef.current.muted = true;
+            setMutedSounds(true)
+        }
+    }
+
     return (
         <div>
-            {step === 1 && (<div>
-                <button style={{marginTop: "100px"}} onClick={() => setStep(prevState => prevState + 1)}>Podium</button>
-            </div>)
+            {step === 1 && (
+                <div>
+                    <Ranking/>
+                    <div className={styles.goTo_podium}>
+                        <ThemeProvider
+                            theme={theme}
+                        >
+                            <IconButton
+                                color='primary'
+                                onClick={() => setStep(prevState => prevState + 1)}
+                            >
+                                <EmojiEventsIcon
+                                    fontSize='medium'
+                                />
+                            </IconButton>
+                        </ThemeProvider>
+                    </div>
+                </div>)
             }
             {step === 2 && (
                 <div className={styles.newRanking_container}>
+                    <div
+                        className={styles.mute_sound}
+                    >
+                        <ThemeProvider
+                            theme={theme}
+                        >
+                            <IconButton
+                                color={'secondary'}
+                                onClick={muteSounds}
+                            >
+                                {mutedSounds
+                                    ?
+                                    <VolumeMuteIcon
+                                        fontSize={'medium'}
+                                    />
+                                    :
+                                    <VolumeOffIcon
+                                        fontSize={'medium'}
+                                    />
+                                }
+                            </IconButton>
+                        </ThemeProvider>
+                    </div>
+
                     {isExploding &&
                         <ConfettiExplosion
                             className={`confetti`}
@@ -222,7 +302,6 @@ export default function NewRanking() {
                             className={`${styles.lightCircleOff} ${darkBackground ? styles.lightCircleOn : ''} ${moveFirstPlayer ? styles.move : ""}`}>
                         </div>) : null
                     }
-
                 </div>
             )}
         </div>

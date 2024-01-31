@@ -1,14 +1,16 @@
 .ranking_container {
-    background-image: url("../../assets/images/crown.jpg");
-    background-attachment: fixed;
-    background-size: cover;
-    background-position: center;
     min-height: 95vh;
     padding-top: 5vh;
-
+    background: rgb(255, 255, 255);
+    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-blue));
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 5vh;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 .title {
@@ -36,6 +38,9 @@
     padding-bottom: 20vh;
     margin-bottom: 30vh;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .king_of_catan::after {
@@ -50,7 +55,8 @@
 
 .ranking {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 5vh;
     padding-bottom: 2vh;
+    overflow: hidden;
 }

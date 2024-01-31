@@ -4,7 +4,6 @@
   justify-content: start;
   gap: 15vh;
   align-items: center;
-  /*background-image: url("../../assets/images/poing.jpg");*/
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -40,8 +39,8 @@
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  grid-column-gap: 0;
+  grid-row-gap: 0;
 }
 
 .animated_button:nth-child(1) {

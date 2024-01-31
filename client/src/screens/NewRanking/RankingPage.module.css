@@ -72,7 +72,8 @@
 
 .playerName {
     position: absolute;
-    top: -110px;
+    /*top: -110px;*/
+    top: -12vh;
     scale: 0;
     transition: scale 0.5s linear;
     font-size: 30px;
@@ -154,4 +155,10 @@
 
 .playerNameTitleIsShown {
     scale: 1;
+}
+
+.goTo_podium, .mute_sound {
+    position: fixed;
+    top: 1.3vh;
+    left: 7vh;
 }

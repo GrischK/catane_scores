@@ -1,9 +1,6 @@
 .players_list_container {
     background: rgb(255, 255, 255);
-    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, rgba(244, 179, 12, 1) 100%);
-    /*background-image: url("../../assets/images/knight_armor_compressed.jpg");*/
-    /*background-attachment: fixed;*/
-    /*background-size: cover;*/
+    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-yellow) 100%);
     min-height: 100vh;
     padding: 10vh;
     display: flex;
