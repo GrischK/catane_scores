@@ -7,6 +7,15 @@ import {motion} from 'framer-motion';
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import {useInView} from "framer-motion"
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import {ThemeProvider, createTheme} from '@mui/material/styles';
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#5ba1fc',
+        },
+    },
+});
 
 interface PlayersPoints {
     player: User;
@@ -129,12 +138,19 @@ export default function Ranking() {
                         </motion.div>
                     </div>
                 )}
-                <motion.a
-                    whileHover={{scale: 1.5}}
-                    href={"#rest_of_players"}
+                <ThemeProvider
+                    theme={theme}
                 >
-                    <ArrowDownwardIcon/>
-                </motion.a>
+                    <motion.a
+                        whileHover={{scale: 1.5}}
+                        href={"#rest_of_players"}
+                    >
+                        <ArrowDownwardIcon
+                            color={'primary'}
+                            fontSize={'large'}
+                        />
+                    </motion.a>
+                </ThemeProvider>
             </motion.div>
             <div
                 className={styles.ranking}

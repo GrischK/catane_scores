@@ -12,7 +12,7 @@ const theme = createTheme({
         },
         secondary: {
             main: '#ffd903',
-        },
+        }
     },
 });
 
