@@ -6,6 +6,7 @@ import ConfettiExplosion from 'react-confetti-explosion';
 import {motion} from 'framer-motion';
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import {useInView} from "framer-motion"
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 interface PlayersPoints {
     player: User;
@@ -105,31 +106,33 @@ export default function Ranking() {
                             <img src={defaultAvatar} alt="user picture"/>
                         }
                         <h1>{playersPoints[0].player?.name}</h1>
+                        <motion.div
+                            initial={{opacity: 0, scale: 0.3, y: '-1000%', x: 0}}
+                            animate={{opacity: 1, scale: 1, y: '-300%', x: 0}}
+                            transition={{
+                                delay: 1,
+                                duration: 0.7,
+                                ease: [0, 0.71, 0.2, 1.01],
+                                type: "spring",
+                                damping: 10,
+                                stiffness: 50,
+                            }}
+                        >
+                            <Crown style={{
+                                width: "90px",
+                                height: "90px",
+                                zIndex: "1000",
+                                fill: "#ffd903",
+                            }}/>
+                        </motion.div>
                     </div>
                 )}
-                <motion.div
-                    initial={{opacity: 0, scale: 0.3, y: '-1000%', x: '27%'}}
-                    animate={{opacity: 1, scale: 1, y: '-300%', x: '27%'}}
-                    transition={{
-                        delay: 1,
-                        duration: 0.7,
-                        ease: [0, 0.71, 0.2, 1.01],
-                        type: "spring",
-                        damping: 10,
-                        stiffness: 50,
-                    }}
+                <motion.a
+                    whileHover={{scale: 1.5}}
+                    href={"#rest_of_players"}
                 >
-                    <Crown style={{
-                        width: "90px",
-                        height: "90px",
-                        zIndex: "1000",
-                        fill: "#ffd903",
-                        // position: "absolute",
-                        // top: "85px",
-                        // left: "55px"
-                    }}/>
-                </motion.div>
-                <button><a href={"#rest_of_players"}>Allez</a></button>
+                    <ArrowDownwardIcon/>
+                </motion.a>
             </motion.div>
             <div
                 className={styles.ranking}
