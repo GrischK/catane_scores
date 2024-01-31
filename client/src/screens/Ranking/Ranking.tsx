@@ -45,6 +45,7 @@ export default function Ranking() {
                         });
                     }
                 }
+                window.history.scrollRestoration = 'manual'
             });
             updatedPlayersPoints.sort((a, b) => b.playerTotalPoints - a.playerTotalPoints);
 
@@ -106,6 +107,7 @@ export default function Ranking() {
                             <img src={defaultAvatar} alt="user picture"/>
                         }
                         <h1>{playersPoints[0].player?.name}</h1>
+                        <span>{`Points : ${playersPoints[0].playerTotalPoints}`}</span>
                         <motion.div
                             initial={{opacity: 0, scale: 0.3, y: '-1000%', x: 0}}
                             animate={{opacity: 1, scale: 1, y: '-300%', x: 0}}
