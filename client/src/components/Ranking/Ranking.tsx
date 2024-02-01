@@ -22,6 +22,21 @@ interface PlayersPoints {
     playerTotalPoints: number;
 }
 
+const draw = {
+    hidden: {pathLength: 0, opacity: 0},
+    visible: (i: number) => {
+        const delay = 1 + i * 0.5;
+        return {
+            pathLength: 1,
+            opacity: 1,
+            transition: {
+                pathLength: {delay, type: "spring", duration: 1.5, bounce: 0},
+                opacity: {delay, duration: 0.01}
+            }
+        };
+    }
+};
+
 export default function Ranking() {
     const {data, refetch} = useGamesQuery()
     const [isExploding, setIsExploding] = React.useState(false);
@@ -189,6 +204,36 @@ export default function Ranking() {
                     )
                 )}
             </div>
+            {/*<div*/}
+            {/*    ref={ref}*/}
+            {/*>*/}
+            {/*    <motion.svg*/}
+            {/*        width="600"*/}
+            {/*        height="600"*/}
+            {/*        viewBox="0 0 600 600"*/}
+            {/*        initial="hidden"*/}
+            {/*        animate="visible"*/}
+            {/*    >*/}
+            {/*        <motion.line*/}
+            {/*            x1="220"*/}
+            {/*            y1="30"*/}
+            {/*            x2="360"*/}
+            {/*            y2="170"*/}
+            {/*            stroke="#00cc88"*/}
+            {/*            variants={draw}*/}
+            {/*            custom={2}*/}
+            {/*        />*/}
+            {/*        <motion.line*/}
+            {/*            x1="220"*/}
+            {/*            y1="170"*/}
+            {/*            x2="360"*/}
+            {/*            y2="30"*/}
+            {/*            stroke="#00cc88"*/}
+            {/*            variants={draw}*/}
+            {/*            custom={2.5}*/}
+            {/*        />*/}
+            {/*    </motion.svg>*/}
+            {/*</div>*/}
 
         </div>
     )

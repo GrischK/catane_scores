@@ -25,12 +25,12 @@ function App() {
                     <Route path="/" element={<HomePage/>}/>
                     <Route
                         path="/new_game"
-                        element={<NavBar><NewGame refreshGamesList={refreshGamesList}/></NavBar>}
+                        element={<NavBar buttonColor={'#f04d4d'}><NewGame refreshGamesList={refreshGamesList}/></NavBar>}
                     />
                     <Route path="/games_list"
-                           element={<NavBar><GamesList gamesListRefreshed={gamesListRefreshed}/></NavBar>}/>
-                    <Route path="/players_list" element={<NavBar><PlayersList/></NavBar>}/>
-                    <Route path="/ranking" element={<NavBar><NewRanking/></NavBar>}/>
+                           element={<NavBar buttonColor={'#2dc40f'}><GamesList gamesListRefreshed={gamesListRefreshed}/></NavBar>}/>
+                    <Route path="/players_list" element={<NavBar buttonColor={'#ffd903'}><PlayersList/></NavBar>}/>
+                    <Route path="/ranking" element={<NavBar buttonColor={'#5ba1fc'}><NewRanking/></NavBar>}/>
                 </Routes>
             </AnimatePresence>
         </>
