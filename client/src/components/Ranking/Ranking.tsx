@@ -22,21 +22,6 @@ interface PlayersPoints {
     playerTotalPoints: number;
 }
 
-const draw = {
-    hidden: {pathLength: 0, opacity: 0},
-    visible: (i: number) => {
-        const delay = 1 + i * 0.5;
-        return {
-            pathLength: 1,
-            opacity: 1,
-            transition: {
-                pathLength: {delay, type: "spring", duration: 1.5, bounce: 0},
-                opacity: {delay, duration: 0.01}
-            }
-        };
-    }
-};
-
 export default function Ranking() {
     const {data, refetch} = useGamesQuery()
     const [isExploding, setIsExploding] = React.useState(false);
@@ -46,6 +31,7 @@ export default function Ranking() {
     // console.log(data)
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
     const [hasExploded, setHasExploded] = useState(false);
+    const [showArrowButton, setShowArrowButton] = useState(false)
 
     useEffect(() => {
         if (data) {
@@ -93,12 +79,20 @@ export default function Ranking() {
             timers.push(isExplodingTimer, isNotExplodingTimer);
         }
 
+        const arrowButtonTimer = setTimeout(() => {
+            setShowArrowButton(true)
+        }, 3000)
+
+        timers.push(arrowButtonTimer);
+
         console.log("Element is in view: ", isInView);
 
         return () => {
             timers.forEach((timer) => clearTimeout(timer));
         };
     }, [isInView, hasExploded]);
+
+    console.log('arrow', showArrowButton)
 
     return (
         <div className={styles.ranking_container}>
@@ -134,7 +128,7 @@ export default function Ranking() {
                         <span>{`Points : ${playersPoints[0].playerTotalPoints}`}</span>
                         <motion.div
                             initial={{opacity: 0, scale: 0.3, y: '-1000%', x: 0}}
-                            animate={{opacity: 1, scale: 1, y: '-300%', x: 0}}
+                            animate={{opacity: 1, scale: 1, y: '-320%', x: 0}}
                             transition={{
                                 delay: 1,
                                 duration: 0.7,
@@ -153,19 +147,33 @@ export default function Ranking() {
                         </motion.div>
                     </div>
                 )}
-                <ThemeProvider
-                    theme={theme}
-                >
-                    <motion.a
-                        whileHover={{scale: 1.5}}
-                        href={"#rest_of_players"}
+                {showArrowButton && (
+                    <ThemeProvider
+                        theme={theme}
                     >
-                        <ArrowDownwardIcon
-                            color={'primary'}
-                            fontSize={'large'}
-                        />
-                    </motion.a>
-                </ThemeProvider>
+                        <motion.a
+                            initial={{opacity: 0, scale: 0}}
+                            animate={{opacity: 1, scale: 1.5}}
+                            transition={{
+                                duration: 0.3,
+                                ease: [0, 0.71, 0.2, 1.01],
+                                scale: {
+                                    type: "spring",
+                                    damping: 5,
+                                    stiffness: 100,
+                                    restDelta: 0.001
+                                }
+                            }}
+                            whileHover={{scale: 2}}
+                            href={"#rest_of_players"}
+                        >
+                            <ArrowDownwardIcon
+                                color={'primary'}
+                                fontSize={'large'}
+                            />
+                        </motion.a>
+                    </ThemeProvider>
+                )}
             </motion.div>
             <div
                 className={styles.ranking}
@@ -199,42 +207,16 @@ export default function Ranking() {
                                 <img src={defaultAvatar} alt="user picture"/>
                             }
                             <h1>{p.player?.name}</h1>
-                            <span>{`Points : ${p.playerTotalPoints}`}</span>
+                            <span>{p.playerTotalPoints === 1
+                                ?
+                                `${p.playerTotalPoints} point`
+                                :
+                                `${p.playerTotalPoints} points`
+                            }</span>
                         </motion.div>
                     )
                 )}
             </div>
-            {/*<div*/}
-            {/*    ref={ref}*/}
-            {/*>*/}
-            {/*    <motion.svg*/}
-            {/*        width="600"*/}
-            {/*        height="600"*/}
-            {/*        viewBox="0 0 600 600"*/}
-            {/*        initial="hidden"*/}
-            {/*        animate="visible"*/}
-            {/*    >*/}
-            {/*        <motion.line*/}
-            {/*            x1="220"*/}
-            {/*            y1="30"*/}
-            {/*            x2="360"*/}
-            {/*            y2="170"*/}
-            {/*            stroke="#00cc88"*/}
-            {/*            variants={draw}*/}
-            {/*            custom={2}*/}
-            {/*        />*/}
-            {/*        <motion.line*/}
-            {/*            x1="220"*/}
-            {/*            y1="170"*/}
-            {/*            x2="360"*/}
-            {/*            y2="30"*/}
-            {/*            stroke="#00cc88"*/}
-            {/*            variants={draw}*/}
-            {/*            custom={2.5}*/}
-            {/*        />*/}
-            {/*    </motion.svg>*/}
-            {/*</div>*/}
-
         </div>
     )
 }

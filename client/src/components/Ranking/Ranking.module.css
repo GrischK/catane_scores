@@ -33,6 +33,12 @@ html {
     border-radius: 50%;
 }
 
+.player_info span:nth-child(1) {
+    font-family: 'Zeyada', cursive;
+    font-size: 1.4rem;
+    font-weight: bolder;
+}
+
 .king_of_catan {
     padding-top: 20vh;
     padding-bottom: 20vh;
