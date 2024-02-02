@@ -177,7 +177,7 @@ export default function NewGame({refreshGamesList}: any) {
                 className={styles.title}
             >
                 {mysteriousTextIsShown &&
-                    <MysteriousText>Ajouter une Catanerie</MysteriousText>
+                    <MysteriousText colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}>Ajouter une Catanerie</MysteriousText>
                 }
             </motion.h1>
             <div className={styles.input_container}>
