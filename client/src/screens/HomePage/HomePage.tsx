@@ -11,6 +11,7 @@ export default function HomePage() {
     const [control2, setControl2] = useState(false);
     const [control3, setControl3] = useState(false);
     const [displayText, setDisplayText] = useState(false)
+
     const buttonTransition = {
         duration: 0.3,
         ease: [0, 0.71, 0.2, 1.01],
@@ -21,6 +22,7 @@ export default function HomePage() {
             restDelta: 0.001
         }
     }
+
     const crownTransition = {
         duration: 4,
         ease: [0, 0.71, 0.2, 1.01],
@@ -31,6 +33,7 @@ export default function HomePage() {
         restDelta: 0.001,
         delay: 3
     }
+
     useEffect(() => {
         setTimeout(() => {
             setControl1(true)
@@ -51,7 +54,8 @@ export default function HomePage() {
     return (
         <div className={styles.home_page_container}>
             <div className={styles.mysterious_text_container}>
-                {displayText && <MysteriousText colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}>Les Cataneurs Fous</MysteriousText>}
+                {displayText && <MysteriousText colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}>Les Cataneurs
+                    Fous</MysteriousText>}
             </div>
             <div className={styles.button_container}>
                 <motion.div

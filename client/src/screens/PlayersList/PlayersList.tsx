@@ -5,7 +5,7 @@ import {
     useDeleteUserMutation, useGamesQuery, User,
     useUsersQuery
 } from "../../gql/generated/schema";
-import {Alert, Button, Snackbar, TextField} from "@mui/material";
+import {Alert, Button, IconButton, Snackbar, TextField} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import Card from "../../components/Card/Card";
 import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
@@ -13,6 +13,18 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import MysteriousText from "../../components/MysteriousText";
 import {motion} from "framer-motion";
+import ColoredButton from "../../components/ColoredButton/ColoredButton";
+import ColoredInput from "../../components/ColoredInput/ColoredInput";
+import ArrowLeft from '@mui/icons-material/ArrowDownward';
+import {ThemeProvider, createTheme} from '@mui/material/styles';
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#5ba1fc',
+        },
+    },
+});
 
 interface PlayerInterface {
     name: string;
@@ -22,6 +34,17 @@ interface PlayerInterface {
 interface PlayersPoints {
     player: User;
     playerTotalPoints: number;
+}
+
+const buttonTransition = {
+    duration: 0.3,
+    ease: [0, 0.71, 0.2, 1.01],
+    scale: {
+        type: "spring",
+        damping: 5,
+        stiffness: 100,
+        restDelta: 0.001
+    }
 }
 
 export default function PlayersList() {
@@ -180,11 +203,20 @@ export default function PlayersList() {
                                             )
                                         })}
                                 </div>
-                                <button
-                                    onClick={() => setStep(prevState => prevState + 1)}
+                                <motion.div
+                                    whileHover={{scale: 1.05}}
+                                    transition={
+                                        buttonTransition
+                                    }
                                 >
-                                    Ajouter un Cataneur
-                                </button>
+                                    <ColoredButton
+                                        bgColor={'yellow'}
+                                        onClick={() => setStep(prevState => prevState + 1)}
+                                    >
+                                        Ajouter un Cataneur
+                                    </ColoredButton>
+                                </motion.div>
+
                                 {errorMessage &&
                                     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                                         <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
@@ -200,45 +232,65 @@ export default function PlayersList() {
             {step === 2 &&
                 (
                     <div className={styles.add_player_container}>
-                        {mysteriousTextStep2IsShown && (
-
-                            <motion.h1
-                                initial={{x: '-100vw'}}
-                                animate={{x: 1}}
-                                transition={
-                                    {delay: 0.5}
-                                }
-                                className={styles.players_list_title}
+                        <div
+                            className={styles.back_button}
+                        >
+                            <ThemeProvider
+                                theme={theme}
                             >
-                                <MysteriousText
-                                    colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                                <IconButton
+                                    color={'primary'}
+                                    onClick={() => setStep(prevState => prevState - 1)}
                                 >
-                                    Liste des Cataneurs
-                                </MysteriousText>
-                            </motion.h1>)
-                        } <TextField
-                        required={true}
-                        className={styles.new_player_input}
-                        label="Nom du Cataneur"
-                        type="text"
-                        value={newPlayer.name}
-                        onChange={(e) =>
-                            setNewPlayer((prevState) => ({
-                                    ...prevState,
-                                    name: e.target.value,
-                                })
+                                    <ArrowLeft
+                                        color={'primary'}
+                                        fontSize={'medium'}
+                                    />
+                                </IconButton>
+                            </ThemeProvider>
+                        </div>
+                        {mysteriousTextStep2IsShown &&
+                            (
+                                <motion.h1
+                                    initial={{x: '-100vw'}}
+                                    animate={{x: 1}}
+                                    transition={
+                                        {delay: 0.5}
+                                    }
+                                    className={styles.players_list_title}
+                                >
+                                    <MysteriousText
+                                        colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                                    >
+                                        Liste des Cataneurs
+                                    </MysteriousText>
+                                </motion.h1>
                             )
                         }
-                    />
+                        <ColoredInput
+                            label="nom"
+                            bgColor={'blue'}
+                            value={newPlayer.name}
+                            onChange={(e) =>
+                                setNewPlayer((prevState) => ({
+                                        ...prevState,
+                                        name: e.target.value,
+                                    })
+                                )
+                            }
+                        />
                         <RandomAvatar onChange={setNewPlayerAvatar}/>
-                        <Button variant="contained" onClick={onClickCreateNewPlayer} endIcon={<SendIcon/>}>
-                            Ajouter
-                        </Button>
-                        <button
-                            onClick={() => setStep(prevState => prevState - 1)}
+                        <motion.div
+                            whileHover={{scale: 1.05}}
+                            transition={buttonTransition}
                         >
-                            Liste des Cataneurs
-                        </button>
+                            <ColoredButton
+                                bgColor={'blue'}
+                                onClick={onClickCreateNewPlayer}
+                            >
+                                Créer le Cataneur
+                            </ColoredButton>
+                        </motion.div>
                     </div>
                 )
             }

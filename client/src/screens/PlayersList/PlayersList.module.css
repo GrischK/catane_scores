@@ -7,6 +7,7 @@
     flex-direction: column;
     gap: 2vh;
     align-items: center;
+    position: relative;
 }
 
 .player_wrapper {
@@ -31,14 +32,13 @@
 }
 
 .add_player_container {
+    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-blue));
     display: flex;
     flex-direction: column;
     gap: 2vh;
     align-items: center;
-}
-
-.add_player_container {
-    margin-top: 10vh;
+    padding: 10vh;
+    min-height: 80vh;
 }
 
 .title {
@@ -52,4 +52,14 @@
 .new_player_input > div {
     background-color: white;
     min-width: 2vw;
+}
+
+.back_button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    position: absolute;
+    top: 1.2vh;
+    left: 7vh;
+    rotate: 90deg;
 }
