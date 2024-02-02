@@ -173,8 +173,6 @@ export default function NewGame({refreshGamesList}: any) {
                 transition={
                     {delay: 0.5}
                 }
-
-                className={styles.title}
             >
                 {mysteriousTextIsShown &&
                     <MysteriousText colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}>Ajouter une Catanerie</MysteriousText>

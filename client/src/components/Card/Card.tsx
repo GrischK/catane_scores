@@ -58,6 +58,8 @@ export default function Card({
         // {onCompleted: () => refetch()}
     )
 
+    const avatarBackgroundColors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]
+
     const onClickUpdatePlayer: MouseEventHandler<HTMLButtonElement> = (event) => {
         const playerToUpdateId = event.currentTarget.getAttribute("data-player-id");
         if (playerToUpdateId && playerToUpdateData.name !== "") {
@@ -77,9 +79,16 @@ export default function Card({
     return (
         <div className={styles.card}>
             <h1>{playerName}</h1>
-            <div className={styles.card_image_wrapper}>
-                {playerAvatar ? <img src={playerAvatar} alt="user picture"/> :
-                    <img src={defaultAvatar} alt="user picture"/>}
+            <div
+                className={styles.card_image_wrapper}
+                style={{backgroundColor: avatarBackgroundColors[Math.floor(Math.random() * avatarBackgroundColors.length)]}}
+            >
+                {playerAvatar
+                    ?
+                    <img src={playerAvatar} alt="user picture"/>
+                    :
+                    <img src={defaultAvatar} alt="user picture"/>
+                }
             </div>
             <div className={styles.players_infos}>
                 <h2>Nombre de Catanes :</h2>
@@ -135,13 +144,13 @@ export default function Card({
                         }
                     />
                     <RandomAvatar
-                        onChange={(newAvatar:string) =>
-                        setPlayerToUpdateData((prevState) => ({
-                                ...prevState,
-                                picture: newAvatar,
-                            })
-                        )
-                    }/>
+                        onChange={(newAvatar: string) =>
+                            setPlayerToUpdateData((prevState) => ({
+                                    ...prevState,
+                                    picture: newAvatar,
+                                })
+                            )
+                        }/>
                     <Button variant="contained" onClick={onClickUpdatePlayer} endIcon={<SendIcon/>}
                             data-player-id={userId}>
                         Modifier
