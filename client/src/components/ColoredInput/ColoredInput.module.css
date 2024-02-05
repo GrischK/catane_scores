@@ -71,7 +71,7 @@
     color: black;
 }
 
-.nom_input:focus + .input_label, .score_input.not_empty + .input_label {
+.nom_input:focus + .input_label, .nom_input.not_empty + .input_label {
     background: var(--bg-blue);
     color: black;
 }

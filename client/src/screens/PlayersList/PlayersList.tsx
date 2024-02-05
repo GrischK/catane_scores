@@ -216,14 +216,6 @@ export default function PlayersList() {
                                         Ajouter un Cataneur
                                     </ColoredButton>
                                 </motion.div>
-
-                                {errorMessage &&
-                                    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                                        <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
-                                            {errorMessage}
-                                        </Alert>
-                                    </Snackbar>
-                                }
                             </>
                         }
                     </div>
@@ -262,7 +254,7 @@ export default function PlayersList() {
                                     <MysteriousText
                                         colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
                                     >
-                                        Liste des Cataneurs
+                                        Nouveau Cataneur
                                     </MysteriousText>
                                 </motion.h1>
                             )
@@ -291,6 +283,14 @@ export default function PlayersList() {
                                 Créer le Cataneur
                             </ColoredButton>
                         </motion.div>
+
+                        {errorMessage &&
+                            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                                <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+                                    {errorMessage}
+                                </Alert>
+                            </Snackbar>
+                        }
                     </div>
                 )
             }

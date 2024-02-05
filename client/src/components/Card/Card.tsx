@@ -1,13 +1,15 @@
 import styles from './Card.module.css';
 import defaultAvatar from '../../assets/images/default_avatar.png';
-import {Box, Button, IconButton, Modal, TextField, Typography} from "@mui/material";
+import {Box, IconButton, Modal, Typography} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {MouseEventHandler, useState} from "react";
 import React from 'react';
 import {useUpdateUserMutation} from "../../gql/generated/schema";
-import SendIcon from "@mui/icons-material/Send";
 import RandomAvatar from "../RandomAvatar/RandomAvatar";
+import {motion} from "framer-motion";
+import ColoredButton from "../ColoredButton/ColoredButton";
+import ColoredInput from "../ColoredInput/ColoredInput";
 
 interface CardProps {
     playerName: string,
@@ -30,6 +32,17 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
+
+const buttonTransition = {
+    duration: 0.3,
+    ease: [0, 0.71, 0.2, 1.01],
+    scale: {
+        type: "spring",
+        damping: 5,
+        stiffness: 100,
+        restDelta: 0.001
+    }
+}
 
 interface PlayerInterface {
     name: string;
@@ -110,6 +123,7 @@ export default function Card({
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 disableScrollLock={true}
+                className={styles.card_modal}
             >
                 <Box id={styles.update_player_modal} sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -129,20 +143,32 @@ export default function Card({
                     {/*    }*/}
                     {/*/>*/}
 
-                    <TextField
-                        required={true}
-                        className={styles.update_player_name_input}
-                        label="Nom"
-                        type="text"
+                    <ColoredInput
+                        bgColor={'blue'}
+                        label={'nom'}
                         value={playerToUpdateData.name}
                         onChange={(e) =>
                             setPlayerToUpdateData((prevState) => ({
                                     ...prevState,
                                     name: e.target.value,
                                 })
-                            )
-                        }
+                            )}
                     />
+
+                    {/*    < TextField*/}
+                    {/*    required={true}*/}
+                    {/*    className={styles.update_player_name_input}*/}
+                    {/*    label="Nom"*/}
+                    {/*    type="text"*/}
+                    {/*    value={playerToUpdateData.name}*/}
+                    {/*    onChange={(e) =>*/}
+                    {/*    setPlayerToUpdateData((prevState) => ({*/}
+                    {/*    ...prevState,*/}
+                    {/*    name: e.target.value,*/}
+                    {/*})*/}
+                    {/*    )*/}
+                    {/*}*/}
+                    {/*    />*/}
                     <RandomAvatar
                         onChange={(newAvatar: string) =>
                             setPlayerToUpdateData((prevState) => ({
@@ -151,10 +177,23 @@ export default function Card({
                                 })
                             )
                         }/>
-                    <Button variant="contained" onClick={onClickUpdatePlayer} endIcon={<SendIcon/>}
-                            data-player-id={userId}>
-                        Modifier
-                    </Button>
+                    <motion.div
+                        whileHover={{scale: 1.05}}
+                        transition={buttonTransition}
+                    >
+                        <ColoredButton
+                            bgColor={'blue'}
+                            onClick={onClickUpdatePlayer}
+                            data-player-id={userId}
+                            style={{
+                                width: '16vw',
+                                height: '6vh',
+                                fontSize: '1rem'
+                            }}
+                        >
+                            Modifier
+                        </ColoredButton>
+                    </motion.div>
                 </Box>
             </Modal>
         </div>
