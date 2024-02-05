@@ -41,9 +41,11 @@ export default function NewGame({refreshGamesList}: any) {
 
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [warningMessage, setWarningMessage] = useState("");
     const [open, setOpen] = React.useState(false);
     const [successOpen, setSuccessOpen] = React.useState(false);
     const [mysteriousTextIsShown, setMysteriousTextIsShown] = React.useState(false);
+    const [warningOpen, setWarningOpen] = React.useState(false);
 
     const [createNewGame] = useCreateGameWithScoresMutation();
 
@@ -107,6 +109,14 @@ export default function NewGame({refreshGamesList}: any) {
             }
         }
 
+        if(newGame.playersData.length>=6){
+            setWarningOpen(true);
+            setWarningMessage("Vous ne pouvez pas sélectionner plus de 6 joueurs");
+            return;
+        }else{
+            setWarningOpen(false);
+        }
+
         setTimeout(() => {
             setMysteriousTextIsShown(true)
         }, 450)
@@ -117,7 +127,6 @@ export default function NewGame({refreshGamesList}: any) {
             document.removeEventListener("click", handleClickOutside);
         };
 
-
     }, [userData, newGame.playersData, newGame]);
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -127,6 +136,7 @@ export default function NewGame({refreshGamesList}: any) {
 
         setOpen(false);
         setSuccessOpen(false)
+        setWarningOpen(false)
     };
 
     const buttonTransition = {
@@ -175,7 +185,8 @@ export default function NewGame({refreshGamesList}: any) {
                 }
             >
                 {mysteriousTextIsShown &&
-                    <MysteriousText colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}>Ajouter une Catanerie</MysteriousText>
+                    <MysteriousText colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}>Ajouter une
+                        Catanerie</MysteriousText>
                 }
             </motion.h1>
             <div className={styles.input_container}>
@@ -252,6 +263,7 @@ export default function NewGame({refreshGamesList}: any) {
                                 {userNames.map((user) => (
                                     <div key={user.id}>
                                         <input
+                                            disabled={newGame.playersData.length >= 6 && !newGame.playersData.some((player) => player.player === user.id)}
                                             className={styles.players_check_input}
                                             type="checkbox"
                                             id={`playerCheckbox-${user.id}`}
@@ -343,6 +355,13 @@ export default function NewGame({refreshGamesList}: any) {
                 <Snackbar open={successOpen} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
                         {successMessage}
+                    </Alert>
+                </Snackbar>
+            }
+            {warningMessage &&
+                <Snackbar open={warningOpen} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="warning" sx={{width: '100%'}}>
+                        {warningMessage}
                     </Alert>
                 </Snackbar>
             }
