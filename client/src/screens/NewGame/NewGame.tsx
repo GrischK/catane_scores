@@ -88,6 +88,9 @@ export default function NewGame({refreshGamesList}: any) {
         }
     };
 
+    useEffect(() => {
+        console.log('useEffect is triggered');
+    }, [newGame.playersData, newGame, containerRef, setShowPlayersList]);
 
     const {data: userData} = useUsersByIdsQuery({
         variables: {
@@ -109,11 +112,11 @@ export default function NewGame({refreshGamesList}: any) {
             }
         }
 
-        if(newGame.playersData.length>=6){
+        if (newGame.playersData.length >= 6) {
             setWarningOpen(true);
             setWarningMessage("Vous ne pouvez pas sélectionner plus de 6 joueurs");
             return;
-        }else{
+        } else {
             setWarningOpen(false);
         }
 
@@ -232,7 +235,8 @@ export default function NewGame({refreshGamesList}: any) {
                     <div ref={containerRef} className={styles.players_list_container}>
                         <label
                             className={`${styles.players_list_label} ${showPlayersList ? `${styles.players_selected}` : ''} ${gamePlayers && gamePlayers?.length > 0 ? `${styles.players_selected}` : ''}`}
-                            htmlFor="playersList" onClick={() => setShowPlayersList(true)}><span>Cataneurs</span>
+                            htmlFor="playersList"
+                            onClick={() => setShowPlayersList(prevState => !prevState)}><span>Cataneurs</span>
                         </label>
                         <AnimatePresence>
                             {showPlayersList && <motion.div

@@ -184,7 +184,7 @@ export default function Card({
                         <ColoredButton
                             bgColor={'blue'}
                             onClick={onClickUpdatePlayer}
-                            data-player-id={userId}
+                            dataPlayerId={userId}
                             style={{
                                 width: '16vw',
                                 height: '6vh',
