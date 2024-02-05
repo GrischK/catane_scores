@@ -1,4 +1,4 @@
-import React, {MouseEventHandler, useEffect, useRef, useState} from "react";
+import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './PlayersList.module.css';
 import {
     useCreateUserMutation,
@@ -11,7 +11,7 @@ import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import MysteriousText from "../../components/MysteriousText";
-import {motion, useInView} from "framer-motion";
+import {motion} from "framer-motion";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
 import ArrowLeft from '@mui/icons-material/ArrowDownward';
@@ -62,8 +62,6 @@ export default function PlayersList() {
 
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
     const [step, setStep] = useState(1)
-    const ref = useRef(null)
-    const isInView = useInView(ref)
 
     useEffect(() => {
         if (gamesData) {
@@ -110,9 +108,7 @@ export default function PlayersList() {
     useEffect(() => {
         refetch()
         setIsPlayerUpdated(false)
-        console.log('is in view', isInView)
-        console.log('ref is', ref)
-    }, [isPlayerUpdated, isInView, ref]);
+    }, [isPlayerUpdated]);
 
     const refreshPlayersList = () => {
         setIsPlayerUpdated(true)
@@ -188,28 +184,27 @@ export default function PlayersList() {
                                 }
                                 <div
                                     className={styles.players_list}
-                                    ref={ref}
                                 >
                                     {data?.users.slice()
                                         .sort((a, b) => a.name.localeCompare(b.name))
                                         .map((user, index) => {
                                             return (
-                                                // <motion.div
-                                                //     initial={{
-                                                //         opacity: 0,
-                                                //         y: isInView ? 0 : 500,
-                                                //     }}
-                                                //     animate={{
-                                                //         opacity: 1,
-                                                //         y: isInView ? 0 : 500,
-                                                //     }}
-                                                //     transition={{
-                                                //         duration: 0.9,
-                                                //         ease: [0.17, 0.55, 0.55, 1],
-                                                //         delay: isInView ? index * 0.2 : 0,
-                                                //     }}
-                                                //     key={index}
-                                                // >
+                                                <motion.div
+                                                    initial={{
+                                                        opacity: 0,
+                                                        y: '100vh',
+                                                    }}
+                                                    animate={{
+                                                        opacity: 1,
+                                                        y: 0,
+                                                    }}
+                                                    transition={{
+                                                        duration: 0.9,
+                                                        ease: [0.17, 0.55, 0.55, 1],
+                                                        delay: (index + 5) * 0.2,
+                                                    }}
+                                                    key={index}
+                                                >
                                                     <Card
                                                         key={index}
                                                         playerName={user.name}
@@ -220,7 +215,7 @@ export default function PlayersList() {
                                                         onClickDeleteFunction={onClickDeletePlayer}
                                                         refreshPlayersList={refreshPlayersList}
                                                     />
-                                                // </motion.div>
+                                                </motion.div>
                                             )
                                         })}
                                 </div>
