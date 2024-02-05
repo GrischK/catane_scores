@@ -9,7 +9,9 @@
   background-size: cover;
   height: 95vh;
   padding-top: 5vh;
-  background: var(--bg-white);
+  /*background: var(--bg-white);*/
+  background: rgb(255, 255, 255);
+  background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-white) 100%);
 }
 
 .mysterious_text_container{

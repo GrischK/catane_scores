@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {animated, useSprings} from "react-spring";
 import {ReactNode} from "react";
 
 interface MysteriousTextProps {
     children: ReactNode;
+    colorsList: string[];
 }
 
-export default function MysteriousText({children, ...props}: MysteriousTextProps) {
+export default function MysteriousText({children, colorsList}: MysteriousTextProps) {
     const childText = children && typeof children === "string" ? children : "";
-    const colors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"];
+    const colors = colorsList;
 
     const animations = useSprings(
         childText.length,
@@ -25,14 +26,15 @@ export default function MysteriousText({children, ...props}: MysteriousTextProps
                 <animated.span key={index} style={{
                     ...animation,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    fontFamily: 'Calistoga',
+                    fontFamily: 'Calistoga, cursive',
                     fontSize: '2.5rem',
-                    fontWeight: 'bold',
-                    margin: '5px',
-                    marginTop:'5vh',
-                    WebkitTextStroke: '.5px black'
-                }} {...props}>
-                    {childText[index]}
+                    fontWeight: 'normal',
+                    margin: '2px',
+                    marginTop: '5vh',
+                    textShadow: '1px 1px 2px grey'
+                    // WebkitTextStroke: '.5px black'
+                }}>
+                               {childText[index]}
                 </animated.span>
             ))}
         </div>

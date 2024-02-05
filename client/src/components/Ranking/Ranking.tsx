@@ -8,6 +8,7 @@ import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import {useInView} from "framer-motion"
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
+import MysteriousText from "../MysteriousText";
 
 const theme = createTheme({
     palette: {
@@ -31,6 +32,8 @@ export default function Ranking() {
     // console.log(data)
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
     const [hasExploded, setHasExploded] = useState(false);
+    const [showArrowButton, setShowArrowButton] = useState(false)
+    const [mysteriousTextIsShown, setMysteriousTextIsShown] = useState(false)
 
     useEffect(() => {
         if (data) {
@@ -78,12 +81,23 @@ export default function Ranking() {
             timers.push(isExplodingTimer, isNotExplodingTimer);
         }
 
+        const arrowButtonTimer = setTimeout(() => {
+            setShowArrowButton(true)
+        }, 2500)
+
+        const mysteriousTextTimer = setTimeout(() => {
+            setMysteriousTextIsShown(true)
+        }, 1000)
+
+        timers.push(arrowButtonTimer, mysteriousTextTimer);
+
         console.log("Element is in view: ", isInView);
+        console.log("Element is in view: ", ref);
 
         return () => {
             timers.forEach((timer) => clearTimeout(timer));
         };
-    }, [isInView, hasExploded]);
+    }, [isInView, hasExploded, ref]);
 
     return (
         <div className={styles.ranking_container}>
@@ -93,7 +107,24 @@ export default function Ranking() {
                     width={2000}
                 />
             }
-            <h1 className={styles.title}>Roi du Catan</h1>
+            <div style={{height: '2.5rem'}}>
+                {mysteriousTextIsShown &&
+                    <motion.h1
+                        initial={{x: '-100vw'}}
+                        animate={{x: 1}}
+                        transition={
+                            {delay: 0.5}
+                        }
+                        className={styles.players_list_title}
+                    >
+                        <MysteriousText
+                            colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                        >
+                            Liste des Cataneurs
+                        </MysteriousText>
+                    </motion.h1>
+                }
+            </div>
             <motion.div
                 className={styles.king_of_catan}
                 initial={{opacity: 0, scale: 0.3}}
@@ -119,7 +150,7 @@ export default function Ranking() {
                         <span>{`Points : ${playersPoints[0].playerTotalPoints}`}</span>
                         <motion.div
                             initial={{opacity: 0, scale: 0.3, y: '-1000%', x: 0}}
-                            animate={{opacity: 1, scale: 1, y: '-300%', x: 0}}
+                            animate={{opacity: 1, scale: 1, y: '-320%', x: 0}}
                             transition={{
                                 delay: 1,
                                 duration: 0.7,
@@ -138,19 +169,33 @@ export default function Ranking() {
                         </motion.div>
                     </div>
                 )}
-                <ThemeProvider
-                    theme={theme}
-                >
-                    <motion.a
-                        whileHover={{scale: 1.5}}
-                        href={"#rest_of_players"}
+                {showArrowButton && (
+                    <ThemeProvider
+                        theme={theme}
                     >
-                        <ArrowDownwardIcon
-                            color={'primary'}
-                            fontSize={'large'}
-                        />
-                    </motion.a>
-                </ThemeProvider>
+                        <motion.a
+                            initial={{opacity: 0, scale: 0}}
+                            animate={{opacity: 1, scale: 1.5}}
+                            transition={{
+                                duration: 0.3,
+                                ease: [0, 0.71, 0.2, 1.01],
+                                scale: {
+                                    type: "spring",
+                                    damping: 5,
+                                    stiffness: 100,
+                                    restDelta: 0.001
+                                }
+                            }}
+                            whileHover={{scale: 2}}
+                            href={"#rest_of_players"}
+                        >
+                            <ArrowDownwardIcon
+                                color={'primary'}
+                                fontSize={'large'}
+                            />
+                        </motion.a>
+                    </ThemeProvider>
+                )}
             </motion.div>
             <div
                 className={styles.ranking}
@@ -162,11 +207,11 @@ export default function Ranking() {
                         <motion.div
                             initial={{
                                 opacity: 0,
-                                y: isInView ? 0 : 500, // décalage initial uniquement si dans la vue
+                                y: isInView ? 0 : '100vh', // décalage initial uniquement si dans la vue
                             }}
                             animate={{
                                 opacity: 1,
-                                y: isInView ? 0 : 500, // décalage d'animation uniquement si dans la vue
+                                y: isInView ? 0 : '100vh', // décalage d'animation uniquement si dans la vue
                             }}
                             transition={{
                                 duration: 0.9,
@@ -184,12 +229,16 @@ export default function Ranking() {
                                 <img src={defaultAvatar} alt="user picture"/>
                             }
                             <h1>{p.player?.name}</h1>
-                            <span>{`Points : ${p.playerTotalPoints}`}</span>
+                            <span>{p.playerTotalPoints === 1
+                                ?
+                                `${p.playerTotalPoints} point`
+                                :
+                                `${p.playerTotalPoints} points`
+                            }</span>
                         </motion.div>
                     )
                 )}
             </div>
-
         </div>
     )
 }
