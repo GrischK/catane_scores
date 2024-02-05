@@ -24,6 +24,7 @@
     align-items: center;
     justify-content: center;
     padding-bottom: 4vh;
+    overflow: hidden;
     /*border-bottom: solid 1px #FDF3AB;*/
 }
 

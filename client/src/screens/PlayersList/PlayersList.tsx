@@ -1,18 +1,17 @@
-import React, {MouseEventHandler, useEffect, useState} from "react";
+import React, {MouseEventHandler, useEffect, useRef, useState} from "react";
 import styles from './PlayersList.module.css';
 import {
     useCreateUserMutation,
     useDeleteUserMutation, useGamesQuery, User,
     useUsersQuery
 } from "../../gql/generated/schema";
-import {Alert, Button, IconButton, Snackbar, TextField} from "@mui/material";
-import SendIcon from '@mui/icons-material/Send';
+import {Alert, IconButton, Snackbar} from "@mui/material";
 import Card from "../../components/Card/Card";
 import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import MysteriousText from "../../components/MysteriousText";
-import {motion} from "framer-motion";
+import {motion, useInView} from "framer-motion";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
 import ArrowLeft from '@mui/icons-material/ArrowDownward';
@@ -63,6 +62,8 @@ export default function PlayersList() {
 
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
     const [step, setStep] = useState(1)
+    const ref = useRef(null)
+    const isInView = useInView(ref)
 
     useEffect(() => {
         if (gamesData) {
@@ -109,7 +110,9 @@ export default function PlayersList() {
     useEffect(() => {
         refetch()
         setIsPlayerUpdated(false)
-    }, [isPlayerUpdated]);
+        console.log('is in view', isInView)
+        console.log('ref is', ref)
+    }, [isPlayerUpdated, isInView, ref]);
 
     const refreshPlayersList = () => {
         setIsPlayerUpdated(true)
@@ -156,8 +159,6 @@ export default function PlayersList() {
         setOpen(false);
     };
 
-    console.log(mysteriousTextStep2IsShown)
-
     return (
         <>
             {step === 1 &&
@@ -185,21 +186,41 @@ export default function PlayersList() {
                                         </MysteriousText>
                                     </motion.h1>
                                 }
-                                <div className={styles.players_list}>
+                                <div
+                                    className={styles.players_list}
+                                    ref={ref}
+                                >
                                     {data?.users.slice()
                                         .sort((a, b) => a.name.localeCompare(b.name))
                                         .map((user, index) => {
                                             return (
-                                                <Card
-                                                    key={index}
-                                                    playerName={user.name}
-                                                    playerAvatar={user.picture}
-                                                    gamesCounter={user.games?.length}
-                                                    playerRank={(playersPoints.find((player) => player.player.name === user.name) || {}).playerTotalPoints || 0}
-                                                    userId={user.id}
-                                                    onClickDeleteFunction={onClickDeletePlayer}
-                                                    refreshPlayersList={refreshPlayersList}
-                                                />
+                                                // <motion.div
+                                                //     initial={{
+                                                //         opacity: 0,
+                                                //         y: isInView ? 0 : 500,
+                                                //     }}
+                                                //     animate={{
+                                                //         opacity: 1,
+                                                //         y: isInView ? 0 : 500,
+                                                //     }}
+                                                //     transition={{
+                                                //         duration: 0.9,
+                                                //         ease: [0.17, 0.55, 0.55, 1],
+                                                //         delay: isInView ? index * 0.2 : 0,
+                                                //     }}
+                                                //     key={index}
+                                                // >
+                                                    <Card
+                                                        key={index}
+                                                        playerName={user.name}
+                                                        playerAvatar={user.picture}
+                                                        gamesCounter={user.games?.length}
+                                                        playerRank={(playersPoints.find((player) => player.player.name === user.name) || {}).playerTotalPoints || 0}
+                                                        userId={user.id}
+                                                        onClickDeleteFunction={onClickDeletePlayer}
+                                                        refreshPlayersList={refreshPlayersList}
+                                                    />
+                                                // </motion.div>
                                             )
                                         })}
                                 </div>

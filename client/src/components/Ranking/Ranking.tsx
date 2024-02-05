@@ -8,6 +8,7 @@ import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import {useInView} from "framer-motion"
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
+import MysteriousText from "../MysteriousText";
 
 const theme = createTheme({
     palette: {
@@ -32,6 +33,7 @@ export default function Ranking() {
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
     const [hasExploded, setHasExploded] = useState(false);
     const [showArrowButton, setShowArrowButton] = useState(false)
+    const [mysteriousTextIsShown, setMysteriousTextIsShown] = useState(false)
 
     useEffect(() => {
         if (data) {
@@ -81,18 +83,21 @@ export default function Ranking() {
 
         const arrowButtonTimer = setTimeout(() => {
             setShowArrowButton(true)
-        }, 3000)
+        }, 2500)
 
-        timers.push(arrowButtonTimer);
+        const mysteriousTextTimer = setTimeout(() => {
+            setMysteriousTextIsShown(true)
+        }, 1000)
+
+        timers.push(arrowButtonTimer, mysteriousTextTimer);
 
         console.log("Element is in view: ", isInView);
+        console.log("Element is in view: ", ref);
 
         return () => {
             timers.forEach((timer) => clearTimeout(timer));
         };
-    }, [isInView, hasExploded]);
-
-    console.log('arrow', showArrowButton)
+    }, [isInView, hasExploded, ref]);
 
     return (
         <div className={styles.ranking_container}>
@@ -102,7 +107,24 @@ export default function Ranking() {
                     width={2000}
                 />
             }
-            <h1 className={styles.title}>Roi du Catan</h1>
+            <div style={{height: '2.5rem'}}>
+                {mysteriousTextIsShown &&
+                    <motion.h1
+                        initial={{x: '-100vw'}}
+                        animate={{x: 1}}
+                        transition={
+                            {delay: 0.5}
+                        }
+                        className={styles.players_list_title}
+                    >
+                        <MysteriousText
+                            colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                        >
+                            Liste des Cataneurs
+                        </MysteriousText>
+                    </motion.h1>
+                }
+            </div>
             <motion.div
                 className={styles.king_of_catan}
                 initial={{opacity: 0, scale: 0.3}}
@@ -185,11 +207,11 @@ export default function Ranking() {
                         <motion.div
                             initial={{
                                 opacity: 0,
-                                y: isInView ? 0 : 500, // décalage initial uniquement si dans la vue
+                                y: isInView ? 0 : '100vh', // décalage initial uniquement si dans la vue
                             }}
                             animate={{
                                 opacity: 1,
-                                y: isInView ? 0 : 500, // décalage d'animation uniquement si dans la vue
+                                y: isInView ? 0 : '100vh', // décalage d'animation uniquement si dans la vue
                             }}
                             transition={{
                                 duration: 0.9,

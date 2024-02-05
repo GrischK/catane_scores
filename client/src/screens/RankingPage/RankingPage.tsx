@@ -15,6 +15,8 @@ import {IconButton} from "@mui/material";
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
+import {motion} from "framer-motion";
+import MysteriousText from "../../components/MysteriousText";
 
 const theme = createTheme({
     palette: {
@@ -65,6 +67,8 @@ export default function RankingPage() {
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
 
     const [step, setStep] = useState(1)
+
+    const [mysteriousTextIsShown, setMysteriousTextIsShown] = useState(false);
 
     useEffect(() => {
         if (data) {
@@ -157,7 +161,11 @@ export default function RankingPage() {
                 cheersSoundRef.current.play();
             }, 10700)
 
-            timers.push(cheersPlay, confettiTimer);
+            const mysteriousTextTimer = setTimeout(() => {
+                setMysteriousTextIsShown(true)
+            }, 1000)
+
+            timers.push(cheersPlay, confettiTimer, mysteriousTextTimer);
 
             return () => {
                 timers.forEach(timer => clearTimeout(timer));
@@ -207,6 +215,16 @@ export default function RankingPage() {
             }
             {step === 2 && (
                 <div className={styles.newRanking_container}>
+                    <motion.div
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        transition={{duration: 2.5}}
+                        className={styles.title}
+                    >
+                        <img src={cup} alt={'cup'} style={{height: '3vh'}}/>
+                        <h1>Podium</h1>
+                        <img src={cup} alt={'cup'} style={{height: '3vh'}}/>
+                    </motion.div>
                     <div
                         className={styles.mute_sound}
                     >
