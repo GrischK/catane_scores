@@ -126,6 +126,7 @@ export default function PlayersList() {
         if (newPlayer.name.trim() !== "") { // Vérifie si le nom n'est pas vide ou composé uniquement d'espaces
             createNewPlayer({variables: {data: newPlayer}});
             setNewPlayer({name: ""});
+            setStep(1)
         } else {
             setOpen(true)
             setErrorMessage("Le nom du joueur ne peut pas être vide.");
@@ -301,8 +302,16 @@ export default function PlayersList() {
                         </motion.div>
 
                         {errorMessage &&
-                            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                                <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+                            <Snackbar
+                                open={open}
+                                autoHideDuration={6000}
+                                onClose={handleClose}
+                            >
+                                <Alert onClose={handleClose} severity="error" sx={{
+                                    width: '100%', borderRadius: '2vh',
+                                    overflow: 'hidden',
+                                    border: '3px solid black'
+                                }}>
                                     {errorMessage}
                                 </Alert>
                             </Snackbar>
