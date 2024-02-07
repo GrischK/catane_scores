@@ -36,7 +36,7 @@ function RandomAvatar({onChange}: any) {
                 transition={buttonTransition}
             >
                 <ColoredButton
-                    style={{width:'16vw', height:'6vh', fontSize:'1rem'}}
+                    style={{width:'16vw', height:'6vh', fontSize:'1rem', marginTop:'0'}}
                     bgColor={'yellow'}
                     onClick={() => setNewAvatar(generateRandomAvatar())}
                 >
