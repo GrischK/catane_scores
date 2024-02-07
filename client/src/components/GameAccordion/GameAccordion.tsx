@@ -4,6 +4,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import defaultAvatar from "../../assets/images/default_avatar.png";
+import styles from "./GameAccordion.module.css"
 
 interface PlayerData {
     id: number;
@@ -26,11 +28,13 @@ interface GameData {
 }
 
 interface GameAccordionProps {
-    game?: GameData;
+    game: GameData;
     index?: number;
 }
 
 export default function GameAccordion({game, index}: GameAccordionProps) {
+
+    console.log(game)
     return (
         <div>
             <Accordion>
@@ -41,25 +45,29 @@ export default function GameAccordion({game, index}: GameAccordionProps) {
                 >
                     Hello {index}
                     <Typography>
-                        {/*<div key={index}>*/}
-                        {/*    <div>*/}
-                        {/*        {score.player.picture ?*/}
-                        {/*            <img src={score.player.picture}*/}
-                        {/*                 alt={`image de ${score.player.name}`}*/}
-                        {/*            />*/}
-                        {/*            :*/}
-                        {/*            <img src={defaultAvatar}*/}
-                        {/*                 alt={`image de ${score.player.name}`}*/}
-                        {/*            />*/}
-                        {/*        }*/}
-                        {/*        <span className={styles.player_name}>*/}
-                        {/*                        {score.player.name}*/}
-                        {/*                    </span>*/}
-                        {/*    </div>*/}
-                        {/*    <span className={styles.player_score}>*/}
-                        {/*                {score.score}*/}
-                        {/*                </span>*/}
-                        {/*</div>*/}
+                        <div
+                            className={styles.accordion_summary_player_info}
+                            key={index}
+                        >
+                            <div>
+                                {game.scores?.[0]?.player?.picture ?
+                                    <img src={game.scores?.[0]?.player?.picture}
+                                         alt={`image de ${game.scores?.[0]?.player?.name}`}
+                                    />
+                                    :
+                                    <img src={defaultAvatar}
+                                         alt={`image de ${game.scores?.[0]?.player?.picture}`}
+                                    />
+                                }
+                                <span className={styles.player_name}>
+                                                {game.scores?.[0]?.player?.name}
+                                            </span>
+                            </div>
+                            <span className={styles.player_score}>
+                                        {game.scores?.[0]?.score}
+
+                            </span>
+                        </div>
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
