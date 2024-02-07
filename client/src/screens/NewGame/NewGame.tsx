@@ -89,7 +89,6 @@ export default function NewGame({refreshGamesList}: any) {
     };
 
     useEffect(() => {
-        console.log('useEffect is triggered');
     }, [newGame.playersData, newGame, containerRef, setShowPlayersList]);
 
     const {data: userData} = useUsersByIdsQuery({
@@ -110,6 +109,7 @@ export default function NewGame({refreshGamesList}: any) {
             if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
                 setShowPlayersList(false)
             }
+            console.log(event.target)
         }
 
         if (newGame.playersData.length >= 6) {
@@ -127,6 +127,7 @@ export default function NewGame({refreshGamesList}: any) {
         document.addEventListener("click", handleClickOutside);
 
         return () => {
+            console.log('coucou')
             document.removeEventListener("click", handleClickOutside);
         };
 

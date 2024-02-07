@@ -1,3 +1,4 @@
+import styles from "../Test/Test.module.css"
 import GameAccordion from "../../components/GameAccordion/GameAccordion";
 import {Game, useGamesQuery} from "../../gql/generated/schema";
 
@@ -19,12 +20,12 @@ export default function Test() {
     console.log(classedGames)
 
     return (
-        <>
+        <div className={styles.test_container}>
             {classedGames?.map((game, index) => (
                     <GameAccordion game={game} key={index} index={index}/>
                 )
             )
             }
-        </>
+        </div>
     )
 }
