@@ -119,6 +119,7 @@
 .input_container {
     display: flex;
     width: 40vw;
+    max-width: 600px;
     flex-wrap: wrap;
     justify-content: center;
     gap: 2vh;
