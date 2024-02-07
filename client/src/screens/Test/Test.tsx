@@ -1,4 +1,4 @@
-import GameAccordion from "../../components/Accordion";
+import GameAccordion from "../../components/GameAccordion/GameAccordion";
 import {Game, useGamesQuery} from "../../gql/generated/schema";
 
 export default function Test() {
@@ -21,7 +21,7 @@ export default function Test() {
     return (
         <>
             {classedGames?.map((game, index) => (
-                    <GameAccordion game={game as Game} key={index} index={index}/>
+                    <GameAccordion game={game} key={index} index={index}/>
                 )
             )
             }

@@ -4,16 +4,25 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import {Score, User} from "../gql/generated/schema";
 
+interface PlayerData {
+    id: number;
+    name: string;
+    picture?: string | null | undefined;
+}
+
+interface ScoreData {
+    player?: PlayerData | null | undefined;
+    score?: number | null | undefined;
+}
 
 interface GameData {
     id: number;
     date?: string | null | undefined;
     place?: string | null | undefined;
     picture?: string | null | undefined;
-    players?: User[];
-    scores?: Score[] | null | undefined;
+    players?: PlayerData | null | undefined;
+    scores?: ScoreData[] | null | undefined;
 }
 
 interface GameAccordionProps {
@@ -30,6 +39,7 @@ export default function GameAccordion({game, index}: GameAccordionProps) {
                     aria-controls="panel1-content"
                     id="panel1-header"
                 >
+                    Hello {index}
                     <Typography>
                         {/*<div key={index}>*/}
                         {/*    <div>*/}
