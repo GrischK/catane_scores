@@ -1,12 +1,13 @@
-import React, {MouseEventHandler, useEffect} from "react";
+import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './GamesList.module.css';
 import {useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
-import defaultAvatar from "../../assets/images/default_avatar.png";
-import {IconButton} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import GameAccordion from "../../components/GameAccordion/GameAccordion";
+import {motion} from "framer-motion";
+import MysteriousText from "../../components/MysteriousText";
 
 export default function GamesList({gamesListRefreshed}: any) {
+    const [mysteriousTextIsShown, setMysteriousTextIsShown] = useState(false);
+
     const {data, refetch} = useGamesQuery()
 
     useEffect(() => {
@@ -42,10 +43,28 @@ export default function GamesList({gamesListRefreshed}: any) {
 
     return (
         <div className={styles.games_list_wrapper}>
-            <h1 className={styles.title}>Liste des parties</h1>
+            <motion.h1
+                initial={{x: '-100vw'}}
+                animate={{x: 1}}
+                transition={
+                    {delay: 0.5}
+                }
+                className={styles.players_list_title}
+            >
+                <MysteriousText
+                    colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                >
+                    Liste des Cataneries
+                </MysteriousText>
+            </motion.h1>
             <div className={styles.games_list_container}>
                 {classedGames?.map((game, index) => (
-                        <GameAccordion game={game} key={index} index={index}/>
+                        <GameAccordion
+                            game={game}
+                            key={index}
+                            index={index}
+                            onClickDeleteFunction={onClickDeleteGame}
+                        />
                     )
                 )
                 }

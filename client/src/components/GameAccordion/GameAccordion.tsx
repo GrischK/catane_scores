@@ -1,4 +1,4 @@
-import React from "react";
+import React, {MouseEventHandler} from "react";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -7,14 +7,17 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import styles from "./GameAccordion.module.css"
 import {GameData} from "../../interfaces/game.interface";
-import Cup from "../../assets/images/cup.png"
+import Cup from "../../assets/images/cup.png";
+import {IconButton} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface GameAccordionProps {
     game: GameData;
     index?: number;
+    onClickDeleteFunction?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function GameAccordion({game, index}: GameAccordionProps) {
+export default function GameAccordion({game, index, onClickDeleteFunction}: GameAccordionProps) {
     const otherPlayers = game.scores?.slice(1) || []
     const avatarBackgroundColors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]
 
@@ -74,6 +77,14 @@ export default function GameAccordion({game, index}: GameAccordionProps) {
                                 </span>
                             </div>
                         </Typography>
+                        <IconButton
+                            aria-label="delete"
+                            onClick={onClickDeleteFunction}
+                            data-game-id={game.id}
+                            sx={{position:'absolute',top:'0',right:'0'}}
+                        >
+                            <DeleteIcon/>
+                        </IconButton>
                     </div>
                 </AccordionSummary>
                 <AccordionDetails
