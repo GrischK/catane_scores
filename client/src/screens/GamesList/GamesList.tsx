@@ -1,4 +1,4 @@
-import React, {MouseEventHandler, useEffect, useState} from "react";
+import React, {MouseEventHandler, useEffect} from "react";
 import styles from './GamesList.module.css';
 import {useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
 import GameAccordion from "../../components/GameAccordion/GameAccordion";
@@ -6,8 +6,6 @@ import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
 
 export default function GamesList({gamesListRefreshed}: any) {
-    const [mysteriousTextIsShown, setMysteriousTextIsShown] = useState(false);
-
     const {data, refetch} = useGamesQuery()
 
     useEffect(() => {

@@ -19,6 +19,7 @@
     margin: 25px;
     width: 22vw;
     height: fit-content;
+    min-height: 8vh;
     min-width: 200px;
     background: transparent;
     border: 5px solid #000000;
