@@ -81,7 +81,7 @@ export default function GameAccordion({game, index, onClickDeleteFunction}: Game
                             aria-label="delete"
                             onClick={onClickDeleteFunction}
                             data-game-id={game.id}
-                            sx={{position: 'absolute', top: '0', right: '0'}}
+                            sx={{position:'absolute',top:'0',right:'0'}}
                         >
                             <DeleteIcon/>
                         </IconButton>

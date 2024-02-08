@@ -58,16 +58,15 @@ export default function GamesList({gamesListRefreshed}: any) {
                 </MysteriousText>
             </motion.h1>
             <div className={styles.games_list_container}>
-                {
-                    classedGames?.map((game, index) => (
-                            <GameAccordion
-                                game={game}
-                                key={index}
-                                index={index}
-                                onClickDeleteFunction={onClickDeleteGame}
-                            />
-                        )
+                {classedGames?.map((game, index) => (
+                        <GameAccordion
+                            game={game}
+                            key={index}
+                            index={index}
+                            onClickDeleteFunction={onClickDeleteGame}
+                        />
                     )
+                )
                 }
             </div>
         </div>
