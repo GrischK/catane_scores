@@ -4,6 +4,7 @@ import {useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import {IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import GameAccordion from "../../components/GameAccordion/GameAccordion";
 
 export default function GamesList({gamesListRefreshed}: any) {
     const {data, refetch} = useGamesQuery()
@@ -44,47 +45,10 @@ export default function GamesList({gamesListRefreshed}: any) {
             <h1 className={styles.title}>Liste des parties</h1>
             <div className={styles.games_list_container}>
                 {classedGames?.map((game, index) => (
-                    <div key={index} className={styles.games_details}>
-                        <div className={styles.games_infos_wrapper}>
-                            <div className={styles.games_infos}>
-                                {game.date && <span className={styles.game_date}>{game.date}</span>}
-                                {game.place && <span>{game.place}</span>}
-                            </div>
-                            <div className={styles.player_cards}>
-                                {game.scores?.map((score, index) => (
-                                    <div key={index} className={styles.player_details}>
-                                        <div className={styles.player_infos}>
-                                            {score.player.picture ?
-                                                <img src={score.player.picture}
-                                                     alt={`image de ${score.player.name}`}
-                                                />
-                                                :
-                                                <img src={defaultAvatar}
-                                                     alt={`image de ${score.player.name}`}
-                                                />
-                                            }
-                                            <span className={styles.player_name}>
-                                                {score.player.name}
-                                            </span>
-                                        </div>
-                                        <span className={styles.player_score}>
-                                        {score.score}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        <div className={styles.game_actions}>
-                            <IconButton
-                                aria-label="delete"
-                                onClick={onClickDeleteGame}
-                                data-game-id={game.id}
-                                className={styles.delete_game_button}>
-                                <DeleteIcon/>
-                            </IconButton>
-                        </div>
-                    </div>
-                ))}
+                        <GameAccordion game={game} key={index} index={index}/>
+                    )
+                )
+                }
             </div>
         </div>
     )

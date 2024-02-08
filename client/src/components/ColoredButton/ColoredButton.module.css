@@ -18,7 +18,7 @@
     position: relative;
     margin: 25px;
     width: 22vw;
-    height: 8vh;
+    height: fit-content;
     min-width: 200px;
     background: transparent;
     border: 5px solid #000000;
