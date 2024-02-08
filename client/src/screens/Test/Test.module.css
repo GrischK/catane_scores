@@ -1,5 +1,8 @@
 .test_container {
     padding: 10vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
 }
 
 .test_accordion_container {
