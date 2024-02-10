@@ -1,61 +1,69 @@
 .accordion {
-  border: 5px solid black;
-  width: 20vw;
+    box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px;
+    transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+    border: 5px solid black;
+    width: 15vw;
+}
+
+.accordion:hover {
+    box-shadow: rgba(0, 0, 0, 0.4) 0 20px 40px, rgba(0, 0, 0, 0.18) 0 24px 24px;
+    transform: translateY(-1vh);
+    cursor: pointer;
 }
 
 .accordion_summary_title {
-  padding-bottom: 2vh;
+    padding-bottom: 2vh;
 }
 
 .accordion_summary_player_info, .player_details {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
 }
 
 .player_details {
-  gap: 0;
-  border: 2px solid black;
-  border-radius: 1vh;
-  padding: 1vh;
-  background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-white) 100%);
+    gap: 0;
+    border: 2px solid black;
+    border-radius: 1vh;
+    padding: 1vh;
+    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-white) 100%);
 }
 
 .accordion_summary_player_info img, .score_player_picture {
-  height: 5vh;
-  border-radius: 50%;
+    height: 5vh;
+    border-radius: 50%;
 }
 
 .accordion_summary_player_info_container {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .accordion_summary {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .accordion_summary_content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .accordion_game_info {
-  min-height: 6vh;
-  color: grey;
+    min-height: 6vh;
+    color: grey;
 }
 
 .accordion_details {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  gap: 2vh;
-  flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 2vh;
+    flex-wrap: wrap;
 }
 
 .player_score img {
-  border-radius: 0;
+    border-radius: 0;
 }

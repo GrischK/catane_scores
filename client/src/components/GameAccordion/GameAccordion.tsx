@@ -8,12 +8,13 @@ import defaultAvatar from "../../assets/images/default_avatar.png";
 import styles from "./GameAccordion.module.css"
 import {GameData} from "../../interfaces/game.interface";
 import Cup from "../../assets/images/cup.png";
+import {ReactComponent as Crown} from "../../assets/images/crown.svg";
 import {IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 interface GameAccordionProps {
     game: GameData;
-    index?: number;
+    index: number;
     onClickDeleteFunction?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -25,7 +26,11 @@ export default function GameAccordion({game, index, onClickDeleteFunction}: Game
         <div>
             <Accordion
                 className={styles.accordion}
-                sx={{borderRadius: '2vh !important'}}
+                sx={{borderRadius: '2vh !important',
+                    boxShadow: 'rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px',
+                    transition: 'box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out',
+                    background:`linear-gradient(-50deg, rgba(255, 255, 255, 1) 90%, ${avatarBackgroundColors[index % avatarBackgroundColors.length]} 100%)`
+                }}
             >
                 <AccordionSummary
                     expandIcon={<ArrowDownwardIcon/>}
@@ -52,6 +57,7 @@ export default function GameAccordion({game, index, onClickDeleteFunction}: Game
                                         <img
                                             src={game.scores?.[0]?.player?.picture}
                                             alt={`image de ${game.scores?.[0]?.player?.name}`}
+                                            style={{background:'#FED402'}}
                                         />
                                         :
                                         <img
