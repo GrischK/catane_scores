@@ -7,9 +7,10 @@ interface ColoredInputProps {
     onClick?: any;
     value: string | number | null | undefined;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    type?: string;
 }
 
-export default function ColoredInput({label, bgColor, onClick, value, onChange}: ColoredInputProps) {
+export default function ColoredInput({label, bgColor, onClick, value, onChange, type='text'}: ColoredInputProps) {
     const coloredInputClassName = `${styles.colored_input} ${styles[`${bgColor}_input`]} ${styles[`${label}_input`]}`;
     const formattedLabel = inputText(label);
 
@@ -35,7 +36,7 @@ export default function ColoredInput({label, bgColor, onClick, value, onChange}:
                 }`}
                 onClick={onClick}
                 required={true}
-                type={"text"}
+                type={type}
                 value={value || ""}
                 onChange={onChange}
             />

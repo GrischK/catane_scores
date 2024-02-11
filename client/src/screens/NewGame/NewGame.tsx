@@ -202,6 +202,7 @@ export default function NewGame({refreshGamesList}: any) {
                     <ColoredInput
                         bgColor={"blue"}
                         label={"date"}
+                        type={'date'}
                         value={newGame.date}
                         onChange={(e) =>
                             setNewGame((prevState) => ({
