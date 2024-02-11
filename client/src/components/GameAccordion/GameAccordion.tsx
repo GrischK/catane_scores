@@ -119,9 +119,9 @@ export default function GameAccordion({game, index, onClickDeleteFunction}: Game
                             {player.player.name}
                             {player.score === 1
                                 ?
-                                <span>{player.score} point</span>
+                                <div>{player.score} <span>point</span></div>
                                 :
-                                <span>{player.score} points</span>
+                                <div>{player.score} <span>points</span></div>
                             }
                         </div>
                     ))}

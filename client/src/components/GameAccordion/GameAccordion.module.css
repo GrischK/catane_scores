@@ -38,6 +38,7 @@
 .accordion_summary_player_info_container {
     display: flex;
     align-items: center;
+    flex-direction: column-reverse;
 }
 
 .accordion_summary {
@@ -64,6 +65,13 @@
     flex-wrap: wrap;
 }
 
+.player_score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .player_score img {
     border-radius: 0;
+    width: fit-content;
 }
