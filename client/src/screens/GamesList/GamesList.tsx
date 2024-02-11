@@ -1,9 +1,10 @@
 import React, {MouseEventHandler, useEffect} from "react";
 import styles from './GamesList.module.css';
-import {useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
+import {Game, useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
 import GameAccordion from "../../components/GameAccordion/GameAccordion";
 import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
+import Pagination from "../../components/Pagination/Pagination";
 
 export default function GamesList({gamesListRefreshed}: any) {
     const {data, refetch} = useGamesQuery()
@@ -38,7 +39,8 @@ export default function GamesList({gamesListRefreshed}: any) {
                 });
         }
     };
-
+console.log(classedGames)
+    // @ts-ignore
     return (
         <div className={styles.games_list_wrapper}>
             <motion.h1
@@ -55,18 +57,12 @@ export default function GamesList({gamesListRefreshed}: any) {
                     Liste des Cataneries
                 </MysteriousText>
             </motion.h1>
-            <div className={styles.games_list_container}>
-                {classedGames?.map((game, index) => (
-                        <GameAccordion
-                            game={game}
-                            key={index}
-                            index={index}
-                            onClickDeleteFunction={onClickDeleteGame}
-                        />
-                    )
-                )
-                }
-            </div>
+            <Pagination
+            length={classedGames?.length}
+            postsPerPage={3}
+            games={classedGames}
+            onClickDeleteGame={onClickDeleteGame}
+            />
         </div>
     )
 }
