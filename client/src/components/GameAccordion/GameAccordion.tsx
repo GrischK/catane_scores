@@ -8,7 +8,6 @@ import defaultAvatar from "../../assets/images/default_avatar.png";
 import styles from "./GameAccordion.module.css"
 import {GameData} from "../../interfaces/game.interface";
 import Cup from "../../assets/images/cup.png";
-import {ReactComponent as Crown} from "../../assets/images/crown.svg";
 import {IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 

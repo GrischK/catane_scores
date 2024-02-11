@@ -32,18 +32,25 @@ export default function Pagination({length, postsPerPage, games, onClickDeleteGa
             />
         </div>
     ));
+
     return (
         <div
             className={styles.pagination}
         >
             {currentItems}
-            {paginationNumber.map((pageNumber) =>
-                (<button key={pageNumber}
-                         onClick={() => setCurrentPage(pageNumber)}
-                >
-                    {pageNumber}
-                </button>)
-            )}
+            <div className={styles.pagination_buttons_wrapper}>
+                {paginationNumber.map((pageNumber) =>
+                    (
+                        <button
+                            className={currentPage === pageNumber ? styles.active : ''}
+                            key={pageNumber}
+                            onClick={() => setCurrentPage(pageNumber)}
+                        >
+                            {pageNumber}
+                        </button>
+                    )
+                )}
+            </div>
         </div>
     )
 }

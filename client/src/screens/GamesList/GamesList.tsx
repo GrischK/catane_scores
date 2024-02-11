@@ -1,7 +1,6 @@
 import React, {MouseEventHandler, useEffect} from "react";
 import styles from './GamesList.module.css';
-import {Game, useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
-import GameAccordion from "../../components/GameAccordion/GameAccordion";
+import {useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
 import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
 import Pagination from "../../components/Pagination/Pagination";
@@ -39,8 +38,7 @@ export default function GamesList({gamesListRefreshed}: any) {
                 });
         }
     };
-console.log(classedGames)
-    // @ts-ignore
+
     return (
         <div className={styles.games_list_wrapper}>
             <motion.h1
@@ -58,10 +56,10 @@ console.log(classedGames)
                 </MysteriousText>
             </motion.h1>
             <Pagination
-            length={classedGames?.length}
-            postsPerPage={3}
-            games={classedGames}
-            onClickDeleteGame={onClickDeleteGame}
+                length={classedGames?.length}
+                postsPerPage={20}
+                games={classedGames}
+                onClickDeleteGame={onClickDeleteGame}
             />
         </div>
     )
