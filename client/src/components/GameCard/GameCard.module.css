@@ -1,9 +1,19 @@
 .gameCard {
   background-color: transparent;
-  width: 300px;
+  width: 15vw;
   height: 200px;
   perspective: 1000px;
   cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+}
+
+.gameCard:hover {
+  transform: translateY(-1vh);
+  cursor: pointer;
+}
+
+.gameCard:hover .gameCard_container {
+  box-shadow: rgba(0, 0, 0, 0.4) 0 20px 40px, rgba(0, 0, 0, 0.18) 0 24px 24px;
 }
 
 .gameCard_container {
@@ -11,9 +21,9 @@
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.8s;
+  transition: transform 0.8s, box-shadow 0.1s ease-in-out;
   transform-style: preserve-3d;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px;
 }
 
 .gameCard_container_flipped {
@@ -26,10 +36,12 @@
   height: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  border: 5px solid black;
+  border-radius: 1vh;
 }
 
 .gameCard_front {
-  background-color: #bbb;
+  background-color: white;
   color: black;
 }
 
@@ -50,11 +62,12 @@
   flex-direction: column;
   align-items: center;
 }
+
 .gameCard_player_info {
   flex-direction: column-reverse;
 }
 
-.gameCard_front_info_container{
+.gameCard_front_info_container {
   width: 100%;
   height: 100%;
   z-index: 1;
