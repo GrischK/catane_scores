@@ -25,10 +25,11 @@ export default function GameAccordion({game, index, onClickDeleteFunction}: Game
         <div>
             <Accordion
                 className={styles.accordion}
-                sx={{borderRadius: '2vh !important',
+                sx={{
+                    borderRadius: '2vh !important',
                     boxShadow: 'rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px',
                     transition: 'box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out',
-                    background:`linear-gradient(-50deg, rgba(255, 255, 255, 1) 90%, ${avatarBackgroundColors[index % avatarBackgroundColors.length]} 100%)`
+                    background: `linear-gradient(-50deg, rgba(255, 255, 255, 1) 90%, ${avatarBackgroundColors[index % avatarBackgroundColors.length]} 100%)`
                 }}
             >
                 <AccordionSummary
@@ -56,7 +57,7 @@ export default function GameAccordion({game, index, onClickDeleteFunction}: Game
                                         <img
                                             src={game.scores?.[0]?.player?.picture}
                                             alt={`image de ${game.scores?.[0]?.player?.name}`}
-                                            style={{background:'#FED402'}}
+                                            style={{background: '#FED402'}}
                                         />
                                         :
                                         <img
@@ -68,7 +69,7 @@ export default function GameAccordion({game, index, onClickDeleteFunction}: Game
                                         className={styles.player_name}
                                     >
                                     {game.scores?.[0]?.player?.name}
-                                </span>
+                                    </span>
                                 </div>
 
                                 <span
@@ -86,7 +87,7 @@ export default function GameAccordion({game, index, onClickDeleteFunction}: Game
                             aria-label="delete"
                             onClick={onClickDeleteFunction}
                             data-game-id={game.id}
-                            sx={{position:'absolute',top:'0',right:'0'}}
+                            sx={{position: 'absolute', top: '0', right: '0'}}
                         >
                             <DeleteIcon/>
                         </IconButton>

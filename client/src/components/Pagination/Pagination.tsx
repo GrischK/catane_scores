@@ -23,10 +23,9 @@ export default function Pagination({length, postsPerPage, games, onClickDeleteGa
     const startIndex = (currentPage - 1) * postsPerPage;
     const endIndex = Math.min(startIndex + postsPerPage, length || 0);
     const currentItems = games?.slice(startIndex, endIndex).map((game, index) => (
-        <div key={index}>
+        <div key={game.id}>
             <GameAccordion
                 game={game}
-                key={index}
                 index={index}
                 onClickDeleteFunction={onClickDeleteGame}
             />

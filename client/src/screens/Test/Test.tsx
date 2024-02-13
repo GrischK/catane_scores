@@ -1,6 +1,7 @@
 import styles from "../Test/Test.module.css"
 import GameAccordion from "../../components/GameAccordion/GameAccordion";
 import {Game, useGamesQuery} from "../../gql/generated/schema";
+import GameCard from "../../components/GameCard/GameCard";
 
 export default function Test() {
     const {data, refetch} = useGamesQuery()
@@ -22,7 +23,7 @@ export default function Test() {
     return (
         <div className={styles.test_container}>
             {classedGames?.map((game, index) => (
-                    <GameAccordion game={game} key={index} index={index}/>
+                    <GameCard game={game} key={index} index={index}/>
                 )
             )
             }
