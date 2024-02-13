@@ -1,7 +1,8 @@
 import styles from "../Test/Test.module.css"
 import GameAccordion from "../../components/GameAccordion/GameAccordion";
-import {Game, useGamesQuery} from "../../gql/generated/schema";
+import {Game, useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
 import GameCard from "../../components/GameCard/GameCard";
+import {MouseEventHandler} from "react";
 
 export default function Test() {
     const {data, refetch} = useGamesQuery()
@@ -18,12 +19,27 @@ export default function Test() {
         }
     });
 
+    const [deleteGame] = useDeleteGameMutation({onCompleted: () => refetch()})
+
+    const onClickDeleteGame: MouseEventHandler<HTMLButtonElement> = (event) => {
+        const gameId = event.currentTarget.getAttribute("data-game-id");
+        if (gameId) {
+            deleteGame({variables: {deleteGameId: parseInt(gameId)}})
+                .then(({data}) => {
+                    refetch();
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    };
+
     console.log(classedGames)
 
     return (
         <div className={styles.test_container}>
             {classedGames?.map((game, index) => (
-                    <GameCard game={game} key={index} index={index}/>
+                    <GameCard game={game} key={index} index={index} onClickDeleteFunction={onClickDeleteGame}/>
                 )
             )
             }
