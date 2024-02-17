@@ -74,9 +74,36 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                 <div className={styles.gameCard_back}
                      onClick={handleFlip}
                 >
-                    <h1>John Doe</h1>
-                    <p>Architect & Engineer</p>
-                    <p>We love that guy</p>
+                    {otherPlayers.length > 0 && otherPlayers.map((player: any, playerIndex: number) => (
+                        <div
+                            key={playerIndex}
+                            className={styles.player_details}
+                        >
+                            {player.player.name}
+                            {player.player.picture ?
+                                <img
+                                    src={player.player.picture}
+                                    alt={`image de ${player.player.name}`}
+                                    className={styles.score_player_picture}
+                                    style={{backgroundColor: avatarBackgroundColors[playerIndex <= 3 ? playerIndex : (playerIndex - 4)]}}
+                                />
+                                :
+                                <img
+                                    src={defaultAvatar}
+                                    alt={`image de ${player.player.name}`}
+                                    className={styles.score_player_picture}
+                                    style={{backgroundColor: avatarBackgroundColors[playerIndex <= 3 ? playerIndex : (playerIndex - 4)]}}
+                                />
+                            }
+
+                            {player.score === 1
+                                ?
+                                <div>{player.score} <span>point</span></div>
+                                :
+                                <div>{player.score} <span>points</span></div>
+                            }
+                        </div>
+                    ))}
                     <IconButton
                         aria-label="delete"
                         onClick={onClickDeleteFunction}

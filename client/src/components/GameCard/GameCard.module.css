@@ -51,14 +51,19 @@
     background-color: dodgerblue;
     color: white;
     transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    gap: 2vh;
 }
 
-.gameCard_front img {
+.gameCard_front img, .player_details img {
     height: 5vh;
     width: 5vh;
 }
 
-.gameCard_player_info_container .gameCard_player_info img {
+.gameCard_player_info_container .gameCard_player_info img, .player_details img {
     border-radius: 50%;
 }
 
@@ -83,4 +88,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.player_details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid yellow;
+    width: 50%;
+    padding-bottom: 2vh;
+}
+
+.player_details:last-of-type {
+    border-bottom: none;
 }
