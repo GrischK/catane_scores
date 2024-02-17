@@ -69,14 +69,6 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                                 {game.scores?.[0]?.score} points
                             </div>
                         </div>
-                        <IconButton
-                            aria-label="delete"
-                            onClick={onClickDeleteFunction}
-                            data-game-id={game.id}
-                            sx={{position: 'absolute', top: '0', right: '0',zIndex:'10'}}
-                        >
-                            <DeleteIcon/>
-                        </IconButton>
                     </div>
                 </div>
                 <div className={styles.gameCard_back}
@@ -85,6 +77,14 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                     <h1>John Doe</h1>
                     <p>Architect & Engineer</p>
                     <p>We love that guy</p>
+                    <IconButton
+                        aria-label="delete"
+                        onClick={onClickDeleteFunction}
+                        data-game-id={game.id}
+                        sx={{position: 'absolute', top: '0', right: '0',zIndex:'10'}}
+                    >
+                        <DeleteIcon/>
+                    </IconButton>
                 </div>
             </div>
         </div>
