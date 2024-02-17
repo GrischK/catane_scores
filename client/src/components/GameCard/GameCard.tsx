@@ -4,9 +4,10 @@ import React, {MouseEventHandler, useState} from "react";
 import Avatar from "../../assets/images/default_avatar.png"
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
-import {IconButton} from "@mui/material";
+import {Box, IconButton, Modal, Typography} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ColoredButton from "../ColoredButton/ColoredButton";
 
 interface GameCardProps {
     game: GameData;
@@ -15,14 +16,33 @@ interface GameCardProps {
 }
 
 export default function GameCard({game, index, onClickDeleteFunction}: GameCardProps) {
-    const [flip, setFlip] = useState(false)
-    const otherPlayers = game.scores?.slice(1) || []
-    const avatarBackgroundColors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]
+    const [flip, setFlip] = useState(false);
+    const otherPlayers = game.scores?.slice(1) || [];
+    const avatarBackgroundColors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"];
+    const [openModal, setOpenModal] = React.useState(false);
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
 
     const handleFlip = () => {
         setFlip(!flip);
         console.log(flip)
     }
+
+    const modalStyle = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        borderRadius: '2vh',
+        boxShadow: 24,
+        p: 8,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    };
 
     return (
         <div
@@ -112,7 +132,7 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                     ))}
                     <IconButton
                         aria-label="delete"
-                        onClick={onClickDeleteFunction}
+                        onClick={handleOpenModal}
                         data-game-id={game.id}
                         sx={{position: 'absolute', top: '0', right: '0', zIndex: '10'}}
                     >
@@ -120,6 +140,28 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                     </IconButton>
                 </div>
             </div>
+            <Modal
+                open={openModal}
+                onClose={handleCloseModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                disableScrollLock={true}
+            >
+                <Box id={styles.update_player_modal} sx={modalStyle}>
+                    <ColoredButton
+                        bgColor={'green'}
+                        onClick={onClickDeleteFunction}
+                    >
+                        Supprimer
+                    </ColoredButton>
+                    <ColoredButton
+                        bgColor={'red'}
+                        onClick={handleCloseModal}
+                    >
+                        Annuler
+                    </ColoredButton>
+                </Box>
+            </Modal>
         </div>
     )
 

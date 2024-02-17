@@ -116,6 +116,10 @@
     scale: 1.5;
 }
 
+.gameCard_modal {
+    padding: 2vh;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 8px;

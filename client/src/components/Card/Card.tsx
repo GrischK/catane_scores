@@ -33,6 +33,23 @@ const style = {
     p: 4,
 };
 
+const deleteModalStyle = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    borderRadius: '2vh',
+    boxShadow: 24,
+    p: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+};
+
+
 const buttonTransition = {
     duration: 0.3,
     ease: [0, 0.71, 0.2, 1.01],
@@ -62,6 +79,10 @@ export default function Card({
     const [openModal, setOpenModal] = React.useState(false);
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
+    const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
+    const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+    const handleCloseDeleteModal = () => setOpenDeleteModal(false);
+
     const [playerToUpdateData, setPlayerToUpdateData] = useState<PlayerInterface>({
         name: playerName,
         picture: playerAvatar
@@ -111,7 +132,7 @@ export default function Card({
                 <h2>Classement :</h2>
                 <p> {playerRank}</p>
             </div>
-            <IconButton aria-label="delete" onClick={onClickDeleteFunction} data-player-id={userId}>
+            <IconButton aria-label="delete" onClick={handleOpenDeleteModal} data-player-id={userId}>
                 <DeleteIcon/>
             </IconButton>
             <IconButton aria-label="update" onClick={handleOpenModal} data-player-id={userId}>
@@ -129,20 +150,6 @@ export default function Card({
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Modifier {playerName}
                     </Typography>
-                    {/*<input*/}
-                    {/*    required={true}*/}
-                    {/*    type="text"*/}
-                    {/*    placeholder="Nom du joueur"*/}
-                    {/*    value={playerToUpdateData.name}*/}
-                    {/*    onChange={(e) =>*/}
-                    {/*        setPlayerToUpdateData((prevState) => ({*/}
-                    {/*                ...prevState,*/}
-                    {/*                name: e.target.value,*/}
-                    {/*            })*/}
-                    {/*        )*/}
-                    {/*    }*/}
-                    {/*/>*/}
-
                     <ColoredInput
                         bgColor={'blue'}
                         label={'nom'}
@@ -154,21 +161,6 @@ export default function Card({
                                 })
                             )}
                     />
-
-                    {/*    < TextField*/}
-                    {/*    required={true}*/}
-                    {/*    className={styles.update_player_name_input}*/}
-                    {/*    label="Nom"*/}
-                    {/*    type="text"*/}
-                    {/*    value={playerToUpdateData.name}*/}
-                    {/*    onChange={(e) =>*/}
-                    {/*    setPlayerToUpdateData((prevState) => ({*/}
-                    {/*    ...prevState,*/}
-                    {/*    name: e.target.value,*/}
-                    {/*})*/}
-                    {/*    )*/}
-                    {/*}*/}
-                    {/*    />*/}
                     <RandomAvatar
                         onChange={(newAvatar: string) =>
                             setPlayerToUpdateData((prevState) => ({
@@ -194,6 +186,28 @@ export default function Card({
                             Modifier
                         </ColoredButton>
                     </motion.div>
+                </Box>
+            </Modal>
+            <Modal
+                open={openDeleteModal}
+                onClose={handleCloseDeleteModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                disableScrollLock={true}
+            >
+                <Box sx={deleteModalStyle}>
+                    <ColoredButton
+                        bgColor={'green'}
+                        onClick={onClickDeleteFunction}
+                    >
+                        Supprimer
+                    </ColoredButton>
+                    <ColoredButton
+                        bgColor={'red'}
+                        onClick={handleCloseDeleteModal}
+                    >
+                        Annuler
+                    </ColoredButton>
                 </Box>
             </Modal>
         </div>
