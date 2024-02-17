@@ -6,6 +6,7 @@ import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
 import {IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 interface GameCardProps {
     game: GameData;
@@ -69,6 +70,11 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                                 {game.scores?.[0]?.score} points
                             </div>
                         </div>
+                        <div
+                            className={styles.frontCard_arrow}
+                        >
+                            <ArrowDownwardIcon/>
+                        </div>
                     </div>
                 </div>
                 <div className={styles.gameCard_back}
@@ -108,7 +114,7 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                         aria-label="delete"
                         onClick={onClickDeleteFunction}
                         data-game-id={game.id}
-                        sx={{position: 'absolute', top: '0', right: '0',zIndex:'10'}}
+                        sx={{position: 'absolute', top: '0', right: '0', zIndex: '10'}}
                     >
                         <DeleteIcon/>
                     </IconButton>

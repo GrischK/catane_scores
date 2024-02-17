@@ -57,7 +57,7 @@ export default function GamesList({gamesListRefreshed}: any) {
             </motion.h1>
             <Pagination
                 length={classedGames?.length}
-                postsPerPage={5}
+                postsPerPage={10}
                 games={classedGames}
                 onClickDeleteGame={onClickDeleteGame}
             />

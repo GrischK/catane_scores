@@ -2,6 +2,7 @@ import styles from "./Pagination.module.css"
 import {MouseEventHandler, ReactNode, useState} from "react";
 import {GameData} from "../../interfaces/game.interface";
 import GameAccordion from "../GameAccordion/GameAccordion";
+import GameCard from "../GameCard/GameCard";
 
 interface PaginationProps {
     length: number | undefined;
@@ -24,7 +25,7 @@ export default function Pagination({length, postsPerPage, games, onClickDeleteGa
     const endIndex = Math.min(startIndex + postsPerPage, length || 0);
     const currentItems = games?.slice(startIndex, endIndex).map((game, index) => (
         <div key={game.id}>
-            <GameAccordion
+            <GameCard
                 game={game}
                 index={index}
                 onClickDeleteFunction={onClickDeleteGame}

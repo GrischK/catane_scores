@@ -16,7 +16,6 @@ import {ThemeProvider, createTheme} from '@mui/material/styles';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {motion} from "framer-motion";
-import MysteriousText from "../../components/MysteriousText";
 
 const theme = createTheme({
     palette: {

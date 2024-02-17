@@ -102,3 +102,16 @@
 .player_details:last-of-type {
     border-bottom: none;
 }
+
+.frontCard_arrow {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    rotate: -45deg;
+    padding: 1vh;
+    transition: scale 0.2s ease-in-out;
+}
+
+.frontCard_arrow:hover {
+    scale: 1.5;
+}
