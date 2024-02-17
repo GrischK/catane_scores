@@ -1,13 +1,7 @@
 import styles from "./Pagination.module.css"
 import React, {MouseEventHandler, ReactNode, useState} from "react";
 import {GameData} from "../../interfaces/game.interface";
-import GameAccordion from "../GameAccordion/GameAccordion";
 import GameCard from "../GameCard/GameCard";
-import {Box, Modal, Typography} from "@mui/material";
-import ColoredInput from "../ColoredInput/ColoredInput";
-import RandomAvatar from "../RandomAvatar/RandomAvatar";
-import {motion} from "framer-motion";
-import ColoredButton from "../ColoredButton/ColoredButton";
 
 interface PaginationProps {
     length: number | undefined;

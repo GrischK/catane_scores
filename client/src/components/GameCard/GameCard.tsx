@@ -1,10 +1,9 @@
 import styles from "./GameCard.module.css"
 import {GameData} from "../../interfaces/game.interface";
 import React, {MouseEventHandler, useState} from "react";
-import Avatar from "../../assets/images/default_avatar.png"
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
-import {Box, IconButton, Modal, Typography} from "@mui/material";
+import {Box, IconButton, Modal} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ColoredButton from "../ColoredButton/ColoredButton";
