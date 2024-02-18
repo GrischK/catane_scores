@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import styles from './NewGame.module.css';
 import {
     Alert, Box, Modal,
-    Snackbar
+    Snackbar, Typography
 } from "@mui/material";
 import {
     useCreateGameWithScoresMutation, User, useUsersByIdsQuery,
@@ -14,7 +14,7 @@ import ColoredInput from "../../components/ColoredInput/ColoredInput";
 import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
 import {buttonTransition, createGameButtonVariants, inputVariants} from "../../utils/animationVariants";
-import {modalStyle} from "../../utils/stylesVariantes";
+import {newGameModalStyle} from "../../utils/stylesVariantes";
 import {GameInterface} from "../../interfaces/newGamePage.interface";
 
 export default function NewGame({refreshGamesList}: any) {
@@ -206,9 +206,19 @@ export default function NewGame({refreshGamesList}: any) {
                     >
                         <div ref={containerRef} className={styles.players_list_container}>
                             <label
-                                className={`${styles.players_list_label} ${showPlayersList ? `${styles.players_selected}` : ''} ${gamePlayers && gamePlayers?.length > 0 ? `${styles.players_selected}` : ''}`}
                                 htmlFor="playersList"
-                                onClick={handleModal}><span>Cataneurs</span>
+                                onClick={handleModal}>
+                                <motion.div
+                                    whileHover={{scale: 1.05}}
+                                    transition={buttonTransition}
+                                >
+                                    <ColoredButton
+                                        bgColor={"yellow"}
+                                        className={"players_button"}
+                                    >
+                                        Cataneurs
+                                    </ColoredButton>
+                                </motion.div>
                             </label>
 
                         </div>
@@ -276,8 +286,12 @@ export default function NewGame({refreshGamesList}: any) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 disableScrollLock={true}
+                className={styles.new_game_players_modal}
             >
-                <Box id={styles.update_player_modal} sx={modalStyle}>
+                <Box id={styles.update_player_modal} sx={newGameModalStyle}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Choisis les Cataneurs qui s'affrontent
+                    </Typography>
                     {userNames.map((user) => (
                         <div key={user.id}>
                             <input
@@ -303,7 +317,16 @@ export default function NewGame({refreshGamesList}: any) {
                                     }));
                                 }}
                             />
-                            <label htmlFor={`playerCheckbox-${user.id}`}>{user.name}</label>
+                            <label htmlFor={`playerCheckbox-${user.id}`}>
+                                {user.name}
+                                {user.picture
+                                    ?
+                                    <img src={user.picture} alt={user.name}/>
+                                    :
+                                    <img src={defaultAvatar} alt={user.name}/>
+                                }
+
+                            </label>
                         </div>
                     ))}
                 </Box>

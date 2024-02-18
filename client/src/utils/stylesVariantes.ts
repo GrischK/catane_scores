@@ -44,6 +44,15 @@ export const modalStyle = {
     justifyContent: 'center'
 };
 
+export const newGameModalStyle =
+    {
+        ...modalStyle,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        width: 'fit-content',
+        gap: '3vh'
+    }
+
 
 export const theme = createTheme({
     palette: {

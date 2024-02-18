@@ -7,10 +7,18 @@ interface ColoredButtonProps {
     onClick?: any;
     style?: object;
     dataPlayerId?: number;
+    className?: string;
 }
 
-export default function ColoredButton({children, bgColor, onClick, style, dataPlayerId}: ColoredButtonProps) {
-    const buttonClassName = `${styles.colored_button} ${styles[`${bgColor}_button`]}`;
+export default function ColoredButton({
+                                          children,
+                                          bgColor,
+                                          onClick,
+                                          style,
+                                          dataPlayerId,
+                                          className
+                                      }: ColoredButtonProps) {
+    const buttonClassName = `${styles.colored_button} ${styles[`${bgColor}_button`]} ${styles[`${className}`]}`;
 
     return (
         <button className={buttonClassName} onClick={onClick} style={style} data-player-id={dataPlayerId}>

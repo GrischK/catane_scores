@@ -134,9 +134,13 @@ input[type="date"] {
 .form_container_appears{
     box-sizing: border-box;
     width: 42vw;
-    height: 35vh;
+    height: fit-content;
     border: 5px solid #000000;
     border-radius: 2vh;
     background: rgb(255, 255, 255);
     box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px;
+}
+
+.new_game_players_modal img {
+    width: 5vh;
 }
