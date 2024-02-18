@@ -1,5 +1,3 @@
-import {createTheme} from "@mui/material/styles";
-
 export const buttonTransition = {
     duration: 0.3,
     ease: [0, 0.71, 0.2, 1.01],

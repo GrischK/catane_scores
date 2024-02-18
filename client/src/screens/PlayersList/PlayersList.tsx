@@ -15,7 +15,7 @@ import {motion} from "framer-motion";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
 import ArrowLeft from '@mui/icons-material/ArrowDownward';
-import {ThemeProvider, createTheme} from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material/styles';
 import {buttonTransition} from "../../utils/animationVariants";
 import {blueTheme} from "../../utils/stylesVariantes";
 

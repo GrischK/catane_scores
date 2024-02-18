@@ -49,13 +49,13 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                                 {game.scores?.[0]?.player?.picture ?
                                     <img
                                         src={game.scores?.[0]?.player?.picture}
-                                        alt={`image de ${game.scores?.[0]?.player?.name}`}
+                                        alt={game.scores?.[0]?.player?.name}
                                         style={{background: '#FED402'}}
                                     />
                                     :
                                     <img
                                         src={defaultAvatar}
-                                        alt={`image de ${game.scores?.[0]?.player?.picture}`}
+                                        alt={"avatar"}
                                     />
                                 }
                                 <span

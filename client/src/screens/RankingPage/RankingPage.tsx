@@ -281,7 +281,7 @@ export default function RankingPage() {
                                         <img src={playersPoints[1].player?.picture}
                                              alt={`avatar de ${playersPoints[1].player.name}`}/>
                                         :
-                                        <img src={defaultAvatar} alt="user picture"/>
+                                        <img src={defaultAvatar} alt={`avatar de ${playersPoints[1].player.name}`}/>
                                     }
                                 </div>
                             )}
