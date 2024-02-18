@@ -1,66 +1,65 @@
 .players_list_container {
-    background: rgb(255, 255, 255);
-    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-yellow) 100%);
-    min-height: 100vh;
-    padding: 10vh;
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
-    align-items: center;
-    position: relative;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-yellow) 100%);
+  min-height: 100vh;
+  padding: 10vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  align-items: center;
+  position: relative;
 }
 
 .player_wrapper {
-    display: flex;
-    background-color: wheat;
-    padding: 1vh;
-    border-radius: 0.5vh;
+  display: flex;
+  background-color: wheat;
+  padding: 1vh;
+  border-radius: 0.5vh;
 }
 
 .players_list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2vh;
-    align-items: center;
-    justify-content: center;
-    padding:2vh 1vh 6vh 1vh;
-    overflow: hidden;
-    /*border-bottom: solid 1px #FDF3AB;*/
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2vh;
+  align-items: center;
+  justify-content: center;
+  padding: 5vh 2vh 8vh 5vh;
+  overflow: hidden;
 }
 
 .players_list_title {
-    padding-bottom: 10vh;
+  padding-bottom: 10vh;
 }
 
 .add_player_container {
-    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-blue));
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
-    align-items: center;
-    padding: 10vh;
-    min-height: 80vh;
+  background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-blue));
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  align-items: center;
+  padding: 10vh;
+  min-height: 80vh;
 }
 
 .title {
-    -webkit-text-stroke: 1px black;
-    font-family: 'Calistoga', cursive;
-    font-weight: 400;
-    color: #FFCC00;
-    font-size: 3rem;
+  -webkit-text-stroke: 1px black;
+  font-family: 'Calistoga', cursive;
+  font-weight: 400;
+  color: #FFCC00;
+  font-size: 3rem;
 }
 
 .new_player_input > div {
-    background-color: white;
-    min-width: 2vw;
+  background-color: white;
+  min-width: 2vw;
 }
 
 .back_button {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    position: absolute;
-    top: 1.2vh;
-    left: 7vh;
-    rotate: 90deg;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: absolute;
+  top: 1.2vh;
+  left: 7vh;
+  rotate: 90deg;
 }

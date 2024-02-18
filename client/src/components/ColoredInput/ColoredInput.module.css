@@ -39,9 +39,11 @@
     border-radius: 2rem;
     padding: 0.5rem;
     padding-left: 4rem;
+    height: 2vh;
 }
 
 .input_label {
+    height: 2vh;
     position: absolute;
     z-index: 1;
     top: 0.5rem;

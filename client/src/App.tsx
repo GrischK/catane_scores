@@ -7,6 +7,7 @@ import NewGame from "./screens/NewGame/NewGame";
 import NavBar from "./components/NavBar/NavBar";
 import NewRanking from "./screens/RankingPage/RankingPage";
 import {AnimatePresence} from "framer-motion";
+import Test from "./screens/Test/Test";
 
 function App() {
     const location = useLocation();
@@ -31,6 +32,7 @@ function App() {
                            element={<NavBar buttonColor={'#2dc40f'}><GamesList gamesListRefreshed={gamesListRefreshed}/></NavBar>}/>
                     <Route path="/players_list" element={<NavBar buttonColor={'#ffd903'}><PlayersList/></NavBar>}/>
                     <Route path="/ranking" element={<NavBar buttonColor={'#5ba1fc'}><NewRanking/></NavBar>}/>
+                    <Route path="/test" element={<NavBar buttonColor={'#5ba1fc'}><Test/></NavBar>}/>
                 </Routes>
             </AnimatePresence>
         </>
