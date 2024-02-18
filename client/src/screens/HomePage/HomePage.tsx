@@ -13,8 +13,6 @@ export default function HomePage() {
     const [control3, setControl3] = useState(false);
     const [displayText, setDisplayText] = useState(false)
 
-
-
     useEffect(() => {
         setTimeout(() => {
             setControl1(true)
@@ -29,9 +27,7 @@ export default function HomePage() {
             setDisplayText(true)
         }, 2000);
     }, []);
-
-    console.log(control1)
-
+    
     return (
         <div className={styles.home_page_container}>
             <div className={styles.mysterious_text_container}>

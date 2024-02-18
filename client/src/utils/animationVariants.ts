@@ -12,7 +12,7 @@ export const buttonTransition = {
 export const createGameButtonVariants = {
     hidden: {y: '100vh'},
     visible: {
-        y: '5vh',
+        y: 0,
         transition: {
             delay: 1.5,
             duration: 1,

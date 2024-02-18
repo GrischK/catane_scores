@@ -4,7 +4,7 @@ import ConfettiExplosion from 'react-confetti-explosion';
 import cheer from '../../assets/sounds/cheer.mp3'
 import trumpets from '../../assets/sounds/fanfare_trumpets.mp3'
 import tadaa from '../../assets/sounds/tadaa.mp3'
-import {useGamesQuery, User} from "../../gql/generated/schema";
+import {useGamesQuery} from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import thirdMedal from "../../assets/images/medal_3.png"
 import secondMedal from "../../assets/images/medal_2.png"
@@ -17,11 +17,7 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {motion} from "framer-motion";
 import {blueTheme} from "../../utils/stylesVariantes";
-
-interface PlayersPoints {
-    player: User;
-    playerTotalPoints: number;
-}
+import {PlayersPoints} from "../../interfaces/playersListPage.interface";
 
 export default function RankingPage() {
     const [thirdPlayerIsShown, setThirdPlayerIsShown] = useState(false)

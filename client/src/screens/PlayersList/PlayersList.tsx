@@ -2,7 +2,7 @@ import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './PlayersList.module.css';
 import {
     useCreateUserMutation,
-    useDeleteUserMutation, useGamesQuery, User,
+    useDeleteUserMutation, useGamesQuery,
     useUsersQuery
 } from "../../gql/generated/schema";
 import {Alert, IconButton, Snackbar} from "@mui/material";
@@ -18,16 +18,7 @@ import ArrowLeft from '@mui/icons-material/ArrowDownward';
 import {ThemeProvider} from '@mui/material/styles';
 import {buttonTransition} from "../../utils/animationVariants";
 import {blueTheme} from "../../utils/stylesVariantes";
-
-interface PlayerInterface {
-    name: string;
-    picture?: string | null;
-}
-
-interface PlayersPoints {
-    player: User;
-    playerTotalPoints: number;
-}
+import {PlayerInterface, PlayersPoints} from "../../interfaces/playersListPage.interface";
 
 export default function PlayersList() {
     const [newPlayerAvatar, setNewPlayerAvatar] = useState("");

@@ -29,7 +29,7 @@
     height: 60px;
 }
 
-.avatar_title{
+.avatar_title {
     display: flex;
     align-items: center;
 }
@@ -112,7 +112,31 @@
     padding: 2vh;
 }
 
-input[type="date"]{
+input[type="date"] {
     font-family: 'Calistoga', cursive;
     color: grey;
+}
+
+.form_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    width: 42vw;
+    height: 35vh;
+    transition: border 0.2s ease-in-out, background 0.2s ease-in;
+}
+
+.create_game_button{
+    margin-top: 5vh;
+}
+
+.form_container_appears{
+    box-sizing: border-box;
+    width: 42vw;
+    height: 35vh;
+    border: 5px solid #000000;
+    border-radius: 2vh;
+    background: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px;
 }
