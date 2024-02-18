@@ -13,6 +13,8 @@ import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
 import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
+import {buttonTransition, createGameButtonVariants, inputVariants} from "../../utils/animationVariants";
+import {modalStyle} from "../../utils/stylesVariantes";
 
 interface PlayerData {
     player: number;
@@ -145,57 +147,6 @@ export default function NewGame({refreshGamesList}: any) {
         setWarningOpen(false)
     };
 
-    const buttonTransition = {
-        duration: 0.3,
-        ease: [0, 0.71, 0.2, 1.01],
-        scale: {
-            type: "spring",
-            damping: 5,
-            stiffness: 100,
-            restDelta: 0.001
-        }
-    }
-
-    const createGameButtonVariants = {
-        hidden: {y: '100vh'},
-        visible: {
-            y: '5vh',
-            transition: {
-                delay: 1.5,
-                duration: 1,
-                type: "spring",
-                stiffness: 55,
-                damping: 9,
-            }
-        }
-    }
-
-    const inputVariants = {
-        hidden: {opacity: 0, scale: 0.5},
-        visible: {
-            opacity: 1, scale: 1, transition: {
-                duration: 0.7,
-                delay: 1.4,
-                ease: [0, 0.71, 0.2, 1.01]
-            }
-        }
-    }
-
-    const modalStyle = {
-        position: 'absolute' as 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        borderRadius: '2vh',
-        boxShadow: 24,
-        p: 8,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-    };
 
     const handleModal = () => {
         setShowPlayersList(prevState => !prevState)

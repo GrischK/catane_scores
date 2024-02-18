@@ -12,21 +12,11 @@ import cup from "../../assets/images/cup.png"
 import Ranking from "../../components/Ranking/Ranking"
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import {IconButton} from "@mui/material";
-import {ThemeProvider, createTheme} from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material/styles';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {motion} from "framer-motion";
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#5ba1fc',
-        },
-        secondary: {
-            main: '#ffd903',
-        }
-    },
-});
+import {blueTheme} from "../../utils/stylesVariantes";
 
 interface PlayersPoints {
     player: User;
@@ -198,7 +188,7 @@ export default function RankingPage() {
                     <Ranking/>
                     <div className={styles.goTo_podium}>
                         <ThemeProvider
-                            theme={theme}
+                            theme={blueTheme}
                         >
                             <IconButton
                                 color='primary'
@@ -228,7 +218,7 @@ export default function RankingPage() {
                         className={styles.mute_sound}
                     >
                         <ThemeProvider
-                            theme={theme}
+                            theme={blueTheme}
                         >
                             <IconButton
                                 color={'secondary'}
@@ -268,7 +258,10 @@ export default function RankingPage() {
                                         <img src={playersPoints[2].player?.picture}
                                              alt={`avatar de ${playersPoints[2].player.name}`}/>
                                         :
-                                        <img src={defaultAvatar} alt="user picture"/>
+                                        <img
+                                            src={defaultAvatar}
+                                            alt={`avatar de ${playersPoints[2].player.name}`}
+                                        />
                                     }
                                 </div>
                             )}
@@ -308,7 +301,10 @@ export default function RankingPage() {
                                         <img src={playersPoints[0].player?.picture}
                                              alt={`avatar de ${playersPoints[0].player.name}`}/>
                                         :
-                                        <img src={defaultAvatar} alt="user picture"/>
+                                        <img
+                                            src={defaultAvatar}
+                                            alt={`avatar de ${playersPoints[0].player.name}`}
+                                        />
                                     }
                                 </div>
                             )}

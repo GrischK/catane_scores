@@ -10,6 +10,8 @@ import RandomAvatar from "../RandomAvatar/RandomAvatar";
 import {motion} from "framer-motion";
 import ColoredButton from "../ColoredButton/ColoredButton";
 import ColoredInput from "../ColoredInput/ColoredInput";
+import {buttonTransition} from "../../utils/animationVariants";
+import {deleteModalStyle, style} from "../../utils/stylesVariantes";
 
 interface CardProps {
     playerName: string,
@@ -19,46 +21,6 @@ interface CardProps {
     gamesCounter: number | undefined,
     refreshPlayersList: any,
     playerRank: number | undefined
-}
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
-
-const deleteModalStyle = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    borderRadius: '2vh',
-    boxShadow: 24,
-    p: 8,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-};
-
-
-const buttonTransition = {
-    duration: 0.3,
-    ease: [0, 0.71, 0.2, 1.01],
-    scale: {
-        type: "spring",
-        damping: 5,
-        stiffness: 100,
-        restDelta: 0.001
-    }
 }
 
 interface PlayerInterface {
@@ -104,8 +66,6 @@ export default function Card({
                 })
                 .catch((error) => {
                     console.error(error);
-                    // setOpen(true)
-                    // setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
                 });
         }
     }
@@ -119,9 +79,9 @@ export default function Card({
             >
                 {playerAvatar
                     ?
-                    <img src={playerAvatar} alt="user picture"/>
+                    <img src={playerAvatar} alt={playerName}/>
                     :
-                    <img src={defaultAvatar} alt="user picture"/>
+                    <img src={defaultAvatar} alt={playerName}/>
                 }
             </div>
             <div className={styles.players_infos}>

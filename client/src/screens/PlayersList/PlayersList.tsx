@@ -16,14 +16,8 @@ import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
 import ArrowLeft from '@mui/icons-material/ArrowDownward';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#5ba1fc',
-        },
-    },
-});
+import {buttonTransition} from "../../utils/animationVariants";
+import {blueTheme} from "../../utils/stylesVariantes";
 
 interface PlayerInterface {
     name: string;
@@ -33,17 +27,6 @@ interface PlayerInterface {
 interface PlayersPoints {
     player: User;
     playerTotalPoints: number;
-}
-
-const buttonTransition = {
-    duration: 0.3,
-    ease: [0, 0.71, 0.2, 1.01],
-    scale: {
-        type: "spring",
-        damping: 5,
-        stiffness: 100,
-        restDelta: 0.001
-    }
 }
 
 export default function PlayersList() {
@@ -124,7 +107,7 @@ export default function PlayersList() {
 
     const onClickCreateNewPlayer = () => {
         if (newPlayer.name.trim() !== "") { // Vérifie si le nom n'est pas vide ou composé uniquement d'espaces
-            createNewPlayer({variables: {data: newPlayer}});
+            createNewPlayer({variables: {data: newPlayer}}).then(r => r.data);
             setNewPlayer({name: ""});
             setStep(1)
         } else {
@@ -245,7 +228,7 @@ export default function PlayersList() {
                             className={styles.back_button}
                         >
                             <ThemeProvider
-                                theme={theme}
+                                theme={blueTheme}
                             >
                                 <IconButton
                                     color={'primary'}

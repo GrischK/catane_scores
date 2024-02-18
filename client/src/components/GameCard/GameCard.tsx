@@ -7,6 +7,7 @@ import {Box, IconButton, Modal} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ColoredButton from "../ColoredButton/ColoredButton";
+import {modalStyle} from "../../utils/stylesVariantes";
 
 interface GameCardProps {
     game: GameData;
@@ -26,22 +27,6 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
         setFlip(!flip);
         console.log(flip)
     }
-
-    const modalStyle = {
-        position: 'absolute' as 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        borderRadius: '2vh',
-        boxShadow: 24,
-        p: 8,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-    };
 
     return (
         <div
@@ -108,14 +93,14 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                             {player.player.picture ?
                                 <img
                                     src={player.player.picture}
-                                    alt={`image de ${player.player.name}`}
+                                    alt={player.player.name}
                                     className={styles.score_player_picture}
                                     style={{backgroundColor: avatarBackgroundColors[playerIndex <= 3 ? playerIndex : (playerIndex - 4)]}}
                                 />
                                 :
                                 <img
                                     src={defaultAvatar}
-                                    alt={`image de ${player.player.name}`}
+                                    alt={player.player.name}
                                     className={styles.score_player_picture}
                                     style={{backgroundColor: avatarBackgroundColors[playerIndex <= 3 ? playerIndex : (playerIndex - 4)]}}
                                 />
