@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import styles from './NewGame.module.css';
 import {
-    Alert,
+    Alert, Box, Modal,
     Snackbar
 } from "@mui/material";
 import {
@@ -11,7 +11,7 @@ import {
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
-import {AnimatePresence, motion} from "framer-motion";
+import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
 
 interface PlayerData {
@@ -46,6 +46,8 @@ export default function NewGame({refreshGamesList}: any) {
     const [successOpen, setSuccessOpen] = React.useState(false);
     const [mysteriousTextIsShown, setMysteriousTextIsShown] = React.useState(false);
     const [warningOpen, setWarningOpen] = React.useState(false);
+    const [openModal, setOpenModal] = React.useState(false);
+    const handleCloseModal = () => setOpenModal(false);
 
     const [createNewGame] = useCreateGameWithScoresMutation();
 
@@ -179,6 +181,27 @@ export default function NewGame({refreshGamesList}: any) {
         }
     }
 
+    const modalStyle = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        borderRadius: '2vh',
+        boxShadow: 24,
+        p: 8,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    };
+
+    const handleModal = () => {
+        setShowPlayersList(prevState => !prevState)
+        setOpenModal(true)
+    }
+
     return (
         <div className={styles.new_game_container}>
             <motion.h1
@@ -238,65 +261,9 @@ export default function NewGame({refreshGamesList}: any) {
                         <label
                             className={`${styles.players_list_label} ${showPlayersList ? `${styles.players_selected}` : ''} ${gamePlayers && gamePlayers?.length > 0 ? `${styles.players_selected}` : ''}`}
                             htmlFor="playersList"
-                            onClick={() => setShowPlayersList(prevState => !prevState)}><span>Cataneurs</span>
+                            onClick={handleModal}><span>Cataneurs</span>
                         </label>
-                        <AnimatePresence>
-                            {showPlayersList &&
-                                <motion.div
-                                    className={styles.choosePlayers}
-                                    initial={{
-                                        width: 0,
-                                        height: 0,
-                                        opacity: 0,
-                                    }}
-                                    animate={{
-                                        width: 'calc(100% - 2rem)',
-                                        height: 'fit-content',
-                                        opacity: 1
-                                    }}
-                                    transition={{
-                                        type: "spring",
-                                        bounce: 0,
-                                        duration: 0.4
-                                    }}
-                                    exit={{
-                                        width: 0,
-                                        height: 0,
-                                        opacity: 0,
-                                        marginTop: 0,
-                                        padding: 0
-                                    }}
-                                >
-                                    {userNames.map((user) => (
-                                        <div key={user.id}>
-                                            <input
-                                                disabled={newGame.playersData.length >= 6 && !newGame.playersData.some((player) => player.player === user.id)}
-                                                className={styles.players_check_input}
-                                                type="checkbox"
-                                                id={`playerCheckbox-${user.id}`}
-                                                value={user.name}
-                                                checked={newGame.playersData.some((player) => player.player === user.id)}
-                                                onChange={(event) => {
-                                                    const isChecked = event.target.checked;
-                                                    setNewGame((prevState) => ({
-                                                        ...prevState,
-                                                        playersData: isChecked
-                                                            ? [
-                                                                ...prevState.playersData,
-                                                                {
-                                                                    player: user.id,
-                                                                    score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
-                                                                },
-                                                            ]
-                                                            : prevState.playersData.filter((player) => player.player !== user.id),
-                                                    }));
-                                                }}
-                                            />
-                                            <label htmlFor={`playerCheckbox-${user.id}`}>{user.name}</label>
-                                        </div>
-                                    ))}
-                                </motion.div>}
-                        </AnimatePresence>
+
                     </div>
                 </motion.div>
             </div>
@@ -307,9 +274,9 @@ export default function NewGame({refreshGamesList}: any) {
                             <div className={styles.new_game_players_item} key={e.id}>
                                 <div className={styles.avatar_container}>
                                     {e.picture ? (
-                                        <img src={e.picture} alt={`image de ${e.name}`}/>
+                                        <img src={e.picture} alt={e.name}/>
                                     ) : (
-                                        <img src={defaultAvatar} alt="user picture"/>
+                                        <img src={defaultAvatar} alt={e.name}/>
                                     )}
                                     <div className={styles.avatar_title}>
                                         <h1>{e.name}</h1>
@@ -351,6 +318,44 @@ export default function NewGame({refreshGamesList}: any) {
                     Créer le Catanage
                 </ColoredButton>
             </motion.div>
+            <Modal
+                open={openModal}
+                onClose={handleCloseModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                disableScrollLock={true}
+            >
+                <Box id={styles.update_player_modal} sx={modalStyle}>
+                    {userNames.map((user) => (
+                        <div key={user.id}>
+                            <input
+                                disabled={newGame.playersData.length >= 6 && !newGame.playersData.some((player) => player.player === user.id)}
+                                className={styles.players_check_input}
+                                type="checkbox"
+                                id={`playerCheckbox-${user.id}`}
+                                value={user.name}
+                                checked={newGame.playersData.some((player) => player.player === user.id)}
+                                onChange={(event) => {
+                                    const isChecked = event.target.checked;
+                                    setNewGame((prevState) => ({
+                                        ...prevState,
+                                        playersData: isChecked
+                                            ? [
+                                                ...prevState.playersData,
+                                                {
+                                                    player: user.id,
+                                                    score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
+                                                },
+                                            ]
+                                            : prevState.playersData.filter((player) => player.player !== user.id),
+                                    }));
+                                }}
+                            />
+                            <label htmlFor={`playerCheckbox-${user.id}`}>{user.name}</label>
+                        </div>
+                    ))}
+                </Box>
+            </Modal>
             {errorMessage &&
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
