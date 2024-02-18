@@ -2,6 +2,7 @@ import styles from "./Pagination.module.css"
 import React, {MouseEventHandler, ReactNode, useState} from "react";
 import {GameData} from "../../interfaces/game.interface";
 import GameCard from "../GameCard/GameCard";
+import {motion} from "framer-motion";
 
 interface PaginationProps {
     length: number | undefined;
@@ -23,13 +24,18 @@ export default function Pagination({length, postsPerPage, games, onClickDeleteGa
     const startIndex = (currentPage - 1) * postsPerPage;
     const endIndex = Math.min(startIndex + postsPerPage, length || 0);
     const currentItems = games?.slice(startIndex, endIndex).map((game, index) => (
-        <div key={game.id}>
+        <motion.div
+            initial={{y: '-100vh'}}
+            animate={{y:0}}
+            transition={{delay:Math.random()}}
+            key={game.id}
+        >
             <GameCard
                 game={game}
                 index={index}
                 onClickDeleteFunction={onClickDeleteGame}
             />
-        </div>
+        </motion.div>
     ));
 
     return (

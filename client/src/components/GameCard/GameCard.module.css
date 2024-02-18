@@ -48,7 +48,8 @@
 }
 
 .gameCard_back {
-    background-color: dodgerblue;
+    /*background-color: dodgerblue;*/
+    background: #145d06;
     color: white;
     transform: rotateY(180deg);
     display: flex;
@@ -56,6 +57,10 @@
     align-items: center;
     overflow: auto;
     gap: 2vh;
+}
+
+.gameCard_back svg {
+    fill:var(--bg-yellow)
 }
 
 .gameCard_front img, .player_details img {
