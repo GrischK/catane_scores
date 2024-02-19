@@ -3,7 +3,7 @@ import {GameCardProps} from "../../interfaces/gameCard.interface";
 import React, {useState} from "react";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
-import {Alert, Box, IconButton, Modal, Snackbar} from "@mui/material";
+import {Box, IconButton, Modal} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ColoredButton from "../ColoredButton/ColoredButton";
