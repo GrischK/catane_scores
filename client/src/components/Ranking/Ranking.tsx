@@ -3,11 +3,10 @@ import React, {useEffect, useRef, useState} from "react";
 import {useGamesQuery, User} from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import ConfettiExplosion from 'react-confetti-explosion';
-import {motion} from 'framer-motion';
+import {motion, useInView} from 'framer-motion';
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
-import {useInView} from "framer-motion"
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import {ThemeProvider, createTheme} from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
 import trumpet from "../../assets/images/trumpet.png"
 import {blueTheme} from "../../utils/stylesVariantes";
@@ -84,31 +83,53 @@ export default function Ranking() {
 
         timers.push(arrowButtonTimer, mysteriousTextTimer);
 
-        console.log("Element is in view: ", isInView);
-        console.log("Element is in view: ", ref);
+        // console.log("Element is in view: ", isInView);
+        // console.log("Element is in view: ", ref);
 
         return () => {
             timers.forEach((timer) => clearTimeout(timer));
         };
     }, [isInView, hasExploded, ref]);
 
+    const [scrollY, setScrollY] = useState(0);
+
+    useEffect(() => {
+        function handleScroll() {
+            setScrollY(window.scrollY)
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () =>
+            window.removeEventListener('scroll', handleScroll)
+    }, []);
+
     return (
         <div className={styles.ranking_container}>
             <motion.div
-            initial={{x:'-100vw'}}
-            animate={{x:'-40vw'}}
-            transition={{delay:0.1}}
-            className={styles.trumpet_left}
+                initial={{x: '-100vw'}}
+                animate={{x: 'calc(40vw + '+scrollY+'px)'}}
+                transition={{delay: 0.1}}
+                className={styles.trumpet_left}
+                style={{x: 'calc(-40vw - '+scrollY+'px)'}}
             >
-                <img src={trumpet} />
+                <img
+                    src={trumpet}
+                    alt={'trumpet'}
+                />
             </motion.div>
             <motion.div
-                initial={{x:'100vw'}}
-                animate={{x:'40vw'}}
-                transition={{delay:0.1}}
+                initial={{x: '100vw'}}
+                animate={{x: 'calc(40vw + '+scrollY+'px)'}}
+                transition={{delay: 0.1}}
                 className={styles.trumpet_right}
+                style={{x: 'calc(40vw + '+scrollY+'px)'}}
+
             >
-                <img src={trumpet} />
+                <img
+                    src={trumpet}
+                    alt={'trumpet'}
+                />
             </motion.div>
 
             {isExploding &&

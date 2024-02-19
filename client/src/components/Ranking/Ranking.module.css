@@ -73,6 +73,10 @@ html {
   position: absolute;
 }
 
-.trumpet_right img{
+.trumpet_right img {
   transform: rotateY(180deg);
+}
+
+.trumpet_right img, .trumpet_left img {
+  width: 30vw;
 }
