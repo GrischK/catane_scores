@@ -108,6 +108,10 @@
     border-bottom: none;
 }
 
+.gameCard_back > div:last-child {
+    border-bottom: none;
+}
+
 .frontCard_arrow {
     position: absolute;
     right: 0;

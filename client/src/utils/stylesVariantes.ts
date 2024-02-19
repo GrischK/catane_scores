@@ -47,10 +47,8 @@ export const modalStyle = {
 export const newGameModalStyle =
     {
         ...modalStyle,
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        width: 'fit-content',
-        gap: '3vh'
+        flexDirection: 'column',
+        gap: '2vh'
     }
 
 

@@ -36,55 +36,14 @@ export default function NewGame({refreshGamesList}: any) {
     const [warningMessage, setWarningMessage] = useState("");
     const [open, setOpen] = React.useState(false);
     const [successOpen, setSuccessOpen] = React.useState(false);
-    const [mysteriousTextIsShown, setMysteriousTextIsShown] = React.useState(false);
     const [warningOpen, setWarningOpen] = React.useState(false);
+
+    const [mysteriousTextIsShown, setMysteriousTextIsShown] = React.useState(false);
     const [openModal, setOpenModal] = React.useState(false);
     const handleCloseModal = () => setOpenModal(false);
     const [showNewGameForm, setShowNewGameForm] = useState(false)
 
     const [createNewGame] = useCreateGameWithScoresMutation();
-
-    const onClickCreateNewGame = async () => {
-        const isGameNotFilledWithPlayers = newGame.playersData.length < 2 || newGame.playersData.length > 6;
-        if (isGameNotFilledWithPlayers) {
-            setOpen(true);
-            setErrorMessage("Sélectionne entre 2 à 6 joueurs");
-            return;
-        }
-
-        const areAllScoresFilled = newGame.playersData.every((player) => player.score !== 0);
-
-        if (!areAllScoresFilled) {
-            setOpen(true);
-            setErrorMessage("Indique le score pour chaque joueur");
-            return;
-        }
-        try {
-            await createNewGame({
-                variables: {
-                    data: {
-                        date: newGame.date,
-                        place: newGame.place,
-                        playersData: newGame.playersData,
-                    },
-                },
-            });
-            console.log(newGame)
-            setSuccessOpen(true);
-            setSuccessMessage("Partie créée");
-            refreshGamesList();
-            setNewGame({
-                date: "",
-                place: "",
-                playersData: [],
-            });
-        } catch (error) {
-            console.error("Erreur lors de la création de la partie :", error);
-        }
-    };
-
-    useEffect(() => {
-    }, [newGame.playersData, newGame, containerRef, setShowPlayersList]);
 
     const {data: userData} = useUsersByIdsQuery({
         variables: {
@@ -145,6 +104,45 @@ export default function NewGame({refreshGamesList}: any) {
         setShowPlayersList(prevState => !prevState)
         setOpenModal(true)
     }
+
+    const onClickCreateNewGame = async () => {
+        const isGameNotFilledWithPlayers = newGame.playersData.length < 2 || newGame.playersData.length > 6;
+        if (isGameNotFilledWithPlayers) {
+            setOpen(true);
+            setErrorMessage("Sélectionne entre 2 à 6 joueurs");
+            return;
+        }
+
+        const areAllScoresFilled = newGame.playersData.every((player) => player.score !== 0);
+
+        if (!areAllScoresFilled) {
+            setOpen(true);
+            setErrorMessage("Indique le score pour chaque joueur");
+            return;
+        }
+        try {
+            await createNewGame({
+                variables: {
+                    data: {
+                        date: newGame.date,
+                        place: newGame.place,
+                        playersData: newGame.playersData,
+                    },
+                },
+            });
+            console.log(newGame)
+            setSuccessOpen(true);
+            setSuccessMessage("Partie créée");
+            refreshGamesList();
+            setNewGame({
+                date: "",
+                place: "",
+                playersData: [],
+            });
+        } catch (error) {
+            console.error("Erreur lors de la création de la partie :", error);
+        }
+    };
 
     return (
         <div className={styles.new_game_container}>
@@ -290,45 +288,54 @@ export default function NewGame({refreshGamesList}: any) {
             >
                 <Box id={styles.update_player_modal} sx={newGameModalStyle}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Choisis les Cataneurs qui s'affrontent
+                        Choisis les Cataneurs qui s'affrontent :
                     </Typography>
-                    {userNames.map((user) => (
-                        <div key={user.id}>
-                            <input
-                                disabled={newGame.playersData.length >= 6 && !newGame.playersData.some((player) => player.player === user.id)}
-                                className={styles.players_check_input}
-                                type="checkbox"
-                                id={`playerCheckbox-${user.id}`}
-                                value={user.name}
-                                checked={newGame.playersData.some((player) => player.player === user.id)}
-                                onChange={(event) => {
-                                    const isChecked = event.target.checked;
-                                    setNewGame((prevState) => ({
-                                        ...prevState,
-                                        playersData: isChecked
-                                            ? [
-                                                ...prevState.playersData,
-                                                {
-                                                    player: user.id,
-                                                    score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
-                                                },
-                                            ]
-                                            : prevState.playersData.filter((player) => player.player !== user.id),
-                                    }));
-                                }}
-                            />
-                            <label htmlFor={`playerCheckbox-${user.id}`}>
-                                {user.name}
-                                {user.picture
-                                    ?
-                                    <img src={user.picture} alt={user.name}/>
-                                    :
-                                    <img src={defaultAvatar} alt={user.name}/>
-                                }
-
-                            </label>
-                        </div>
-                    ))}
+                    <div
+                        className={styles.modal_players_container}
+                    >
+                        {userNames.map((user) => (
+                            <div
+                                key={user.id}
+                                className={styles.game_player_wrapper}
+                            >
+                                <label
+                                    htmlFor={`playerCheckbox-${user.id}`}
+                                    className={styles.game_player_input}
+                                >
+                                    {user.picture
+                                        ?
+                                        <img src={user.picture} alt={user.name}/>
+                                        :
+                                        <img src={defaultAvatar} alt={user.name}/>
+                                    }
+                                        <input
+                                            disabled={newGame.playersData.length >= 6 && !newGame.playersData.some((player) => player.player === user.id)}
+                                            className={styles.players_check_input}
+                                            type="checkbox"
+                                            id={`playerCheckbox-${user.id}`}
+                                            value={user.name}
+                                            checked={newGame.playersData.some((player) => player.player === user.id)}
+                                            onChange={(event) => {
+                                                const isChecked = event.target.checked;
+                                                setNewGame((prevState) => ({
+                                                    ...prevState,
+                                                    playersData: isChecked
+                                                        ? [
+                                                            ...prevState.playersData,
+                                                            {
+                                                                player: user.id,
+                                                                score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
+                                                            },
+                                                        ]
+                                                        : prevState.playersData.filter((player) => player.player !== user.id),
+                                                }));
+                                            }}
+                                        />
+                                        {user.name}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
                 </Box>
             </Modal>
             {errorMessage &&
