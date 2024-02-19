@@ -9,14 +9,8 @@ import {useInView} from "framer-motion"
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#5ba1fc',
-        },
-    },
-});
+import trumpet from "../../assets/images/trumpet.png"
+import {blueTheme} from "../../utils/stylesVariantes";
 
 interface PlayersPoints {
     player: User;
@@ -29,7 +23,6 @@ export default function Ranking() {
     const ref = useRef(null)
     const isInView = useInView(ref)
 
-    // console.log(data)
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
     const [hasExploded, setHasExploded] = useState(false);
     const [showArrowButton, setShowArrowButton] = useState(false)
@@ -101,6 +94,23 @@ export default function Ranking() {
 
     return (
         <div className={styles.ranking_container}>
+            <motion.div
+            initial={{x:'-100vw'}}
+            animate={{x:'-40vw'}}
+            transition={{delay:0.1}}
+            className={styles.trumpet_left}
+            >
+                <img src={trumpet} />
+            </motion.div>
+            <motion.div
+                initial={{x:'100vw'}}
+                animate={{x:'40vw'}}
+                transition={{delay:0.1}}
+                className={styles.trumpet_right}
+            >
+                <img src={trumpet} />
+            </motion.div>
+
             {isExploding &&
                 <ConfettiExplosion
                     height={"100vh"}
@@ -171,7 +181,7 @@ export default function Ranking() {
                 )}
                 {showArrowButton && (
                     <ThemeProvider
-                        theme={theme}
+                        theme={blueTheme}
                     >
                         <motion.a
                             initial={{opacity: 0, scale: 0}}
