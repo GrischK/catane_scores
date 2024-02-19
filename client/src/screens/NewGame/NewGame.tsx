@@ -308,34 +308,45 @@ export default function NewGame({refreshGamesList}: any) {
                                         :
                                         <img src={defaultAvatar} alt={user.name}/>
                                     }
-                                        <input
-                                            disabled={newGame.playersData.length >= 6 && !newGame.playersData.some((player) => player.player === user.id)}
-                                            className={styles.players_check_input}
-                                            type="checkbox"
-                                            id={`playerCheckbox-${user.id}`}
-                                            value={user.name}
-                                            checked={newGame.playersData.some((player) => player.player === user.id)}
-                                            onChange={(event) => {
-                                                const isChecked = event.target.checked;
-                                                setNewGame((prevState) => ({
-                                                    ...prevState,
-                                                    playersData: isChecked
-                                                        ? [
-                                                            ...prevState.playersData,
-                                                            {
-                                                                player: user.id,
-                                                                score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
-                                                            },
-                                                        ]
-                                                        : prevState.playersData.filter((player) => player.player !== user.id),
-                                                }));
-                                            }}
-                                        />
-                                        {user.name}
+                                    <input
+                                        disabled={newGame.playersData.length >= 6 && !newGame.playersData.some((player) => player.player === user.id)}
+                                        className={styles.players_check_input}
+                                        type="checkbox"
+                                        id={`playerCheckbox-${user.id}`}
+                                        value={user.name}
+                                        checked={newGame.playersData.some((player) => player.player === user.id)}
+                                        onChange={(event) => {
+                                            const isChecked = event.target.checked;
+                                            setNewGame((prevState) => ({
+                                                ...prevState,
+                                                playersData: isChecked
+                                                    ? [
+                                                        ...prevState.playersData,
+                                                        {
+                                                            player: user.id,
+                                                            score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
+                                                        },
+                                                    ]
+                                                    : prevState.playersData.filter((player) => player.player !== user.id),
+                                            }));
+                                        }}
+                                    />
+                                    {user.name}
                                 </label>
                             </div>
                         ))}
                     </div>
+                    <motion.div
+                        whileHover={{scale: 1.05}}
+                        transition={buttonTransition}
+                    >
+                        <ColoredButton
+                            bgColor={'red'}
+                            onClick={handleCloseModal}
+                        >
+                            OK
+                        </ColoredButton>
+                    </motion.div>
                 </Box>
             </Modal>
             {errorMessage &&
