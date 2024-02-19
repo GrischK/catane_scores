@@ -1,14 +1,5 @@
 import styles from "./ColoredButton.module.css"
-import {ReactNode} from "react";
-
-interface ColoredButtonProps {
-    children: ReactNode;
-    bgColor: string;
-    onClick?: any;
-    style?: object;
-    dataPlayerId?: number;
-    className?: string;
-}
+import {ColoredButtonProps} from "../../interfaces/coloredButton.interface"
 
 export default function ColoredButton({
                                           children,
@@ -16,12 +7,19 @@ export default function ColoredButton({
                                           onClick,
                                           style,
                                           dataPlayerId,
-                                          className
+                                          className,
+                                          dataGameId
                                       }: ColoredButtonProps) {
     const buttonClassName = `${styles.colored_button} ${styles[`${bgColor}_button`]} ${styles[`${className}`]}`;
 
     return (
-        <button className={buttonClassName} onClick={onClick} style={style} data-player-id={dataPlayerId}>
+        <button
+            className={buttonClassName}
+            onClick={onClick}
+            style={style}
+            data-player-id={dataPlayerId}
+            data-game-id={dataGameId}
+        >
             {children}
         </button>
     )

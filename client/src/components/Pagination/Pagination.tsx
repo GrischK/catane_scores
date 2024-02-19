@@ -1,16 +1,8 @@
 import styles from "./Pagination.module.css"
-import React, {MouseEventHandler, ReactNode, useState} from "react";
-import {GameData} from "../../interfaces/game.interface";
+import React, {useState} from "react";
 import GameCard from "../GameCard/GameCard";
 import {motion} from "framer-motion";
-
-interface PaginationProps {
-    length: number | undefined;
-    postsPerPage: number;
-    children?: ReactNode;
-    games: GameData[] | undefined;
-    onClickDeleteGame?: MouseEventHandler<HTMLButtonElement> | undefined;
-}
+import {PaginationProps} from "../../interfaces/pagination.interface"
 
 export default function Pagination({length, postsPerPage, games, onClickDeleteGame}: PaginationProps) {
     const [currentPage, setCurrentPage] = useState(1)
@@ -34,6 +26,7 @@ export default function Pagination({length, postsPerPage, games, onClickDeleteGa
                 game={game}
                 index={index}
                 onClickDeleteFunction={onClickDeleteGame}
+                dataGameId={game.id}
             />
         </motion.div>
     ));

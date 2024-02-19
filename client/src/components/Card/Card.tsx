@@ -12,21 +12,8 @@ import ColoredButton from "../ColoredButton/ColoredButton";
 import ColoredInput from "../ColoredInput/ColoredInput";
 import {buttonTransition} from "../../utils/animationVariants";
 import { modalStyle, style} from "../../utils/stylesVariantes";
-
-interface CardProps {
-    playerName: string,
-    playerAvatar: string | null | undefined,
-    onClickDeleteFunction: MouseEventHandler<HTMLButtonElement>,
-    userId: number,
-    gamesCounter: number | undefined,
-    refreshPlayersList: any,
-    playerRank: number | undefined
-}
-
-interface PlayerInterface {
-    name: string;
-    picture?: string | null;
-}
+import {CardProps} from "../../interfaces/card.interface";
+import {PlayerInterface} from "../../interfaces/playersListPage.interface";
 
 export default function Card({
                                  playerName,
@@ -163,6 +150,7 @@ export default function Card({
                         <ColoredButton
                             bgColor={'green'}
                             onClick={onClickDeleteFunction}
+                            dataPlayerId={userId}
                         >
                             Supprimer
                         </ColoredButton>

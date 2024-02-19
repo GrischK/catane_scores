@@ -120,6 +120,7 @@ export default function PlayersList() {
                     setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
                 });
         }
+        console.log(playerId)
     };
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -208,6 +209,22 @@ export default function PlayersList() {
                                     </ColoredButton>
                                 </motion.div>
                             </>
+                        }
+
+                        {errorMessage &&
+                            <Snackbar
+                                open={open}
+                                autoHideDuration={6000}
+                                onClose={handleClose}
+                            >
+                                <Alert onClose={handleClose} severity="error" sx={{
+                                    width: '100%', borderRadius: '2vh',
+                                    overflow: 'hidden',
+                                    border: '3px solid black'
+                                }}>
+                                    {errorMessage}
+                                </Alert>
+                            </Snackbar>
                         }
                     </div>
                 )

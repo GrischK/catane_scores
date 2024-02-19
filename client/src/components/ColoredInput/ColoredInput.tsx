@@ -1,14 +1,6 @@
 import styles from "./ColoredInput.module.css"
 import {useEffect} from "react";
-
-interface ColoredInputProps {
-    label: string;
-    bgColor?: string;
-    onClick?: any;
-    value: string | number | null | undefined;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    type?: string;
-}
+import {ColoredInputProps} from "../../interfaces/coloredInput.interface"
 
 export default function ColoredInput({label, bgColor, onClick, value, onChange, type='text'}: ColoredInputProps) {
     const coloredInputClassName = `${styles.colored_input} ${styles[`${bgColor}_input`]} ${styles[`${label}_input`]}`;

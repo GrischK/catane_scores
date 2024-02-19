@@ -1,6 +1,6 @@
 import styles from './Ranking.module.css';
 import React, {useEffect, useRef, useState} from "react";
-import {useGamesQuery, User} from "../../gql/generated/schema";
+import {useGamesQuery} from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import ConfettiExplosion from 'react-confetti-explosion';
 import {motion, useInView} from 'framer-motion';
@@ -10,11 +10,7 @@ import {ThemeProvider} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
 import trumpet from "../../assets/images/trumpet.png"
 import {blueTheme} from "../../utils/stylesVariantes";
-
-interface PlayersPoints {
-    player: User;
-    playerTotalPoints: number;
-}
+import {PlayersPoints} from "../../interfaces/ranking.interface";
 
 export default function Ranking() {
     const {data, refetch} = useGamesQuery()
@@ -108,10 +104,10 @@ export default function Ranking() {
         <div className={styles.ranking_container}>
             <motion.div
                 initial={{x: '-100vw'}}
-                animate={{x: 'calc(40vw + '+scrollY+'px)'}}
+                animate={{x: 'calc(40vw + ' + scrollY + 'px)'}}
                 transition={{delay: 0.1}}
                 className={styles.trumpet_left}
-                style={{x: 'calc(-40vw - '+scrollY+'px)'}}
+                style={{x: 'calc(-40vw - ' + scrollY + 'px)'}}
             >
                 <img
                     src={trumpet}
@@ -120,10 +116,10 @@ export default function Ranking() {
             </motion.div>
             <motion.div
                 initial={{x: '100vw'}}
-                animate={{x: 'calc(40vw + '+scrollY+'px)'}}
+                animate={{x: 'calc(40vw + ' + scrollY + 'px)'}}
                 transition={{delay: 0.1}}
                 className={styles.trumpet_right}
-                style={{x: 'calc(40vw + '+scrollY+'px)'}}
+                style={{x: 'calc(40vw + ' + scrollY + 'px)'}}
 
             >
                 <img

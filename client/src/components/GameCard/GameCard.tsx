@@ -1,6 +1,6 @@
 import styles from "./GameCard.module.css"
-import {GameData} from "../../interfaces/game.interface";
-import React, {MouseEventHandler, useState} from "react";
+import {GameCardProps} from "../../interfaces/gameCard.interface";
+import React, {useState} from "react";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
 import {Box, IconButton, Modal} from "@mui/material";
@@ -11,13 +11,7 @@ import {modalStyle} from "../../utils/stylesVariantes";
 import {buttonTransition} from "../../utils/animationVariants";
 import {motion} from "framer-motion";
 
-interface GameCardProps {
-    game: GameData;
-    index: number;
-    onClickDeleteFunction?: MouseEventHandler<HTMLButtonElement>;
-}
-
-export default function GameCard({game, index, onClickDeleteFunction}: GameCardProps) {
+export default function GameCard({game, index, onClickDeleteFunction, dataGameId}: GameCardProps) {
     const [flip, setFlip] = useState(false);
     const otherPlayers = game.scores?.slice(1) || [];
     const avatarBackgroundColors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"];
@@ -143,6 +137,7 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                         <ColoredButton
                             bgColor={'green'}
                             onClick={onClickDeleteFunction}
+                            dataGameId={dataGameId}
                         >
                             Supprimer
                         </ColoredButton>
