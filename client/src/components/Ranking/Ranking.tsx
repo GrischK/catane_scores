@@ -104,10 +104,10 @@ export default function Ranking() {
         <div className={styles.ranking_container}>
             <motion.div
                 initial={{x: '-100vw'}}
-                animate={{x: 'calc(40vw + ' + scrollY + 'px)'}}
+                animate={{x: 'calc(-40vw - ' + scrollY*1.5 + 'px)',y:'25vh'}}
                 transition={{delay: 0.1}}
                 className={styles.trumpet_left}
-                style={{x: 'calc(-40vw - ' + scrollY + 'px)'}}
+                style={{x: 'calc(-35vw - ' + scrollY*1.5 + 'px)'}}
             >
                 <img
                     src={trumpet}
@@ -116,10 +116,10 @@ export default function Ranking() {
             </motion.div>
             <motion.div
                 initial={{x: '100vw'}}
-                animate={{x: 'calc(40vw + ' + scrollY + 'px)'}}
+                animate={{x: 'calc(40vw + ' + scrollY*1.5 + 'px)',y:'25vh'}}
                 transition={{delay: 0.1}}
                 className={styles.trumpet_right}
-                style={{x: 'calc(40vw + ' + scrollY + 'px)'}}
+                style={{x: 'calc(35vw + ' + scrollY*1.5 + 'px)'}}
 
             >
                 <img
