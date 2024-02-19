@@ -11,7 +11,7 @@ import {motion} from "framer-motion";
 import ColoredButton from "../ColoredButton/ColoredButton";
 import ColoredInput from "../ColoredInput/ColoredInput";
 import {buttonTransition} from "../../utils/animationVariants";
-import { modalStyle, style} from "../../utils/stylesVariantes";
+import {modalStyle, style} from "../../utils/stylesVariantes";
 import {CardProps} from "../../interfaces/card.interface";
 import {PlayerInterface} from "../../interfaces/playersListPage.interface";
 
@@ -40,6 +40,13 @@ export default function Card({
     const [updatePlayer] = useUpdateUserMutation(
         // {onCompleted: () => refetch()}
     )
+
+    const handeDelete = (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        if (onClickDeleteFunction && event) {
+            onClickDeleteFunction(event)
+        }
+        handleCloseDeleteModal()
+    }
 
     const avatarBackgroundColors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]
 
@@ -149,7 +156,7 @@ export default function Card({
                     >
                         <ColoredButton
                             bgColor={'green'}
-                            onClick={onClickDeleteFunction}
+                            onClick={handeDelete}
                             dataPlayerId={userId}
                         >
                             Supprimer

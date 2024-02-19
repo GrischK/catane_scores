@@ -3,7 +3,7 @@ import {GameCardProps} from "../../interfaces/gameCard.interface";
 import React, {useState} from "react";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
-import {Box, IconButton, Modal} from "@mui/material";
+import {Alert, Box, IconButton, Modal, Snackbar} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ColoredButton from "../ColoredButton/ColoredButton";
@@ -21,13 +21,11 @@ export default function GameCard({game, index, onClickDeleteFunction, dataGameId
 
     const handleFlip = () => {
         setFlip(!flip);
-        console.log(flip)
     }
 
     return (
         <div
             className={styles.gameCard}
-
         >
             <div className={`${styles.gameCard_container} ${flip ? styles.gameCard_container_flipped : ''}`}>
                 <div className={styles.gameCard_front}>
@@ -157,5 +155,4 @@ export default function GameCard({game, index, onClickDeleteFunction, dataGameId
             </Modal>
         </div>
     )
-
 }

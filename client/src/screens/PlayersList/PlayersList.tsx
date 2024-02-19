@@ -28,6 +28,8 @@ export default function PlayersList() {
     },)
     const [errorMessage, setErrorMessage] = useState(""); // État pour stocker le message d'erreur
     const [open, setOpen] = React.useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+    const [successOpen, setSuccessOpen] = React.useState(false);
     const [isPlayerUpdated, setIsPlayerUpdated] = useState(false)
     const {data: gamesData} = useGamesQuery()
 
@@ -101,6 +103,8 @@ export default function PlayersList() {
             createNewPlayer({variables: {data: newPlayer}}).then(r => r.data);
             setNewPlayer({name: ""});
             setStep(1)
+            setSuccessMessage("Nouveau Cataneur prêt à coloniser.");
+            setSuccessOpen(true)
         } else {
             setOpen(true)
             setErrorMessage("Le nom du joueur ne peut pas être vide.");
@@ -113,6 +117,8 @@ export default function PlayersList() {
             deletePlayer({variables: {deleteUserId: parseInt(playerId)}})
                 .then(({data}) => {
                     refetch();
+                    setSuccessMessage("Cataneur disparu. Que ses exploits Catanistiques restent gravés à jamais pour les générations futures !");
+                    setSuccessOpen(true)
                 })
                 .catch((error) => {
                     console.error(error);
@@ -129,6 +135,7 @@ export default function PlayersList() {
         }
 
         setOpen(false);
+        setSuccessOpen(false);
     };
 
     return (
@@ -309,6 +316,21 @@ export default function PlayersList() {
                         }
                     </div>
                 )
+            }
+            {successMessage &&
+                <Snackbar
+                    open={successOpen}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    <Alert onClose={handleClose} severity="success" sx={{
+                        width: '100%', borderRadius: '2vh',
+                        overflow: 'hidden',
+                        border: '3px solid black'
+                    }}>
+                        {successMessage}
+                    </Alert>
+                </Snackbar>
             }
         </>
     )
