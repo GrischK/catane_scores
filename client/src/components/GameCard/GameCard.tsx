@@ -8,6 +8,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ColoredButton from "../ColoredButton/ColoredButton";
 import {modalStyle} from "../../utils/stylesVariantes";
+import {buttonTransition} from "../../utils/animationVariants";
+import {motion} from "framer-motion";
 
 interface GameCardProps {
     game: GameData;
@@ -134,18 +136,28 @@ export default function GameCard({game, index, onClickDeleteFunction}: GameCardP
                 disableScrollLock={true}
             >
                 <Box id={styles.update_player_modal} sx={modalStyle}>
-                    <ColoredButton
-                        bgColor={'green'}
-                        onClick={onClickDeleteFunction}
+                    <motion.div
+                        whileHover={{scale: 1.05}}
+                        transition={buttonTransition}
                     >
-                        Supprimer
-                    </ColoredButton>
-                    <ColoredButton
-                        bgColor={'red'}
-                        onClick={handleCloseModal}
+                        <ColoredButton
+                            bgColor={'green'}
+                            onClick={onClickDeleteFunction}
+                        >
+                            Supprimer
+                        </ColoredButton>
+                    </motion.div>
+                    <motion.div
+                        whileHover={{scale: 1.05}}
+                        transition={buttonTransition}
                     >
-                        Annuler
-                    </ColoredButton>
+                        <ColoredButton
+                            bgColor={'red'}
+                            onClick={handleCloseModal}
+                        >
+                            Annuler
+                        </ColoredButton>
+                    </motion.div>
                 </Box>
             </Modal>
         </div>

@@ -11,7 +11,7 @@ import {motion} from "framer-motion";
 import ColoredButton from "../ColoredButton/ColoredButton";
 import ColoredInput from "../ColoredInput/ColoredInput";
 import {buttonTransition} from "../../utils/animationVariants";
-import {deleteModalStyle, style} from "../../utils/stylesVariantes";
+import { modalStyle, style} from "../../utils/stylesVariantes";
 
 interface CardProps {
     playerName: string,
@@ -155,19 +155,29 @@ export default function Card({
                 aria-describedby="modal-modal-description"
                 disableScrollLock={true}
             >
-                <Box sx={deleteModalStyle}>
-                    <ColoredButton
-                        bgColor={'green'}
-                        onClick={onClickDeleteFunction}
+                <Box sx={modalStyle}>
+                    <motion.div
+                        whileHover={{scale: 1.05}}
+                        transition={buttonTransition}
                     >
-                        Supprimer
-                    </ColoredButton>
-                    <ColoredButton
-                        bgColor={'red'}
-                        onClick={handleCloseDeleteModal}
+                        <ColoredButton
+                            bgColor={'green'}
+                            onClick={onClickDeleteFunction}
+                        >
+                            Supprimer
+                        </ColoredButton>
+                    </motion.div>
+                    <motion.div
+                        whileHover={{scale: 1.05}}
+                        transition={buttonTransition}
                     >
-                        Annuler
-                    </ColoredButton>
+                        <ColoredButton
+                            bgColor={'red'}
+                            onClick={handleCloseDeleteModal}
+                        >
+                            Annuler
+                        </ColoredButton>
+                    </motion.div>
                 </Box>
             </Modal>
         </div>
