@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
 import styles from './NewGame.module.css';
 import {
-    Alert,
-    Snackbar
+    Alert, Box, Modal,
+    Snackbar, Typography
 } from "@mui/material";
 import {
     useCreateGameWithScoresMutation, User, useUsersByIdsQuery,
@@ -11,19 +11,11 @@ import {
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
-import {AnimatePresence, motion} from "framer-motion";
+import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
-
-interface PlayerData {
-    player: number;
-    score: number;
-}
-
-interface GameInterface {
-    date?: string | null;
-    place?: string | null;
-    playersData: PlayerData[];
-}
+import {buttonTransition, createGameButtonVariants, inputVariants} from "../../utils/animationVariants";
+import {newGameModalStyle} from "../../utils/stylesVariantes";
+import {GameInterface} from "../../interfaces/newGamePage.interface";
 
 export default function NewGame({refreshGamesList}: any) {
     const {data} = useUsersQuery();
@@ -44,10 +36,74 @@ export default function NewGame({refreshGamesList}: any) {
     const [warningMessage, setWarningMessage] = useState("");
     const [open, setOpen] = React.useState(false);
     const [successOpen, setSuccessOpen] = React.useState(false);
-    const [mysteriousTextIsShown, setMysteriousTextIsShown] = React.useState(false);
     const [warningOpen, setWarningOpen] = React.useState(false);
 
+    const [mysteriousTextIsShown, setMysteriousTextIsShown] = React.useState(false);
+    const [openModal, setOpenModal] = React.useState(false);
+    const handleCloseModal = () => setOpenModal(false);
+    const [showNewGameForm, setShowNewGameForm] = useState(false)
+
     const [createNewGame] = useCreateGameWithScoresMutation();
+
+    const {data: userData} = useUsersByIdsQuery({
+        variables: {
+            ids: newGame.playersData.map((player) => player.player),
+        },
+        skip: newGame.playersData.length === 0,
+    });
+
+    useEffect(() => {
+        if (userData) {
+            setGamePlayers(userData.usersByIds || []);
+        } else {
+            setGamePlayers([]);
+        }
+
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setShowPlayersList(false)
+            }
+        }
+
+        if (newGame.playersData.length >= 6) {
+            setWarningOpen(true);
+            setWarningMessage("Vous ne pouvez pas sélectionner plus de 6 joueurs");
+            return;
+        } else {
+            setWarningOpen(false);
+        }
+
+        setTimeout(() => {
+            setMysteriousTextIsShown(true)
+        }, 450)
+
+        setTimeout(() => {
+            setShowNewGameForm(true)
+        }, 3000)
+
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+
+    }, [userData, newGame.playersData, newGame]);
+
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+        setSuccessOpen(false)
+        setWarningOpen(false)
+    };
+
+
+    const handleModal = () => {
+        setShowPlayersList(prevState => !prevState)
+        setOpenModal(true)
+    }
 
     const onClickCreateNewGame = async () => {
         const isGameNotFilledWithPlayers = newGame.playersData.length < 2 || newGame.playersData.length > 6;
@@ -88,97 +144,6 @@ export default function NewGame({refreshGamesList}: any) {
         }
     };
 
-    useEffect(() => {
-    }, [newGame.playersData, newGame, containerRef, setShowPlayersList]);
-
-    const {data: userData} = useUsersByIdsQuery({
-        variables: {
-            ids: newGame.playersData.map((player) => player.player),
-        },
-        skip: newGame.playersData.length === 0,
-    });
-
-    useEffect(() => {
-        if (userData) {
-            setGamePlayers(userData.usersByIds || []);
-        } else {
-            setGamePlayers([]);
-        }
-
-        const handleClickOutside = (event: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-                setShowPlayersList(false)
-            }
-            console.log(event.target)
-        }
-
-        if (newGame.playersData.length >= 6) {
-            setWarningOpen(true);
-            setWarningMessage("Vous ne pouvez pas sélectionner plus de 6 joueurs");
-            return;
-        } else {
-            setWarningOpen(false);
-        }
-
-        setTimeout(() => {
-            setMysteriousTextIsShown(true)
-        }, 450)
-
-        document.addEventListener("click", handleClickOutside);
-
-        return () => {
-            console.log('coucou')
-            document.removeEventListener("click", handleClickOutside);
-        };
-
-    }, [userData, newGame.playersData, newGame]);
-
-    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-        setSuccessOpen(false)
-        setWarningOpen(false)
-    };
-
-    const buttonTransition = {
-        duration: 0.3,
-        ease: [0, 0.71, 0.2, 1.01],
-        scale: {
-            type: "spring",
-            damping: 5,
-            stiffness: 100,
-            restDelta: 0.001
-        }
-    }
-
-    const createGameButtonVariants = {
-        hidden: {y: '100vh'},
-        visible: {
-            y: '5vh',
-            transition: {
-                delay: 1.5,
-                duration: 1,
-                type: "spring",
-                stiffness: 55,
-                damping: 9,
-            }
-        }
-    }
-
-    const inputVariants = {
-        hidden: {opacity: 0, scale: 0.5},
-        visible: {
-            opacity: 1, scale: 1, transition: {
-                duration: 0.7,
-                delay: 1.4,
-                ease: [0, 0.71, 0.2, 1.01]
-            }
-        }
-    }
-
     return (
         <div className={styles.new_game_container}>
             <motion.h1
@@ -193,164 +158,197 @@ export default function NewGame({refreshGamesList}: any) {
                         Catanerie</MysteriousText>
                 }
             </motion.h1>
-            <div className={styles.input_container}>
-                <motion.div
-                    variants={inputVariants}
-                    initial='hidden'
-                    animate='visible'
-                >
-                    <ColoredInput
-                        bgColor={"blue"}
-                        label={"date"}
-                        type={'date'}
-                        value={newGame.date}
-                        onChange={(e) =>
-                            setNewGame((prevState) => ({
-                                ...prevState,
-                                date: e.target.value,
-                            }))
-                        }
-                    />
-                </motion.div>
-                <motion.div
-                    variants={inputVariants}
-                    initial='hidden'
-                    animate='visible'
-                >
-                    <ColoredInput
-                        bgColor={"yellow"}
-                        label={"lieu"}
-                        value={newGame.place}
-                        onChange={(e) =>
-                            setNewGame((prevState) => ({
-                                ...prevState,
-                                place: e.target.value,
-                            }))
-                        }
-                    />
-                </motion.div>
-                <motion.div
-                    variants={inputVariants}
-                    initial='hidden'
-                    animate='visible'
-                >
-                    <div ref={containerRef} className={styles.players_list_container}>
-                        <label
-                            className={`${styles.players_list_label} ${showPlayersList ? `${styles.players_selected}` : ''} ${gamePlayers && gamePlayers?.length > 0 ? `${styles.players_selected}` : ''}`}
-                            htmlFor="playersList"
-                            onClick={() => setShowPlayersList(prevState => !prevState)}><span>Cataneurs</span>
-                        </label>
-                        <AnimatePresence>
-                            {showPlayersList &&
+            <div
+                className={`${styles.form_container} ${showNewGameForm ? `${styles.form_container_appears}` : ''}`}
+            >
+                <div className={styles.input_container}>
+                    <motion.div
+                        variants={inputVariants}
+                        initial='hidden'
+                        animate='visible'
+                    >
+                        <ColoredInput
+                            bgColor={"blue"}
+                            label={"date"}
+                            type={'date'}
+                            value={newGame.date}
+                            onChange={(e) =>
+                                setNewGame((prevState) => ({
+                                    ...prevState,
+                                    date: e.target.value,
+                                }))
+                            }
+                        />
+                    </motion.div>
+                    <motion.div
+                        variants={inputVariants}
+                        initial='hidden'
+                        animate='visible'
+                    >
+                        <ColoredInput
+                            bgColor={"yellow"}
+                            label={"lieu"}
+                            value={newGame.place}
+                            onChange={(e) =>
+                                setNewGame((prevState) => ({
+                                    ...prevState,
+                                    place: e.target.value,
+                                }))
+                            }
+                        />
+                    </motion.div>
+                    <motion.div
+                        variants={inputVariants}
+                        initial='hidden'
+                        animate='visible'
+                    >
+                        <div ref={containerRef} className={styles.players_list_container}>
+                            <label
+                                htmlFor="playersList"
+                                onClick={handleModal}>
                                 <motion.div
-                                    className={styles.choosePlayers}
-                                    initial={{
-                                        width: 0,
-                                        height: 0,
-                                        opacity: 0,
-                                    }}
-                                    animate={{
-                                        width: 'calc(100% - 2rem)',
-                                        height: 'fit-content',
-                                        opacity: 1
-                                    }}
-                                    transition={{
-                                        type: "spring",
-                                        bounce: 0,
-                                        duration: 0.4
-                                    }}
-                                    exit={{
-                                        width: 0,
-                                        height: 0,
-                                        opacity: 0,
-                                        marginTop: 0,
-                                        padding: 0
-                                    }}
+                                    whileHover={{scale: 1.05}}
+                                    transition={buttonTransition}
                                 >
-                                    {userNames.map((user) => (
-                                        <div key={user.id}>
-                                            <input
-                                                disabled={newGame.playersData.length >= 6 && !newGame.playersData.some((player) => player.player === user.id)}
-                                                className={styles.players_check_input}
-                                                type="checkbox"
-                                                id={`playerCheckbox-${user.id}`}
-                                                value={user.name}
-                                                checked={newGame.playersData.some((player) => player.player === user.id)}
-                                                onChange={(event) => {
-                                                    const isChecked = event.target.checked;
-                                                    setNewGame((prevState) => ({
-                                                        ...prevState,
-                                                        playersData: isChecked
-                                                            ? [
-                                                                ...prevState.playersData,
-                                                                {
-                                                                    player: user.id,
-                                                                    score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
-                                                                },
-                                                            ]
-                                                            : prevState.playersData.filter((player) => player.player !== user.id),
-                                                    }));
-                                                }}
-                                            />
-                                            <label htmlFor={`playerCheckbox-${user.id}`}>{user.name}</label>
+                                    <ColoredButton
+                                        bgColor={"yellow"}
+                                        className={"players_button"}
+                                    >
+                                        Cataneurs
+                                    </ColoredButton>
+                                </motion.div>
+                            </label>
+
+                        </div>
+                    </motion.div>
+                </div>
+                {gamePlayers && gamePlayers?.length > 0 &&
+                    <div className={styles.new_game_players}>
+                        {gamePlayers &&
+                            gamePlayers.map((e) => (
+                                <div className={styles.new_game_players_item} key={e.id}>
+                                    <div className={styles.avatar_container}>
+                                        {e.picture ? (
+                                            <img src={e.picture} alt={e.name}/>
+                                        ) : (
+                                            <img src={defaultAvatar} alt={e.name}/>
+                                        )}
+                                        <div className={styles.avatar_title}>
+                                            <h1>{e.name}</h1>
                                         </div>
-                                    ))}
-                                </motion.div>}
-                        </AnimatePresence>
+                                    </div>
+                                    <ColoredInput
+                                        bgColor={"yellow"}
+                                        label={"score"}
+                                        value={newGame.playersData.find(player => player.player === e.id)?.score || ""}
+                                        onChange={(event) => {
+                                            const score = event.target.value;
+                                            setNewGame((prevState) => ({
+                                                ...prevState,
+                                                playersData: prevState.playersData.map(player => {
+                                                    if (player.player === e.id) {
+                                                        return {
+                                                            ...player,
+                                                            score: score === "" ? 0 : parseInt(score, 10)
+                                                        };
+                                                    } else {
+                                                        return player;
+                                                    }
+                                                }),
+                                            }));
+                                        }}
+                                    />
+                                </div>
+                            ))}
                     </div>
+                }
+                <motion.div
+                    className={styles.create_game_button}
+                    variants={createGameButtonVariants}
+                    initial='hidden'
+                    animate='visible'
+                    whileHover={{scale: 1.05}}
+                    transition={buttonTransition}
+                >
+                    <ColoredButton
+                        bgColor={"red"}
+                        onClick={onClickCreateNewGame}
+                    >
+                        Créer le Catanage
+                    </ColoredButton>
                 </motion.div>
             </div>
-            {gamePlayers && gamePlayers?.length > 0 &&
-                <div className={styles.new_game_players}>
-                    {gamePlayers &&
-                        gamePlayers.map((e) => (
-                            <div className={styles.new_game_players_item} key={e.id}>
-                                <div className={styles.avatar_container}>
-                                    {e.picture ? (
-                                        <img src={e.picture} alt={`image de ${e.name}`}/>
-                                    ) : (
-                                        <img src={defaultAvatar} alt="user picture"/>
-                                    )}
-                                    <div className={styles.avatar_title}>
-                                        <h1>{e.name}</h1>
-                                    </div>
-                                </div>
-                                <ColoredInput
-                                    bgColor={"yellow"}
-                                    label={"score"}
-                                    value={newGame.playersData.find(player => player.player === e.id)?.score || ""}
-                                    onChange={(event) => {
-                                        const score = event.target.value;
-                                        setNewGame((prevState) => ({
-                                            ...prevState,
-                                            playersData: prevState.playersData.map(player => {
-                                                if (player.player === e.id) {
-                                                    return {...player, score: score === "" ? 0 : parseInt(score, 10)};
-                                                } else {
-                                                    return player;
-                                                }
-                                            }),
-                                        }));
-                                    }}
-                                />
+            <Modal
+                open={openModal}
+                onClose={handleCloseModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                disableScrollLock={true}
+                className={styles.new_game_players_modal}
+            >
+                <Box id={styles.update_player_modal} sx={newGameModalStyle}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Choisis les Cataneurs qui s'affrontent :
+                    </Typography>
+                    <div
+                        className={styles.modal_players_container}
+                    >
+                        {userNames.map((user) => (
+                            <div
+                                key={user.id}
+                                className={styles.game_player_wrapper}
+                            >
+                                <label
+                                    htmlFor={`playerCheckbox-${user.id}`}
+                                    className={styles.game_player_input}
+                                >
+                                    {user.picture
+                                        ?
+                                        <img src={user.picture} alt={user.name}/>
+                                        :
+                                        <img src={defaultAvatar} alt={user.name}/>
+                                    }
+                                    <input
+                                        disabled={newGame.playersData.length >= 6 && !newGame.playersData.some((player) => player.player === user.id)}
+                                        className={styles.players_check_input}
+                                        type="checkbox"
+                                        id={`playerCheckbox-${user.id}`}
+                                        value={user.name}
+                                        checked={newGame.playersData.some((player) => player.player === user.id)}
+                                        onChange={(event) => {
+                                            const isChecked = event.target.checked;
+                                            setNewGame((prevState) => ({
+                                                ...prevState,
+                                                playersData: isChecked
+                                                    ? [
+                                                        ...prevState.playersData,
+                                                        {
+                                                            player: user.id,
+                                                            score: prevState.playersData.find((player) => player.player === user.id)?.score || 0,
+                                                        },
+                                                    ]
+                                                    : prevState.playersData.filter((player) => player.player !== user.id),
+                                            }));
+                                        }}
+                                    />
+                                    {user.name}
+                                </label>
                             </div>
                         ))}
-                </div>
-            }
-            <motion.div
-                variants={createGameButtonVariants}
-                initial='hidden'
-                animate='visible'
-                whileHover={{scale: 1.05}}
-                transition={buttonTransition}
-            >
-                <ColoredButton
-                    bgColor={"red"}
-                    onClick={onClickCreateNewGame}
-                >
-                    Créer le Catanage
-                </ColoredButton>
-            </motion.div>
+                    </div>
+                    <motion.div
+                        whileHover={{scale: 1.05}}
+                        transition={buttonTransition}
+                    >
+                        <ColoredButton
+                            bgColor={'red'}
+                            onClick={handleCloseModal}
+                        >
+                            OK
+                        </ColoredButton>
+                    </motion.div>
+                </Box>
+            </Modal>
             {errorMessage &&
                 <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                     <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>

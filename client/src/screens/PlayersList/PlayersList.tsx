@@ -2,7 +2,7 @@ import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './PlayersList.module.css';
 import {
     useCreateUserMutation,
-    useDeleteUserMutation, useGamesQuery, User,
+    useDeleteUserMutation, useGamesQuery,
     useUsersQuery
 } from "../../gql/generated/schema";
 import {Alert, IconButton, Snackbar} from "@mui/material";
@@ -15,36 +15,10 @@ import {motion} from "framer-motion";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
 import ArrowLeft from '@mui/icons-material/ArrowDownward';
-import {ThemeProvider, createTheme} from '@mui/material/styles';
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#5ba1fc',
-        },
-    },
-});
-
-interface PlayerInterface {
-    name: string;
-    picture?: string | null;
-}
-
-interface PlayersPoints {
-    player: User;
-    playerTotalPoints: number;
-}
-
-const buttonTransition = {
-    duration: 0.3,
-    ease: [0, 0.71, 0.2, 1.01],
-    scale: {
-        type: "spring",
-        damping: 5,
-        stiffness: 100,
-        restDelta: 0.001
-    }
-}
+import {ThemeProvider} from '@mui/material/styles';
+import {buttonTransition} from "../../utils/animationVariants";
+import {blueTheme} from "../../utils/stylesVariantes";
+import {PlayerInterface, PlayersPoints} from "../../interfaces/playersListPage.interface";
 
 export default function PlayersList() {
     const [newPlayerAvatar, setNewPlayerAvatar] = useState("");
@@ -54,6 +28,8 @@ export default function PlayersList() {
     },)
     const [errorMessage, setErrorMessage] = useState(""); // État pour stocker le message d'erreur
     const [open, setOpen] = React.useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
+    const [successOpen, setSuccessOpen] = React.useState(false);
     const [isPlayerUpdated, setIsPlayerUpdated] = useState(false)
     const {data: gamesData} = useGamesQuery()
 
@@ -124,9 +100,11 @@ export default function PlayersList() {
 
     const onClickCreateNewPlayer = () => {
         if (newPlayer.name.trim() !== "") { // Vérifie si le nom n'est pas vide ou composé uniquement d'espaces
-            createNewPlayer({variables: {data: newPlayer}});
+            createNewPlayer({variables: {data: newPlayer}}).then(r => r.data);
             setNewPlayer({name: ""});
             setStep(1)
+            setSuccessMessage("Nouveau Cataneur prêt à coloniser.");
+            setSuccessOpen(true)
         } else {
             setOpen(true)
             setErrorMessage("Le nom du joueur ne peut pas être vide.");
@@ -139,6 +117,8 @@ export default function PlayersList() {
             deletePlayer({variables: {deleteUserId: parseInt(playerId)}})
                 .then(({data}) => {
                     refetch();
+                    setSuccessMessage("Cataneur disparu. Que ses exploits Catanistiques restent gravés à jamais pour les générations futures !");
+                    setSuccessOpen(true)
                 })
                 .catch((error) => {
                     console.error(error);
@@ -146,6 +126,7 @@ export default function PlayersList() {
                     setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
                 });
         }
+        console.log(playerId)
     };
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -154,6 +135,7 @@ export default function PlayersList() {
         }
 
         setOpen(false);
+        setSuccessOpen(false);
     };
 
     return (
@@ -235,6 +217,22 @@ export default function PlayersList() {
                                 </motion.div>
                             </>
                         }
+
+                        {errorMessage &&
+                            <Snackbar
+                                open={open}
+                                autoHideDuration={6000}
+                                onClose={handleClose}
+                            >
+                                <Alert onClose={handleClose} severity="error" sx={{
+                                    width: '100%', borderRadius: '2vh',
+                                    overflow: 'hidden',
+                                    border: '3px solid black'
+                                }}>
+                                    {errorMessage}
+                                </Alert>
+                            </Snackbar>
+                        }
                     </div>
                 )
             }
@@ -245,7 +243,7 @@ export default function PlayersList() {
                             className={styles.back_button}
                         >
                             <ThemeProvider
-                                theme={theme}
+                                theme={blueTheme}
                             >
                                 <IconButton
                                     color={'primary'}
@@ -318,6 +316,21 @@ export default function PlayersList() {
                         }
                     </div>
                 )
+            }
+            {successMessage &&
+                <Snackbar
+                    open={successOpen}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    <Alert onClose={handleClose} severity="success" sx={{
+                        width: '100%', borderRadius: '2vh',
+                        overflow: 'hidden',
+                        border: '3px solid black'
+                    }}>
+                        {successMessage}
+                    </Alert>
+                </Snackbar>
             }
         </>
     )

@@ -3,23 +3,13 @@ import {useState, useEffect} from "react";
 import styles from "./RandomAvatar.module.css";
 import ColoredButton from "../ColoredButton/ColoredButton";
 import {motion} from "framer-motion";
+import {buttonTransition} from "../../utils/animationVariants";
 
 const generateRandomAvatar = () => {
     return `https://api.dicebear.com/7.x/avataaars/svg?seed=${Math.floor(
         Math.random() * 1000000
     )}`;
 };
-
-const buttonTransition = {
-    duration: 0.3,
-    ease: [0, 0.71, 0.2, 1.01],
-    scale: {
-        type: "spring",
-        damping: 5,
-        stiffness: 100,
-        restDelta: 0.001
-    }
-}
 
 function RandomAvatar({onChange}: any) {
     const [newAvatar, setNewAvatar] = useState(generateRandomAvatar());

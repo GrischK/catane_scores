@@ -1,15 +1,9 @@
 import styles from "./NavBar.module.css"
 import {NavLink} from "react-router-dom";
-import {ReactNode} from "react";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import {IconButton} from "@mui/material";
-import {ThemeProvider, createTheme} from '@mui/material/styles';
-
-
-interface NavBarProps {
-    children: ReactNode;
-    buttonColor: string;
-}
+import {ThemeProvider, createTheme} from "@mui/material/styles";
+import {NavBarProps} from "../../interfaces/navBar.interface"
 
 export default function NavBar({children, buttonColor}: NavBarProps) {
 

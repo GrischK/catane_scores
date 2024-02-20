@@ -10,61 +10,10 @@ import RandomAvatar from "../RandomAvatar/RandomAvatar";
 import {motion} from "framer-motion";
 import ColoredButton from "../ColoredButton/ColoredButton";
 import ColoredInput from "../ColoredInput/ColoredInput";
-
-interface CardProps {
-    playerName: string,
-    playerAvatar: string | null | undefined,
-    onClickDeleteFunction: MouseEventHandler<HTMLButtonElement>,
-    userId: number,
-    gamesCounter: number | undefined,
-    refreshPlayersList: any,
-    playerRank: number | undefined
-}
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
-
-const deleteModalStyle = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    borderRadius: '2vh',
-    boxShadow: 24,
-    p: 8,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-};
-
-
-const buttonTransition = {
-    duration: 0.3,
-    ease: [0, 0.71, 0.2, 1.01],
-    scale: {
-        type: "spring",
-        damping: 5,
-        stiffness: 100,
-        restDelta: 0.001
-    }
-}
-
-interface PlayerInterface {
-    name: string;
-    picture?: string | null;
-}
+import {buttonTransition} from "../../utils/animationVariants";
+import {modalStyle, style} from "../../utils/stylesVariantes";
+import {CardProps} from "../../interfaces/card.interface";
+import {PlayerInterface} from "../../interfaces/playersListPage.interface";
 
 export default function Card({
                                  playerName,
@@ -92,6 +41,13 @@ export default function Card({
         // {onCompleted: () => refetch()}
     )
 
+    const handeDelete = (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        if (onClickDeleteFunction && event) {
+            onClickDeleteFunction(event)
+        }
+        handleCloseDeleteModal()
+    }
+
     const avatarBackgroundColors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]
 
     const onClickUpdatePlayer: MouseEventHandler<HTMLButtonElement> = (event) => {
@@ -104,8 +60,6 @@ export default function Card({
                 })
                 .catch((error) => {
                     console.error(error);
-                    // setOpen(true)
-                    // setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
                 });
         }
     }
@@ -119,9 +73,9 @@ export default function Card({
             >
                 {playerAvatar
                     ?
-                    <img src={playerAvatar} alt="user picture"/>
+                    <img src={playerAvatar} alt={playerName}/>
                     :
-                    <img src={defaultAvatar} alt="user picture"/>
+                    <img src={defaultAvatar} alt={playerName}/>
                 }
             </div>
             <div className={styles.players_infos}>
@@ -195,19 +149,30 @@ export default function Card({
                 aria-describedby="modal-modal-description"
                 disableScrollLock={true}
             >
-                <Box sx={deleteModalStyle}>
-                    <ColoredButton
-                        bgColor={'green'}
-                        onClick={onClickDeleteFunction}
+                <Box sx={modalStyle}>
+                    <motion.div
+                        whileHover={{scale: 1.05}}
+                        transition={buttonTransition}
                     >
-                        Supprimer
-                    </ColoredButton>
-                    <ColoredButton
-                        bgColor={'red'}
-                        onClick={handleCloseDeleteModal}
+                        <ColoredButton
+                            bgColor={'green'}
+                            onClick={handeDelete}
+                            dataPlayerId={userId}
+                        >
+                            Supprimer
+                        </ColoredButton>
+                    </motion.div>
+                    <motion.div
+                        whileHover={{scale: 1.05}}
+                        transition={buttonTransition}
                     >
-                        Annuler
-                    </ColoredButton>
+                        <ColoredButton
+                            bgColor={'red'}
+                            onClick={handleCloseDeleteModal}
+                        >
+                            Annuler
+                        </ColoredButton>
+                    </motion.div>
                 </Box>
             </Modal>
         </div>

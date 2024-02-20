@@ -1,27 +1,16 @@
 import styles from './Ranking.module.css';
 import React, {useEffect, useRef, useState} from "react";
-import {useGamesQuery, User} from "../../gql/generated/schema";
+import {useGamesQuery} from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import ConfettiExplosion from 'react-confetti-explosion';
-import {motion} from 'framer-motion';
+import {motion, useInView} from 'framer-motion';
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
-import {useInView} from "framer-motion"
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import {ThemeProvider, createTheme} from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#5ba1fc',
-        },
-    },
-});
-
-interface PlayersPoints {
-    player: User;
-    playerTotalPoints: number;
-}
+import trumpet from "../../assets/images/trumpet.png"
+import {blueTheme} from "../../utils/stylesVariantes";
+import {PlayersPoints} from "../../interfaces/ranking.interface";
 
 export default function Ranking() {
     const {data, refetch} = useGamesQuery()
@@ -29,7 +18,6 @@ export default function Ranking() {
     const ref = useRef(null)
     const isInView = useInView(ref)
 
-    // console.log(data)
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
     const [hasExploded, setHasExploded] = useState(false);
     const [showArrowButton, setShowArrowButton] = useState(false)
@@ -91,16 +79,55 @@ export default function Ranking() {
 
         timers.push(arrowButtonTimer, mysteriousTextTimer);
 
-        console.log("Element is in view: ", isInView);
-        console.log("Element is in view: ", ref);
+        // console.log("Element is in view: ", isInView);
+        // console.log("Element is in view: ", ref);
 
         return () => {
             timers.forEach((timer) => clearTimeout(timer));
         };
     }, [isInView, hasExploded, ref]);
 
+    const [scrollY, setScrollY] = useState(0);
+
+    useEffect(() => {
+        function handleScroll() {
+            setScrollY(window.scrollY)
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () =>
+            window.removeEventListener('scroll', handleScroll)
+    }, []);
+
     return (
         <div className={styles.ranking_container}>
+            <motion.div
+                initial={{x: '-100vw'}}
+                animate={{x: 'calc(-40vw - ' + scrollY*1.5 + 'px)',y:'25vh'}}
+                transition={{delay: 0.1}}
+                className={styles.trumpet_left}
+                style={{x: 'calc(-35vw - ' + scrollY*1.5 + 'px)'}}
+            >
+                <img
+                    src={trumpet}
+                    alt={'trumpet'}
+                />
+            </motion.div>
+            <motion.div
+                initial={{x: '100vw'}}
+                animate={{x: 'calc(40vw + ' + scrollY*1.5 + 'px)',y:'25vh'}}
+                transition={{delay: 0.1}}
+                className={styles.trumpet_right}
+                style={{x: 'calc(35vw + ' + scrollY*1.5 + 'px)'}}
+
+            >
+                <img
+                    src={trumpet}
+                    alt={'trumpet'}
+                />
+            </motion.div>
+
             {isExploding &&
                 <ConfettiExplosion
                     height={"100vh"}
@@ -171,7 +198,7 @@ export default function Ranking() {
                 )}
                 {showArrowButton && (
                     <ThemeProvider
-                        theme={theme}
+                        theme={blueTheme}
                     >
                         <motion.a
                             initial={{opacity: 0, scale: 0}}

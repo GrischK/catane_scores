@@ -1,4 +1,4 @@
-import React, {MouseEventHandler} from "react";
+import React from "react";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -6,16 +6,10 @@ import Typography from '@mui/material/Typography';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import styles from "./GameAccordion.module.css"
-import {GameData} from "../../interfaces/game.interface";
+import {GameAccordionProps} from "../../interfaces/gameAccordion.interface";
 import Cup from "../../assets/images/cup.png";
 import {IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-interface GameAccordionProps {
-    game: GameData;
-    index: number;
-    onClickDeleteFunction?: MouseEventHandler<HTMLButtonElement>;
-}
 
 export default function GameAccordion({game, index, onClickDeleteFunction}: GameAccordionProps) {
     const otherPlayers = game.scores?.slice(1) || []

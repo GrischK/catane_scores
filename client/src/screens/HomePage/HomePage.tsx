@@ -5,34 +5,13 @@ import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import MysteriousText from "../../components/MysteriousText";
 import {motion} from "framer-motion"
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
+import {buttonTransition, crownTransition} from "../../utils/animationVariants";
 
 export default function HomePage() {
     const [control1, setControl1] = useState(false);
     const [control2, setControl2] = useState(false);
     const [control3, setControl3] = useState(false);
     const [displayText, setDisplayText] = useState(false)
-
-    const buttonTransition = {
-        duration: 0.3,
-        ease: [0, 0.71, 0.2, 1.01],
-        scale: {
-            type: "spring",
-            damping: 5,
-            stiffness: 100,
-            restDelta: 0.001
-        }
-    }
-
-    const crownTransition = {
-        duration: 4,
-        ease: [0, 0.71, 0.2, 1.01],
-        type: "spring",
-        damping: 11,
-        stiffness: 100,
-        mass: 0.5,
-        restDelta: 0.001,
-        delay: 3
-    }
 
     useEffect(() => {
         setTimeout(() => {
@@ -48,9 +27,7 @@ export default function HomePage() {
             setDisplayText(true)
         }, 2000);
     }, []);
-
-    console.log(control1)
-
+    
     return (
         <div className={styles.home_page_container}>
             <div className={styles.mysterious_text_container}>
