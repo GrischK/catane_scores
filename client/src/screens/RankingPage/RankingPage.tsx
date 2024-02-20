@@ -40,6 +40,10 @@ export default function RankingPage() {
 
     const [mutedSounds, setMutedSounds] = useState(false);
 
+    const [firstIsSparkling, setFirstIsSparkling] = useState(false)
+    const [secondIsSparkling, setSecondIsSparkling] = useState(false)
+    const [thirdIsSparkling, setThirdIsSparkling] = useState(false)
+
     const cheersSoundRef = useRef(new Audio(cheer));
     const trumpetsSoundRef = useRef(new Audio(trumpets));
     const tadaaSound1Ref = useRef(new Audio(tadaa));
@@ -99,6 +103,9 @@ export default function RankingPage() {
             const moveThirdPlayerTimer = setTimeout(() => {
                 setMoveThirdPlayer(true)
             }, 5000);
+            const thirdPlayerSparkles = setTimeout(() => {
+                setThirdIsSparkling(true)
+            }, 5200);
 
             timers.push(thirdPlayerTimer, moveThirdPlayerTimer, thirdPlayerNameTimer);
             const secondPlayerTimer = setTimeout(() => {
@@ -112,6 +119,9 @@ export default function RankingPage() {
             const moveSecondPlayerTimer = setTimeout(() => {
                 setMoveSecondPlayer(true)
             }, 9000);
+            const secondPlayerSparkles = setTimeout(() => {
+                setSecondIsSparkling(true)
+            }, 9200);
 
             const firstPlayerTimer = setTimeout(() => {
                 setFirstPlayerIsShown(true)
@@ -124,6 +134,9 @@ export default function RankingPage() {
             const moveFirstPlayerTimer = setTimeout(() => {
                 setMoveFirstPlayer(true)
             }, 13000);
+            const firstPlayerSparkles = setTimeout(() => {
+                setFirstIsSparkling(true)
+            }, 13200);
             timers.push(firstPlayerTimer, moveFirstPlayerTimer, firstPlayerNameTimer);
 
             const darkBackground = setTimeout(() => {
@@ -136,7 +149,7 @@ export default function RankingPage() {
             const removeDarkBackground = setTimeout(() => {
                 setDarkBackground(false);
             }, 14000);
-            timers.push(secondPlayerTimer, moveSecondPlayerTimer, secondPlayerNameTimer, light, removeDarkBackground, darkBackground);
+            timers.push(secondPlayerTimer, moveSecondPlayerTimer, secondPlayerNameTimer, light, removeDarkBackground, darkBackground, thirdPlayerSparkles, firstPlayerSparkles, secondPlayerSparkles);
 
             const confettiTimer = setTimeout(() => {
                 setIsExploding(true);
@@ -246,16 +259,35 @@ export default function RankingPage() {
                     <div
                         className={`${styles.thirdPlayer} ${thirdPlayerIsShown ? styles.appear : ''} ${moveThirdPlayer ? styles.move : ''}`}
                     >
-                        <Sparkles>
-                            <img src={thirdMedal} alt={"medal of third best player"} className={styles.podiumMedal}/>
-                            {playersPoints.length > 0 &&
+                        {thirdIsSparkling ? (
+                                <Sparkles>
+                                    <img src={thirdMedal} alt={"medal of third best player"}
+                                         className={styles.podiumMedal}/>
+                                    {playersPoints.length > 0 &&
 
-                                <h1 className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
-                                >
-                                    {playersPoints[2].player?.name}
-                                </h1>
-                            }
-                        </Sparkles>
+                                        <h1 className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                        >
+                                            {playersPoints[2].player?.name}
+                                        </h1>
+                                    }
+                                </Sparkles>
+                            )
+                            :
+                            (
+                                <>
+                                    <img src={thirdMedal} alt={"medal of third best player"}
+                                         className={styles.podiumMedal}/>
+                                    {playersPoints.length > 0 &&
+
+                                        <h1 className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                        >
+                                            {playersPoints[2].player?.name}
+                                        </h1>
+                                    }
+                                </>
+                            )
+                        }
+
 
                         <div
                             className={`${styles.playerName} ${thirdPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
@@ -278,16 +310,36 @@ export default function RankingPage() {
                     <div
                         className={`${styles.secondPlayer} ${secondPlayerIsShown ? styles.appear : ''} ${moveSecondPlayer ? styles.move : ''}`}
                     >
-                        <Sparkles>
-                            <img src={secondMedal} alt={"medal of second best player"} className={styles.podiumMedal}/>
-                            {playersPoints.length > 0 &&
-                                <h1
-                                    className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
-                                >
-                                    {playersPoints[1].player?.name}
-                                </h1>
-                            }
-                        </Sparkles>
+                        {secondIsSparkling ?
+                            (
+                                <Sparkles>
+                                    <img src={secondMedal} alt={"medal of second best player"}
+                                         className={styles.podiumMedal}/>
+                                    {playersPoints.length > 0 &&
+                                        <h1
+                                            className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                        >
+                                            {playersPoints[1].player?.name}
+                                        </h1>
+                                    }
+                                </Sparkles>
+                            )
+                            :
+                            (
+                                <>
+                                    <img src={secondMedal} alt={"medal of second best player"}
+                                         className={styles.podiumMedal}/>
+                                    {playersPoints.length > 0 &&
+                                        <h1
+                                            className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                        >
+                                            {playersPoints[1].player?.name}
+                                        </h1>
+                                    }
+                                </>
+                            )
+                        }
+
                         <div
                             className={`${styles.playerName} ${secondPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
                             {playersPoints.length > 0 && (
@@ -305,17 +357,34 @@ export default function RankingPage() {
                     <div
                         className={`${styles.firstPlayer} ${firstPlayerIsShown ? styles.appear : ''} ${moveFirstPlayer ? styles.move : ''} `}
                     >
-                        <Sparkles>
-                            <img src={cup} alt={"cup of the Catan king"} className={styles.podiumMedal}
-                            />
-                            {playersPoints.length > 0 &&
-                                <h1
-                                    className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
-                                >
-                                    {playersPoints[0].player?.name}
-                                </h1>
-                            }
-                        </Sparkles>
+                        {firstIsSparkling
+                            ?
+                            (<Sparkles>
+                                <img src={cup} alt={"cup of the Catan king"} className={styles.podiumMedal}
+                                />
+                                {playersPoints.length > 0 &&
+                                    <h1
+                                        className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                    >
+                                        {playersPoints[0].player?.name}
+                                    </h1>
+                                }
+                            </Sparkles>)
+                            :
+                            (
+                                <>
+                                    <img src={cup} alt={"cup of the Catan king"} className={styles.podiumMedal}
+                                    />
+                                    {playersPoints.length > 0 &&
+                                        <h1
+                                            className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                        >
+                                            {playersPoints[0].player?.name}
+                                        </h1>
+                                    }
+                                </>
+                            )
+                        }
                         <div
                             className={`${styles.playerName} ${firstPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
                             {playersPoints.length > 0 && (
