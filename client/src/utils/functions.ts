@@ -27,8 +27,6 @@ export const useRandomInterval = (callback: () => void, minDelay: number, maxDel
     }, [callback]);
 
     React.useEffect(() => {
-        let isEnabled = typeof minDelay === 'number' && typeof maxDelay === 'number';
-        if (isEnabled) {
             const handleTick = () => {
                 const nextTickAt = random(minDelay, maxDelay);
                 timeoutId.current = window.setTimeout(() => {
@@ -37,7 +35,6 @@ export const useRandomInterval = (callback: () => void, minDelay: number, maxDel
                 }, nextTickAt);
             };
             handleTick();
-        }
         return () => {
             if (timeoutId.current !== null) {
                 window.clearTimeout(timeoutId.current);

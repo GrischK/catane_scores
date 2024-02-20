@@ -10,7 +10,7 @@ interface SparklesComponentProps {
 
 const defaultColor = 'hsl(50deg, 100%, 50%)';
 
-export default function Sparkles({color = defaultColor, children, ...delegated}: SparklesComponentProps) {
+export default function Sparkles({color = defaultColor, children}: SparklesComponentProps) {
     const [sparkles, setSparkles] = React.useState(() => {
         return range(3).map(() => generateSparkle(color));
     });
