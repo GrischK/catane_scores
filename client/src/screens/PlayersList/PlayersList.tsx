@@ -133,7 +133,6 @@ export default function PlayersList() {
         if (reason === 'clickaway') {
             return;
         }
-
         setOpen(false);
         setSuccessOpen(false);
     };

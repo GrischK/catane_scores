@@ -18,6 +18,7 @@ import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {motion} from "framer-motion";
 import {blueTheme} from "../../utils/stylesVariantes";
 import {PlayersPoints} from "../../interfaces/playersListPage.interface";
+import Sparkles from "../../components/Sparkles/Sparkles";
 
 export default function RankingPage() {
     const [thirdPlayerIsShown, setThirdPlayerIsShown] = useState(false)
@@ -207,7 +208,9 @@ export default function RankingPage() {
                         className={styles.title}
                     >
                         <img src={cup} alt={'cup'} style={{height: '3vh'}}/>
-                        <h1>Podium</h1>
+                        <Sparkles>
+                            <h1>Podium</h1>
+                        </Sparkles>
                         <img src={cup} alt={'cup'} style={{height: '3vh'}}/>
                     </motion.div>
                     <div
@@ -241,13 +244,22 @@ export default function RankingPage() {
                             width={2000}
                         />}
                     <div
-                        className={`${styles.thirdPlayer} ${thirdPlayerIsShown ? styles.appear : ''} ${moveThirdPlayer ? styles.move : ''}`}>
-                        <img src={thirdMedal} alt={"medal of third best player"} className={styles.podiumMedal}/>
-                        {playersPoints.length > 0 &&
-                            <h1 className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}>{playersPoints[2].player?.name}</h1>
-                        }
+                        className={`${styles.thirdPlayer} ${thirdPlayerIsShown ? styles.appear : ''} ${moveThirdPlayer ? styles.move : ''}`}
+                    >
+                        <Sparkles>
+                            <img src={thirdMedal} alt={"medal of third best player"} className={styles.podiumMedal}/>
+                            {playersPoints.length > 0 &&
+
+                                <h1 className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                >
+                                    {playersPoints[2].player?.name}
+                                </h1>
+                            }
+                        </Sparkles>
+
                         <div
-                            className={`${styles.playerName} ${thirdPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
+                            className={`${styles.playerName} ${thirdPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
+                        >
                             {playersPoints.length > 0 && (
                                 <div className={styles.player_info}>
                                     {playersPoints[2].player.picture ?
@@ -264,11 +276,18 @@ export default function RankingPage() {
                         </div>
                     </div>
                     <div
-                        className={`${styles.secondPlayer} ${secondPlayerIsShown ? styles.appear : ''} ${moveSecondPlayer ? styles.move : ''}`}>
-                        <img src={secondMedal} alt={"medal of second best player"} className={styles.podiumMedal}/>
-                        {playersPoints.length > 0 &&
-                            <h1 className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}>{playersPoints[1].player?.name}</h1>
-                        }
+                        className={`${styles.secondPlayer} ${secondPlayerIsShown ? styles.appear : ''} ${moveSecondPlayer ? styles.move : ''}`}
+                    >
+                        <Sparkles>
+                            <img src={secondMedal} alt={"medal of second best player"} className={styles.podiumMedal}/>
+                            {playersPoints.length > 0 &&
+                                <h1
+                                    className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                >
+                                    {playersPoints[1].player?.name}
+                                </h1>
+                            }
+                        </Sparkles>
                         <div
                             className={`${styles.playerName} ${secondPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
                             {playersPoints.length > 0 && (
@@ -284,18 +303,30 @@ export default function RankingPage() {
                         </div>
                     </div>
                     <div
-                        className={`${styles.firstPlayer} ${firstPlayerIsShown ? styles.appear : ''} ${moveFirstPlayer ? styles.move : ''} `}>
-                        <img src={cup} alt={"cup of the Catan king"} className={styles.podiumMedal}/>
-                        {playersPoints.length > 0 &&
-                            <h1 className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}>{playersPoints[0].player?.name}</h1>
-                        }
+                        className={`${styles.firstPlayer} ${firstPlayerIsShown ? styles.appear : ''} ${moveFirstPlayer ? styles.move : ''} `}
+                    >
+                        <Sparkles>
+                            <img src={cup} alt={"cup of the Catan king"} className={styles.podiumMedal}
+                            />
+                            {playersPoints.length > 0 &&
+                                <h1
+                                    className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                >
+                                    {playersPoints[0].player?.name}
+                                </h1>
+                            }
+                        </Sparkles>
                         <div
                             className={`${styles.playerName} ${firstPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
                             {playersPoints.length > 0 && (
-                                <div className={styles.player_info}>
+                                <div
+                                    className={styles.player_info}
+                                >
                                     {playersPoints[0].player.picture ?
+
                                         <img src={playersPoints[0].player?.picture}
-                                             alt={`avatar de ${playersPoints[0].player.name}`}/>
+                                             alt={`avatar de ${playersPoints[0].player.name}`}
+                                        />
                                         :
                                         <img
                                             src={defaultAvatar}
