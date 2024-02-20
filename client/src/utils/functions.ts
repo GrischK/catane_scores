@@ -4,10 +4,14 @@ export const random = (min: number, max: number) => Math.floor(Math.random() * (
 
 const defaultColor = 'hsl(50deg, 100%, 50%)';
 
+
+// Function that will create a new sparkle instance
 export const generateSparkle = (color = defaultColor) => {
     return {
         id: String(random(10000, 99999)),
         createdAt: Date.now(),
+
+        // Bright yellow color by default
         color,
         size: random(10, 20),
         style: {
@@ -18,6 +22,7 @@ export const generateSparkle = (color = defaultColor) => {
     }
 }
 
+// Function for random number generation for interval sparkles apparition
 export const useRandomInterval = (callback: () => void, minDelay: number, maxDelay: number): (() => void) => {
     const timeoutId = React.useRef<number | null>(null);
     const savedCallback = React.useRef<() => void>(callback);
@@ -51,6 +56,7 @@ export const useRandomInterval = (callback: () => void, minDelay: number, maxDel
     return cancel;
 };
 
+// Create a range for example to determine the sparkles number
 export const range = (start: number, end?: number, step = 1) => {
     let output = [];
     if (typeof end === 'undefined') {
