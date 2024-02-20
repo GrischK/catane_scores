@@ -161,7 +161,7 @@ export default function PlayersList() {
                                         <MysteriousText
                                             colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
                                         >
-                                            Liste des Cataneurs
+                                            Cataneurs fous recensés
                                         </MysteriousText>
                                     </motion.h1>
                                 }
