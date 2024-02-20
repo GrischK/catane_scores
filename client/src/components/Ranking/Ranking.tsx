@@ -147,7 +147,7 @@ export default function Ranking() {
                         <MysteriousText
                             colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
                         >
-                            Liste des Cataneurs
+                            Trône du Catane
                         </MysteriousText>
                     </motion.h1>
                 }

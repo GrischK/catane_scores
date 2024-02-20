@@ -26,9 +26,9 @@ export default function MysteriousText({children, colorsList}: MysteriousTextPro
                 <animated.span key={index} style={{
                     ...animation,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    fontFamily: 'Calistoga, cursive',
-                    fontSize: '2.5rem',
-                    fontWeight: 'normal',
+                    fontFamily: 'Zeyada, cursive',
+                    fontSize: '4rem',
+                    fontWeight: 'bolder',
                     margin: '2px',
                     marginTop: '5vh',
                     textShadow: '1px 1px 2px grey'

@@ -28,7 +28,7 @@ export default function GamesList({gamesListRefreshed}: any) {
             return game;
         }
     });
-    
+
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
@@ -66,14 +66,14 @@ export default function GamesList({gamesListRefreshed}: any) {
                 initial={{x: '-100vw'}}
                 animate={{x: 1}}
                 transition={
-                    {delay: 0.5}
+                    {delay: 1.5}
                 }
                 className={styles.players_list_title}
             >
                 <MysteriousText
                     colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
                 >
-                    Liste des Cataneries
+                    Les joutes Catanistiques
                 </MysteriousText>
             </motion.h1>
             <Pagination
