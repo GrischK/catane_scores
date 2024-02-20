@@ -44,6 +44,8 @@ export default function RankingPage() {
     const [secondIsSparkling, setSecondIsSparkling] = useState(false)
     const [thirdIsSparkling, setThirdIsSparkling] = useState(false)
 
+    const [newBackground, setNewBackground] = useState(false)
+    const [finalPodiumBackground, setFinalPodiumBackground] = useState(false)
     const cheersSoundRef = useRef(new Audio(cheer));
     const trumpetsSoundRef = useRef(new Audio(trumpets));
     const tadaaSound1Ref = useRef(new Audio(tadaa));
@@ -160,11 +162,19 @@ export default function RankingPage() {
                 cheersSoundRef.current.play();
             }, 10700)
 
+            const changeBackgourndTimer = setTimeout(() => {
+                setNewBackground(true)
+            }, 14000)
+
+            const finalPodiumBackground = setTimeout(() => {
+                setFinalPodiumBackground(true)
+            }, 14000)
+
             const mysteriousTextTimer = setTimeout(() => {
                 setMysteriousTextIsShown(true)
             }, 1000)
 
-            timers.push(cheersPlay, confettiTimer, mysteriousTextTimer);
+            timers.push(cheersPlay, confettiTimer, mysteriousTextTimer, changeBackgourndTimer, finalPodiumBackground);
 
             return () => {
                 timers.forEach(timer => clearTimeout(timer));
@@ -213,7 +223,8 @@ export default function RankingPage() {
                 </div>)
             }
             {step === 2 && (
-                <div className={styles.newRanking_container}>
+                <div className={`${styles.newRanking_container} ${newBackground ? `${styles.updated}` : ''} `}
+                >
                     <motion.div
                         initial={{opacity: 0}}
                         animate={{opacity: 1}}
@@ -257,7 +268,7 @@ export default function RankingPage() {
                             width={2000}
                         />}
                     <div
-                        className={`${styles.thirdPlayer} ${thirdPlayerIsShown ? styles.appear : ''} ${moveThirdPlayer ? styles.move : ''}`}
+                        className={`${styles.thirdPlayer} ${thirdPlayerIsShown ? styles.appear : ''} ${moveThirdPlayer ? styles.move : ''} ${finalPodiumBackground ? styles.final : ''} `}
                     >
                         {thirdIsSparkling ? (
                                 <Sparkles>
@@ -308,7 +319,7 @@ export default function RankingPage() {
                         </div>
                     </div>
                     <div
-                        className={`${styles.secondPlayer} ${secondPlayerIsShown ? styles.appear : ''} ${moveSecondPlayer ? styles.move : ''}`}
+                        className={`${styles.secondPlayer} ${secondPlayerIsShown ? styles.appear : ''} ${moveSecondPlayer ? styles.move : ''} ${finalPodiumBackground ? styles.final : ''}`}
                     >
                         {secondIsSparkling ?
                             (
@@ -355,7 +366,7 @@ export default function RankingPage() {
                         </div>
                     </div>
                     <div
-                        className={`${styles.firstPlayer} ${firstPlayerIsShown ? styles.appear : ''} ${moveFirstPlayer ? styles.move : ''} `}
+                        className={`${styles.firstPlayer} ${firstPlayerIsShown ? styles.appear : ''} ${moveFirstPlayer ? styles.move : ''}  ${finalPodiumBackground ? styles.final : ''}`}
                     >
                         {firstIsSparkling
                             ?
