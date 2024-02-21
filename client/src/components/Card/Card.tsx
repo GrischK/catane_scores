@@ -1,19 +1,20 @@
 import styles from './Card.module.css';
-import defaultAvatar from '../../assets/images/default_avatar.png';
-import {Box, IconButton, Modal, Typography} from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import {MouseEventHandler, useState} from "react";
 import React from 'react';
+import {MouseEventHandler, useState} from "react";
+import {CardProps} from "../../interfaces/card.interface";
+import {PlayerInterface} from "../../interfaces/playersListPage.interface";
+import defaultAvatar from '../../assets/images/default_avatar.png';
 import {useUpdateUserMutation} from "../../gql/generated/schema";
 import RandomAvatar from "../RandomAvatar/RandomAvatar";
-import {motion} from "framer-motion";
 import ColoredButton from "../ColoredButton/ColoredButton";
 import ColoredInput from "../ColoredInput/ColoredInput";
 import {buttonTransition} from "../../utils/animationVariants";
 import {modalStyle, style} from "../../utils/stylesVariantes";
-import {CardProps} from "../../interfaces/card.interface";
-import {PlayerInterface} from "../../interfaces/playersListPage.interface";
+import CloseIcon from '@mui/icons-material/Close';
+import {Box, IconButton, Modal, Typography} from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {motion} from "framer-motion";
 
 export default function Card({
                                  playerName,
@@ -26,11 +27,12 @@ export default function Card({
                              }: CardProps) {
 
     const [openModal, setOpenModal] = React.useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
     const handleOpenModal = () => setOpenModal(true);
     const handleCloseModal = () => setOpenModal(false);
-    const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
     const handleOpenDeleteModal = () => setOpenDeleteModal(true);
     const handleCloseDeleteModal = () => setOpenDeleteModal(false);
+    const avatarBackgroundColors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]
 
     const [playerToUpdateData, setPlayerToUpdateData] = useState<PlayerInterface>({
         name: playerName,
@@ -48,8 +50,6 @@ export default function Card({
         handleCloseDeleteModal()
     }
 
-    const avatarBackgroundColors = ["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]
-
     const onClickUpdatePlayer: MouseEventHandler<HTMLButtonElement> = (event) => {
         const playerToUpdateId = event.currentTarget.getAttribute("data-player-id");
         if (playerToUpdateId && playerToUpdateData.name !== "") {
@@ -65,8 +65,12 @@ export default function Card({
     }
 
     return (
-        <div className={styles.card}>
-            <h1>{playerName}</h1>
+        <div
+            className={styles.card}
+        >
+            <h1>
+                {playerName}
+            </h1>
             <div
                 className={styles.card_image_wrapper}
                 style={{backgroundColor: avatarBackgroundColors[Math.floor(Math.random() * avatarBackgroundColors.length)]}}
@@ -78,18 +82,38 @@ export default function Card({
                     <img src={defaultAvatar} alt={playerName}/>
                 }
             </div>
-            <div className={styles.players_infos}>
-                <h2>Nombre de Catanes :</h2>
-                <p> {gamesCounter}</p>
+            <div
+                className={styles.players_infos}
+            >
+                <h2>
+                    Nombre de Catanes :
+                </h2>
+                <p>
+                    {gamesCounter}
+                </p>
             </div>
-            <div className={styles.players_infos}>
-                <h2>Classement :</h2>
-                <p> {playerRank}</p>
+            <div
+                className={styles.players_infos}
+            >
+                <h2>
+                    Classement :
+                </h2>
+                <p>
+                    {playerRank}
+                </p>
             </div>
-            <IconButton aria-label="delete" onClick={handleOpenDeleteModal} data-player-id={userId}>
+            <IconButton
+                aria-label="delete"
+                onClick={handleOpenDeleteModal}
+                data-player-id={userId}
+            >
                 <DeleteIcon/>
             </IconButton>
-            <IconButton aria-label="update" onClick={handleOpenModal} data-player-id={userId}>
+            <IconButton
+                aria-label="update"
+                onClick={handleOpenModal}
+                data-player-id={userId}
+            >
                 <EditIcon/>
             </IconButton>
             <Modal
@@ -100,8 +124,15 @@ export default function Card({
                 disableScrollLock={true}
                 className={styles.card_modal}
             >
-                <Box id={styles.update_player_modal} sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Box
+                    id={styles.update_player_modal}
+                    sx={style}
+                >
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                    >
                         Modifier {playerName}
                     </Typography>
                     <ColoredInput
@@ -140,6 +171,10 @@ export default function Card({
                             Modifier
                         </ColoredButton>
                     </motion.div>
+                    <CloseIcon
+                        onClick={handleCloseModal}
+                        className={styles.close_modal_icon}
+                    />
                 </Box>
             </Modal>
             <Modal
@@ -149,7 +184,9 @@ export default function Card({
                 aria-describedby="modal-modal-description"
                 disableScrollLock={true}
             >
-                <Box sx={modalStyle}>
+                <Box
+                    sx={modalStyle}
+                >
                     <motion.div
                         whileHover={{scale: 1.05}}
                         transition={buttonTransition}

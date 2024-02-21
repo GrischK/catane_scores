@@ -1,12 +1,12 @@
+import React, {useState} from "react";
 import styles from "./GameCard.module.css"
 import {GameCardProps} from "../../interfaces/gameCard.interface";
-import React, {useState} from "react";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
+import ColoredButton from "../ColoredButton/ColoredButton";
 import {Box, IconButton, Modal} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ColoredButton from "../ColoredButton/ColoredButton";
 import {modalStyle} from "../../utils/stylesVariantes";
 import {buttonTransition} from "../../utils/animationVariants";
 import {motion} from "framer-motion";
@@ -27,19 +27,28 @@ export default function GameCard({game, index, onClickDeleteFunction, dataGameId
         <div
             className={styles.gameCard}
         >
-            <div className={`${styles.gameCard_container} ${flip ? styles.gameCard_container_flipped : ''}`}>
-                <div className={styles.gameCard_front}>
-                    <div className={styles.gameCard_front_info_container}
-                         onClick={handleFlip}
+            <div
+                className={`${styles.gameCard_container} ${flip ? styles.gameCard_container_flipped : ''}`}
+            >
+                <div
+                    className={styles.gameCard_front}
+                >
+                    <div
+                        className={styles.gameCard_front_info_container}
+                        onClick={handleFlip}
                     >
-                        <p className={styles.gameCard_game_info}>
+                        <p
+                            className={styles.gameCard_game_info}
+                        >
                             {game.date && <span>Le {game.date}</span>}
                             {game.place && <span> à {game.place}</span>}
                         </p>
                         <div
                             className={styles.gameCard_player_info_container}
                         >
-                            <div className={styles.gameCard_player_info}>
+                            <div
+                                className={styles.gameCard_player_info}
+                            >
                                 {game.scores?.[0]?.player?.picture ?
                                     <img
                                         src={game.scores?.[0]?.player?.picture}
@@ -75,10 +84,13 @@ export default function GameCard({game, index, onClickDeleteFunction, dataGameId
                         </div>
                     </div>
                 </div>
-                <div className={styles.gameCard_back}
-                     onClick={handleFlip}
+                <div
+                    className={styles.gameCard_back}
+                    onClick={handleFlip}
                 >
-                    <div className={styles.delete_icon}>
+                    <div
+                        className={styles.delete_icon}
+                    >
                         <IconButton
                             aria-label="delete"
                             onClick={handleOpenModal}
@@ -109,12 +121,21 @@ export default function GameCard({game, index, onClickDeleteFunction, dataGameId
                                     style={{backgroundColor: avatarBackgroundColors[playerIndex <= 3 ? playerIndex : (playerIndex - 4)]}}
                                 />
                             }
-
                             {player.score === 1
                                 ?
-                                <div>{player.score} <span>point</span></div>
+                                <div>
+                                    {player.score}
+                                    <span>
+                                        point
+                                    </span>
+                                </div>
                                 :
-                                <div>{player.score} <span>points</span></div>
+                                <div>
+                                    {player.score}
+                                    <span>
+                                        points
+                                    </span>
+                                </div>
                             }
                         </div>
                     ))}
@@ -127,7 +148,10 @@ export default function GameCard({game, index, onClickDeleteFunction, dataGameId
                 aria-describedby="modal-modal-description"
                 disableScrollLock={true}
             >
-                <Box id={styles.update_player_modal} sx={modalStyle}>
+                <Box
+                    id={styles.update_player_modal}
+                    sx={modalStyle}
+                >
                     <motion.div
                         whileHover={{scale: 1.05}}
                         transition={buttonTransition}

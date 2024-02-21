@@ -1,9 +1,9 @@
 import styles from "./NavBar.module.css"
+import {NavBarProps} from "../../interfaces/navBar.interface"
 import {NavLink} from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import {IconButton} from "@mui/material";
 import {ThemeProvider, createTheme} from "@mui/material/styles";
-import {NavBarProps} from "../../interfaces/navBar.interface"
 
 export default function NavBar({children, buttonColor}: NavBarProps) {
 
@@ -19,10 +19,16 @@ export default function NavBar({children, buttonColor}: NavBarProps) {
     });
 
     return (
-        <div className={styles.navBar}>
+        <div
+            className={styles.navBar}
+        >
             <nav>
-                <NavLink to={"/"}>
-                    <ThemeProvider theme={theme}>
+                <NavLink
+                    to={"/"}
+                >
+                    <ThemeProvider
+                        theme={theme}
+                    >
                         <IconButton
                             size='large'
                             color='primary'

@@ -1,21 +1,22 @@
 import React, {useEffect, useRef, useState} from "react";
 import styles from './NewGame.module.css';
-import {
-    Alert, Box, Modal,
-    Snackbar, Typography
-} from "@mui/material";
+import {GameInterface} from "../../interfaces/newGamePage.interface";
 import {
     useCreateGameWithScoresMutation, User, useUsersByIdsQuery,
     useUsersQuery
 } from "../../gql/generated/schema";
-import defaultAvatar from "../../assets/images/default_avatar.png";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
-import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
+import {motion} from "framer-motion";
 import {buttonTransition, createGameButtonVariants, inputVariants} from "../../utils/animationVariants";
 import {newGameModalStyle} from "../../utils/stylesVariantes";
-import {GameInterface} from "../../interfaces/newGamePage.interface";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+    Alert, Box, Modal,
+    Snackbar, Typography
+} from "@mui/material";
+import defaultAvatar from "../../assets/images/default_avatar.png";
 
 export default function NewGame({refreshGamesList}: any) {
     const {data} = useUsersQuery();
@@ -99,7 +100,6 @@ export default function NewGame({refreshGamesList}: any) {
         setWarningOpen(false)
     };
 
-
     const handleModal = () => {
         setShowPlayersList(prevState => !prevState)
         setOpenModal(true)
@@ -154,14 +154,19 @@ export default function NewGame({refreshGamesList}: any) {
                 }
             >
                 {mysteriousTextIsShown &&
-                    <MysteriousText colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}>Ajouter une
-                        Catanerie</MysteriousText>
+                    <MysteriousText
+                        colorsList={["#f04d4d", "#F58F8F", "#ffd903","#FFED85", "#5ba1fc", "#87BAFD"]}
+                    >Ajouter une
+                        Catanerie
+                    </MysteriousText>
                 }
             </motion.h1>
             <div
                 className={`${styles.form_container} ${showNewGameForm ? `${styles.form_container_appears}` : ''}`}
             >
-                <div className={styles.input_container}>
+                <div
+                    className={styles.input_container}
+                >
                     <motion.div
                         variants={inputVariants}
                         initial='hidden'
@@ -202,7 +207,10 @@ export default function NewGame({refreshGamesList}: any) {
                         initial='hidden'
                         animate='visible'
                     >
-                        <div ref={containerRef} className={styles.players_list_container}>
+                        <div
+                            ref={containerRef}
+                            className={styles.players_list_container}
+                        >
                             <label
                                 htmlFor="playersList"
                                 onClick={handleModal}>
@@ -218,7 +226,6 @@ export default function NewGame({refreshGamesList}: any) {
                                     </ColoredButton>
                                 </motion.div>
                             </label>
-
                         </div>
                     </motion.div>
                 </div>
@@ -226,15 +233,34 @@ export default function NewGame({refreshGamesList}: any) {
                     <div className={styles.new_game_players}>
                         {gamePlayers &&
                             gamePlayers.map((e) => (
-                                <div className={styles.new_game_players_item} key={e.id}>
-                                    <div className={styles.avatar_container}>
-                                        {e.picture ? (
-                                            <img src={e.picture} alt={e.name}/>
-                                        ) : (
-                                            <img src={defaultAvatar} alt={e.name}/>
-                                        )}
-                                        <div className={styles.avatar_title}>
-                                            <h1>{e.name}</h1>
+                                <div
+                                    className={styles.new_game_players_item}
+                                    key={e.id}
+                                >
+                                    <div
+                                        className={styles.avatar_container}
+                                    >
+                                        {e.picture
+                                            ?
+                                            (
+                                                <img
+                                                    src={e.picture}
+                                                    alt={e.name}
+                                                />
+                                            )
+                                            :
+                                            (
+                                                <img
+                                                    src={defaultAvatar}
+                                                    alt={e.name}
+                                                />
+                                            )}
+                                        <div
+                                            className={styles.avatar_title}
+                                        >
+                                            <h1>
+                                                {e.name}
+                                            </h1>
                                         </div>
                                     </div>
                                     <ColoredInput
@@ -286,8 +312,15 @@ export default function NewGame({refreshGamesList}: any) {
                 disableScrollLock={true}
                 className={styles.new_game_players_modal}
             >
-                <Box id={styles.update_player_modal} sx={newGameModalStyle}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Box
+                    id={styles.update_player_modal}
+                    sx={newGameModalStyle}
+                >
+                    <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                    >
                         Choisis les Cataneurs qui s'affrontent :
                     </Typography>
                     <div
@@ -347,25 +380,51 @@ export default function NewGame({refreshGamesList}: any) {
                             OK
                         </ColoredButton>
                     </motion.div>
+                    <CloseIcon
+                        onClick={handleCloseModal}
+                        className={styles.close_modal_icon}
+                    />
                 </Box>
             </Modal>
             {errorMessage &&
-                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+                <Snackbar
+                    open={open}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity="error"
+                        sx={{width: '100%'}}
+                    >
                         {errorMessage}
                     </Alert>
                 </Snackbar>
             }
             {successMessage &&
-                <Snackbar open={successOpen} autoHideDuration={6000} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
+                <Snackbar
+                    open={successOpen}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity="success"
+                        sx={{width: '100%'}}
+                    >
                         {successMessage}
                     </Alert>
                 </Snackbar>
             }
             {warningMessage &&
-                <Snackbar open={warningOpen} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="warning" sx={{width: '100%'}}>
+                <Snackbar
+                    open={warningOpen}
+                    onClose={handleClose}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity="warning" sx={{width: '100%'}}
+                    >
                         {warningMessage}
                     </Alert>
                 </Snackbar>

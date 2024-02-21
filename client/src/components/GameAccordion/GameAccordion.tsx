@@ -1,13 +1,13 @@
 import React from "react";
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import defaultAvatar from "../../assets/images/default_avatar.png";
 import styles from "./GameAccordion.module.css"
 import {GameAccordionProps} from "../../interfaces/gameAccordion.interface";
+import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {IconButton} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -35,7 +35,9 @@ export default function GameAccordion({game, index, onClickDeleteFunction}: Game
                     <div
                         className={styles.accordion_summary_content}
                     >
-                        <p className={styles.accordion_game_info}>
+                        <p
+                            className={styles.accordion_game_info}
+                        >
                             {game.date && <span>Le {game.date}</span>}
                             {game.place && <span> à {game.place}</span>}
                         </p>
@@ -65,7 +67,6 @@ export default function GameAccordion({game, index, onClickDeleteFunction}: Game
                                     {game.scores?.[0]?.player?.name}
                                     </span>
                                 </div>
-
                                 <span
                                     className={styles.player_score}
                                 >

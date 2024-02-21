@@ -1,27 +1,30 @@
 import styles from './Ranking.module.css';
 import React, {useEffect, useRef, useState} from "react";
-import {useGamesQuery} from "../../gql/generated/schema";
-import defaultAvatar from "../../assets/images/default_avatar.png";
-import ConfettiExplosion from 'react-confetti-explosion';
-import {motion, useInView} from 'framer-motion';
+import {PlayersPoints} from "../../interfaces/ranking.interface";
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import defaultAvatar from "../../assets/images/default_avatar.png";
+import trumpet from "../../assets/images/trumpet.png"
+import {useGamesQuery} from "../../gql/generated/schema";
+import ConfettiExplosion from 'react-confetti-explosion';
 import {ThemeProvider} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
-import trumpet from "../../assets/images/trumpet.png"
 import {blueTheme} from "../../utils/stylesVariantes";
-import {PlayersPoints} from "../../interfaces/ranking.interface";
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import {motion, useInView} from 'framer-motion';
 
 export default function Ranking() {
     const {data, refetch} = useGamesQuery()
-    const [isExploding, setIsExploding] = React.useState(false);
+
     const ref = useRef(null)
     const isInView = useInView(ref)
 
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
-    const [hasExploded, setHasExploded] = useState(false);
+
     const [showArrowButton, setShowArrowButton] = useState(false)
     const [mysteriousTextIsShown, setMysteriousTextIsShown] = useState(false)
+
+    const [isExploding, setIsExploding] = React.useState(false);
+    const [hasExploded, setHasExploded] = useState(false);
 
     useEffect(() => {
         if (data) {
@@ -101,13 +104,15 @@ export default function Ranking() {
     }, []);
 
     return (
-        <div className={styles.ranking_container}>
+        <div
+            className={styles.ranking_container}
+        >
             <motion.div
                 initial={{x: '-100vw'}}
-                animate={{x: 'calc(-40vw - ' + scrollY*1.5 + 'px)',y:'25vh'}}
+                animate={{x: 'calc(-40vw - ' + scrollY * 1.5 + 'px)', y: '25vh'}}
                 transition={{delay: 0.1}}
                 className={styles.trumpet_left}
-                style={{x: 'calc(-35vw - ' + scrollY*1.5 + 'px)'}}
+                style={{x: 'calc(-35vw - ' + scrollY * 1.5 + 'px)'}}
             >
                 <img
                     src={trumpet}
@@ -116,25 +121,25 @@ export default function Ranking() {
             </motion.div>
             <motion.div
                 initial={{x: '100vw'}}
-                animate={{x: 'calc(40vw + ' + scrollY*1.5 + 'px)',y:'25vh'}}
+                animate={{x: 'calc(40vw + ' + scrollY * 1.5 + 'px)', y: '25vh'}}
                 transition={{delay: 0.1}}
                 className={styles.trumpet_right}
-                style={{x: 'calc(35vw + ' + scrollY*1.5 + 'px)'}}
-
+                style={{x: 'calc(35vw + ' + scrollY * 1.5 + 'px)'}}
             >
                 <img
                     src={trumpet}
                     alt={'trumpet'}
                 />
             </motion.div>
-
             {isExploding &&
                 <ConfettiExplosion
                     height={"100vh"}
                     width={2000}
                 />
             }
-            <div style={{height: '2.5rem'}}>
+            <div
+                style={{height: '2.5rem'}}
+            >
                 {mysteriousTextIsShown &&
                     <motion.h1
                         initial={{x: '-100vw'}}
@@ -145,7 +150,7 @@ export default function Ranking() {
                         className={styles.players_list_title}
                     >
                         <MysteriousText
-                            colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                            colorsList={["#f04d4d", "#F58F8F", "#ffd903","#FFED85", "#5ba1fc", "#87BAFD"]}
                         >
                             Trône du Catane
                         </MysteriousText>
@@ -165,106 +170,137 @@ export default function Ranking() {
                     stiffness: 100,
                 }}
             >
-                {playersPoints.length > 0 && (
-                    <div className={styles.player_info}>
-                        {playersPoints[0].player.picture ?
-                            <img src={playersPoints[0].player?.picture}
-                                 alt={`avatar de ${playersPoints[0].player.name}`}/>
-                            :
-                            <img src={defaultAvatar} alt="user picture"/>
-                        }
-                        <h1>{playersPoints[0].player?.name}</h1>
-                        <span>{`Points : ${playersPoints[0].playerTotalPoints}`}</span>
-                        <motion.div
-                            initial={{opacity: 0, scale: 0.3, y: '-1000%', x: 0}}
-                            animate={{opacity: 1, scale: 1, y: '-320%', x: 0}}
-                            transition={{
-                                delay: 1,
-                                duration: 0.7,
-                                ease: [0, 0.71, 0.2, 1.01],
-                                type: "spring",
-                                damping: 10,
-                                stiffness: 50,
-                            }}
+                {playersPoints.length > 0 &&
+                    (
+                        <div
+                            className={styles.player_info}
                         >
-                            <Crown style={{
-                                width: "90px",
-                                height: "90px",
-                                zIndex: "1000",
-                                fill: "#ffd903",
-                            }}/>
-                        </motion.div>
-                    </div>
-                )}
-                {showArrowButton && (
-                    <ThemeProvider
-                        theme={blueTheme}
-                    >
-                        <motion.a
-                            initial={{opacity: 0, scale: 0}}
-                            animate={{opacity: 1, scale: 1.5}}
-                            transition={{
-                                duration: 0.3,
-                                ease: [0, 0.71, 0.2, 1.01],
-                                scale: {
+                            {playersPoints[0].player.picture
+                                ?
+                                <img
+                                    src={playersPoints[0].player?.picture}
+                                    alt={`avatar de ${playersPoints[0].player.name}`}
+                                />
+                                :
+                                <img
+                                    src={defaultAvatar}
+                                    alt="user picture"
+                                />
+                            }
+                            <h1>
+                                {playersPoints[0].player?.name}
+                            </h1>
+                            <span>
+                                {`Points : ${playersPoints[0].playerTotalPoints}`}
+                            </span>
+                            <motion.div
+                                initial={{opacity: 0, scale: 0.3, y: '-1000%', x: 0}}
+                                animate={{opacity: 1, scale: 1, y: '-320%', x: 0}}
+                                transition={{
+                                    delay: 1,
+                                    duration: 0.7,
+                                    ease: [0, 0.71, 0.2, 1.01],
                                     type: "spring",
-                                    damping: 5,
-                                    stiffness: 100,
-                                    restDelta: 0.001
-                                }
-                            }}
-                            whileHover={{scale: 2}}
-                            href={"#rest_of_players"}
+                                    damping: 10,
+                                    stiffness: 50,
+                                }}
+                            >
+                                <Crown
+                                    style={{
+                                        width: "90px",
+                                        height: "90px",
+                                        zIndex: "1000",
+                                        fill: "#ffd903",
+                                    }}
+                                />
+                            </motion.div>
+                        </div>
+                    )}
+                {showArrowButton &&
+                    (
+                        <ThemeProvider
+                            theme={blueTheme}
                         >
-                            <ArrowDownwardIcon
-                                color={'primary'}
-                                fontSize={'large'}
-                            />
-                        </motion.a>
-                    </ThemeProvider>
-                )}
+                            <motion.a
+                                initial={{opacity: 0, scale: 0}}
+                                animate={{opacity: 1, scale: 1.5}}
+                                transition={{
+                                    duration: 0.3,
+                                    ease: [0, 0.71, 0.2, 1.01],
+                                    scale: {
+                                        type: "spring",
+                                        damping: 5,
+                                        stiffness: 100,
+                                        restDelta: 0.001
+                                    }
+                                }}
+                                whileHover={{scale: 2}}
+                                href={"#rest_of_players"}
+                            >
+                                <ArrowDownwardIcon
+                                    color={'primary'}
+                                    fontSize={'large'}
+                                />
+                            </motion.a>
+                        </ThemeProvider>
+                    )
+                }
             </motion.div>
             <div
                 className={styles.ranking}
                 id={"rest_of_players"}
                 ref={ref}
             >
-                {playersPoints.length > 0 && (
-                    playersPoints.slice(1).map((p, index) =>
-                        <motion.div
-                            initial={{
-                                opacity: 0,
-                                y: isInView ? 0 : '100vh', // décalage initial uniquement si dans la vue
-                            }}
-                            animate={{
-                                opacity: 1,
-                                y: isInView ? 0 : '100vh', // décalage d'animation uniquement si dans la vue
-                            }}
-                            transition={{
-                                duration: 0.9,
-                                ease: [0.17, 0.55, 0.55, 1],
-                                delay: isInView ? index * 0.2 : 0, // délai seulement si dans la vue
-                            }}
-                            className={styles.player_info}
-                            key={p.player.id}
-                        >
-                            <span>{index + 2}ème</span>
-                            {p.player.picture ?
-                                <img src={p.player?.picture}
-                                     alt={`avatar de ${p.player.name}`}/>
-                                :
-                                <img src={defaultAvatar} alt="user picture"/>
-                            }
-                            <h1>{p.player?.name}</h1>
-                            <span>{p.playerTotalPoints === 1
-                                ?
-                                `${p.playerTotalPoints} point`
-                                :
-                                `${p.playerTotalPoints} points`
-                            }</span>
-                        </motion.div>
+                {playersPoints.length > 0 &&
+                    (
+                        playersPoints.slice(1).map((p, index) =>
+                            <motion.div
+                                initial={{
+                                    opacity: 0,
+                                    y: isInView ? 0 : '100vh', // décalage initial uniquement si dans la vue
+                                }}
+                                animate={{
+                                    opacity: 1,
+                                    y: isInView ? 0 : '100vh', // décalage d'animation uniquement si dans la vue
+                                }}
+                                transition={{
+                                    duration: 0.9,
+                                    ease: [0.17, 0.55, 0.55, 1],
+                                    delay: isInView ? index * 0.2 : 0, // délai seulement si dans la vue
+                                }}
+                                className={styles.player_info}
+                                key={p.player.id}
+                            >
+                                <span>
+                                    {index + 2}ème
+                                </span>
+                                {p.player.picture
+                                    ?
+                                    <img
+                                        src={p.player?.picture}
+                                        alt={`avatar de ${p.player.name}`}
+                                    />
+                                    :
+                                    <img
+                                        src={defaultAvatar}
+                                        alt="user picture"
+                                    />
+                                }
+                                <h1>
+                                    {p.player?.name}
+                                </h1>
+                                <span>
+                                {p.playerTotalPoints === 1
+                                    ?
+                                    `${p.playerTotalPoints} point`
+                                    :
+                                    `${p.playerTotalPoints} points`
+                                }
+                                </span>
+                            </motion.div>
+                        )
                     )
-                )}
+                }
             </div>
         </div>
     )

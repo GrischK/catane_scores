@@ -26,12 +26,12 @@ export default function MysteriousText({children, colorsList}: MysteriousTextPro
                 <animated.span key={index} style={{
                     ...animation,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    fontFamily: 'Zeyada, cursive',
+                    fontFamily: 'Indie Flower, cursive',
                     fontSize: '4rem',
                     fontWeight: 'bolder',
                     margin: '2px',
                     marginTop: '5vh',
-                    textShadow: '1px 1px 2px grey'
+                    textShadow: '1px 1px 2px grey',
                     // WebkitTextStroke: '.5px black'
                 }}>
                                {childText[index]}

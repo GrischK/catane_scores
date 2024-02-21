@@ -1,10 +1,10 @@
 import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './GamesList.module.css';
 import {useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
-import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
 import Pagination from "../../components/Pagination/Pagination";
 import {Alert, Snackbar} from "@mui/material";
+import {motion} from "framer-motion";
 
 export default function GamesList({gamesListRefreshed}: any) {
     const {data, refetch} = useGamesQuery()
@@ -71,7 +71,7 @@ export default function GamesList({gamesListRefreshed}: any) {
                 className={styles.players_list_title}
             >
                 <MysteriousText
-                    colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                    colorsList={["#ffd903", "#FFED85", "#5FF141", "#2dc40f"]}
                 >
                     Les joutes Catanistiques
                 </MysteriousText>
