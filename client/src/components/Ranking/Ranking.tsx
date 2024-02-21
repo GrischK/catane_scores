@@ -40,17 +40,17 @@ export default function Ranking() {
                     );
 
                     if (playerIndex !== -1) {
-                        updatedPlayersPoints[playerIndex].playerTotalPoints += 1;
+                        updatedPlayersPoints[playerIndex].victoryCount += 1;
                     } else {
                         updatedPlayersPoints.push({
                             player: firstPlayer,
-                            playerTotalPoints: 1,
+                            victoryCount: 1,
                         });
                     }
                 }
                 window.history.scrollRestoration = 'manual'
             });
-            updatedPlayersPoints.sort((a, b) => b.playerTotalPoints - a.playerTotalPoints);
+            updatedPlayersPoints.sort((a, b) => b.victoryCount - a.victoryCount);
 
             setPlayersPoints(updatedPlayersPoints);
         }
@@ -150,7 +150,7 @@ export default function Ranking() {
                         className={styles.players_list_title}
                     >
                         <MysteriousText
-                            colorsList={["#f04d4d", "#F58F8F", "#ffd903","#FFED85", "#5ba1fc", "#87BAFD"]}
+                            colorsList={["#f04d4d", "#F58F8F", "#ffd903", "#FFED85", "#5ba1fc", "#87BAFD"]}
                         >
                             Trône du Catane
                         </MysteriousText>
@@ -191,7 +191,7 @@ export default function Ranking() {
                                 {playersPoints[0].player?.name}
                             </h1>
                             <span>
-                                {`Points : ${playersPoints[0].playerTotalPoints}`}
+                                {`Points : ${playersPoints[0].victoryCount}`}
                             </span>
                             <motion.div
                                 initial={{opacity: 0, scale: 0.3, y: '-1000%', x: 0}}
@@ -290,11 +290,12 @@ export default function Ranking() {
                                     {p.player?.name}
                                 </h1>
                                 <span>
-                                {p.playerTotalPoints === 1
-                                    ?
-                                    `${p.playerTotalPoints} point`
-                                    :
-                                    `${p.playerTotalPoints} points`
+                                {
+                                    p.victoryCount === 1
+                                        ?
+                                        `${p.victoryCount} point`
+                                        :
+                                        `${p.victoryCount} points`
                                 }
                                 </span>
                             </motion.div>

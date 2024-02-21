@@ -83,18 +83,38 @@ export default function RankingPage() {
                     );
 
                     if (playerIndex !== -1) {
-                        updatedPlayersPoints[playerIndex].playerTotalPoints += 1;
+                        updatedPlayersPoints[playerIndex].victoryCount += 1;
                     } else {
                         updatedPlayersPoints.push({
                             player: firstPlayer,
-                            playerTotalPoints: 1,
+                            victoryCount: 1,
                         });
                     }
+
+                    game.scores.forEach((score) => {
+                        const playerIndex = updatedPlayersPoints.findIndex(
+                            (p) => p.player?.name === score.player.name
+                        );
+
+                        if (playerIndex !== -1) {
+                            updatedPlayersPoints[playerIndex].participationCount =
+                                (updatedPlayersPoints[playerIndex].participationCount ?? 0) + 1;
+                        } else {
+                            updatedPlayersPoints.push({
+                                player: score.player,
+                                victoryCount: 0,
+                                participationCount: 1,
+                            });
+                        }
+                    });
                 }
+                console.log(game)
             });
-            updatedPlayersPoints.sort((a, b) => b.playerTotalPoints - a.playerTotalPoints);
+            updatedPlayersPoints.sort((a, b) => b.victoryCount - a.victoryCount);
 
             setPlayersPoints(updatedPlayersPoints);
+
+            console.table(updatedPlayersPoints)
         }
     }, [data]);
 

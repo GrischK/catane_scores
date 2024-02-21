@@ -54,16 +54,16 @@ export default function PlayersList() {
                     );
 
                     if (playerIndex !== -1) {
-                        updatedPlayersPoints[playerIndex].playerTotalPoints += 1;
+                        updatedPlayersPoints[playerIndex].victoryCount += 1;
                     } else {
                         updatedPlayersPoints.push({
                             player: firstPlayer,
-                            playerTotalPoints: 1,
+                            victoryCount: 1,
                         } as PlayersPoints);
                     }
                 }
             });
-            updatedPlayersPoints.sort((a, b) => b.playerTotalPoints - a.playerTotalPoints);
+            updatedPlayersPoints.sort((a, b) => b.victoryCount - a.victoryCount);
 
             setPlayersPoints(updatedPlayersPoints);
         }
@@ -195,7 +195,7 @@ export default function PlayersList() {
                                                         playerName={user.name}
                                                         playerAvatar={user.picture}
                                                         gamesCounter={user.games?.length}
-                                                        playerRank={(playersPoints.find((player) => player.player.name === user.name) || {}).playerTotalPoints || 0}
+                                                        playerRank={(playersPoints.find((player) => player.player.name === user.name) || {}).victoryCount || 0}
                                                         userId={user.id}
                                                         onClickDeleteFunction={onClickDeletePlayer}
                                                         refreshPlayersList={refreshPlayersList}
