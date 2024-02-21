@@ -17,7 +17,7 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import {IconButton} from "@mui/material";
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
-import {motion} from "framer-motion";
+import {motion, AnimatePresence} from "framer-motion";
 import {blueTheme} from "../../utils/stylesVariantes";
 
 export default function RankingPage() {
@@ -221,275 +221,307 @@ export default function RankingPage() {
 
     return (
         <div>
-            {step === 1 && (
-                <div>
-                    <Ranking/>
-                    <div
-                        className={styles.goTo_podium}
-                    >
-                        <ThemeProvider
-                            theme={blueTheme}
+            <AnimatePresence>
+                {step === 1 &&
+                    (
+                        <motion.div
+                            key="step1"
+                            initial={{opacity: 1}}
+                            animate={{opacity: 1}}
+                            exit={{opacity: 0}}
+                            transition={{duration: 0.5}}
                         >
-                            <IconButton
-                                color='primary'
-                                onClick={() => setStep(prevState => prevState + 1)}
+                            <Ranking/>
+                            <div
+                                className={styles.goTo_podium}
                             >
-                                <EmojiEventsIcon
-                                    fontSize='medium'
-                                />
-                            </IconButton>
-                        </ThemeProvider>
-                    </div>
-                </div>)
-            }
-            {step === 2 && (
-                <div
-                    className={`${styles.newRanking_container} ${newBackground ? `${styles.updated}` : ''} `}
-                >
-                    <motion.div
-                        initial={{opacity: 0}}
-                        animate={{opacity: 1}}
-                        transition={{duration: 2.5}}
-                        className={styles.title}
-                    >
-                        <img
-                            src={cup}
-                            alt={'cup'}
-                            style={{height: '3vh'}}
-                        />
-                        <SparklesComponent>
-                            <h1>
-                                Podium
-                            </h1>
-                        </SparklesComponent>
-                        <img
-                            src={cup}
-                            alt={'cup'}
-                            style={{height: '3vh'}}
-                        />
-                    </motion.div>
-                    <div
-                        className={styles.mute_sound}
-                    >
-                        <ThemeProvider
-                            theme={blueTheme}
+                                <ThemeProvider
+                                    theme={blueTheme}
+                                >
+                                    <IconButton
+                                        color='primary'
+                                        onClick={() => setStep(prevState => prevState + 1)}
+                                    >
+                                        <EmojiEventsIcon
+                                            fontSize='medium'
+                                        />
+                                    </IconButton>
+                                </ThemeProvider>
+                            </div>
+                        </motion.div>
+                    )
+                }
+            </AnimatePresence>
+            <AnimatePresence>
+                {step === 2 &&
+                    (
+                        <motion.div
+                            key="step2"
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            exit={{opacity: 0}}
+                            transition={{duration: 1, delay: 0.5}}
+                            className={`${styles.newRanking_container} ${newBackground ? `${styles.updated}` : ''} `}
                         >
-                            <IconButton
-                                color={'secondary'}
-                                onClick={muteSounds}
+                            <motion.div
+                                initial={{opacity: 0}}
+                                animate={{opacity: 1}}
+                                transition={{duration: 2.5}}
+                                className={styles.title}
                             >
-                                {mutedSounds
-                                    ?
-                                    <VolumeMuteIcon
-                                        fontSize={'medium'}
-                                    />
-                                    :
-                                    <VolumeOffIcon
-                                        fontSize={'medium'}
-                                    />
-                                }
-                            </IconButton>
-                        </ThemeProvider>
-                    </div>
-                    {isExploding &&
-                        <ConfettiExplosion
-                            className={`confetti`}
-                            height={"100vh"}
-                            width={2000}
-                        />}
-                    <div
-                        className={`${styles.thirdPlayer} ${thirdPlayerIsShown ? styles.appear : ''} ${moveThirdPlayer ? styles.move : ''} ${finalPodiumBackground ? styles.final : ''} `}
-                    >
-                        {thirdIsSparkling ? (
-                                <SparklesComponent>
-                                    <img
-                                        src={thirdMedal} alt={"medal of third best player"}
-                                        className={styles.podiumMedal}
-                                    />
-                                    {playersPoints.length > 0 &&
-                                        <h1
-                                            className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
-                                        >
-                                            {playersPoints[2].player?.name}
-                                        </h1>
-                                    }
-                                </SparklesComponent>
-                            )
-                            :
-                            (
-                                <>
-                                    <img
-                                        src={thirdMedal}
-                                        alt={"medal of third best player"}
-                                        className={styles.podiumMedal}
-                                    />
-                                    {playersPoints.length > 0 &&
-
-                                        <h1
-                                            className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
-                                        >
-                                            {playersPoints[2].player?.name}
-                                        </h1>
-                                    }
-                                </>
-                            )
-                        }
-                        <div
-                            className={`${styles.playerName} ${thirdPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
-                        >
-                            {playersPoints.length > 0 && (
-                                <div
-                                    className={styles.player_info}
-                                >
-                                    {playersPoints[2].player.picture
-                                        ?
-                                        <img
-                                            src={playersPoints[2].player?.picture}
-
-                                            alt={`avatar de ${playersPoints[2].player.name}`}
-                                        />
-                                        :
-                                        <img
-                                            src={defaultAvatar}
-                                            alt={`avatar de ${playersPoints[2].player.name}`}
-                                        />
-                                    }
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div
-                        className={`${styles.secondPlayer} ${secondPlayerIsShown ? styles.appear : ''} ${moveSecondPlayer ? styles.move : ''} ${finalPodiumBackground ? styles.final : ''}`}
-                    >
-                        {secondIsSparkling ?
-                            (
-                                <SparklesComponent>
-                                    <img
-                                        src={secondMedal}
-                                        alt={"medal of second best player"}
-                                        className={styles.podiumMedal}
-                                    />
-                                    {playersPoints.length > 0 &&
-                                        <h1
-                                            className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
-                                        >
-                                            {playersPoints[1].player?.name}
-                                        </h1>
-                                    }
-                                </SparklesComponent>
-                            )
-                            :
-                            (
-                                <>
-                                    <img
-                                        src={secondMedal}
-                                        alt={"medal of second best player"}
-                                        className={styles.podiumMedal}
-                                    />
-                                    {playersPoints.length > 0 &&
-                                        <h1
-                                            className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
-                                        >
-                                            {playersPoints[1].player?.name}
-                                        </h1>
-                                    }
-                                </>
-                            )
-                        }
-                        <div
-                            className={`${styles.playerName} ${secondPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
-                        >
-                            {playersPoints.length > 0 && (
-                                <div
-                                    className={styles.player_info}
-                                >
-                                    {playersPoints[1].player.picture ?
-                                        <img
-                                            src={playersPoints[1].player?.picture}
-
-                                            alt={`avatar de ${playersPoints[1].player.name}`}
-                                        />
-                                        :
-                                        <img
-                                            src={defaultAvatar}
-                                            alt={`avatar de ${playersPoints[1].player.name}`}
-                                        />
-                                    }
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div
-                        className={`${styles.firstPlayer} ${firstPlayerIsShown ? styles.appear : ''} ${moveFirstPlayer ? styles.move : ''}  ${finalPodiumBackground ? styles.final : ''}`}
-                    >
-                        {firstIsSparkling
-                            ?
-                            (<SparklesComponent>
                                 <img
                                     src={cup}
-                                    alt={"cup of the Catan king"}
-                                    className={styles.podiumMedal}
+                                    alt={'cup'}
+                                    style={{height: '3vh'}}
                                 />
-                                {playersPoints.length > 0 &&
-                                    <h1
-                                        className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
-                                    >
-                                        {playersPoints[0].player?.name}
+                                <SparklesComponent>
+                                    <h1>
+                                        Podium
                                     </h1>
-                                }
-                            </SparklesComponent>)
-                            :
-                            (
-                                <>
-                                    <img
-                                        src={cup}
-                                        alt={"cup of the Catan king"}
-                                        className={styles.podiumMedal}
-                                    />
-                                    {playersPoints.length > 0 &&
-                                        <h1
-                                            className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
-                                        >
-                                            {playersPoints[0].player?.name}
-                                        </h1>
-                                    }
-                                </>
-                            )
-                        }
-                        <div
-                            className={`${styles.playerName} ${firstPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
-                            {playersPoints.length > 0 && (
-                                <div
-                                    className={styles.player_info}
-                                >
-                                    {playersPoints[0].player.picture ?
-
-                                        <img
-                                            src={playersPoints[0].player?.picture}
-                                            alt={`avatar de ${playersPoints[0].player.name}`}
-                                        />
-                                        :
-                                        <img
-                                            src={defaultAvatar}
-                                            alt={`avatar de ${playersPoints[0].player.name}`}
-                                        />
-                                    }
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    {spotLight
-                        ?
-                        (
+                                </SparklesComponent>
+                                <img
+                                    src={cup}
+                                    alt={'cup'}
+                                    style={{height: '3vh'}}
+                                />
+                            </motion.div>
                             <div
-                                className={`${styles.lightCircleOff} ${darkBackground ? styles.lightCircleOn : ''} ${moveFirstPlayer ? styles.move : ""}`}>
+                                className={styles.mute_sound}
+                            >
+                                <ThemeProvider
+                                    theme={blueTheme}
+                                >
+                                    <IconButton
+                                        color={'secondary'}
+                                        onClick={muteSounds}
+                                    >
+                                        {
+                                            mutedSounds
+                                                ?
+                                                <VolumeMuteIcon
+                                                    fontSize={'medium'}
+                                                />
+                                                :
+                                                <VolumeOffIcon
+                                                    fontSize={'medium'}
+                                                />
+                                        }
+                                    </IconButton>
+                                </ThemeProvider>
                             </div>
-                        )
-                        :
-                        null
-                    }
-                </div>
-            )}
+                            {
+                                isExploding &&
+                                <ConfettiExplosion
+                                    className={`confetti`}
+                                    height={"100vh"}
+                                    width={2000}
+                                />
+                            }
+                            <div
+                                className={`${styles.thirdPlayer} ${thirdPlayerIsShown ? styles.appear : ''} ${moveThirdPlayer ? styles.move : ''} ${finalPodiumBackground ? styles.final : ''} `}
+                            >
+                                {thirdIsSparkling ? (
+                                        <SparklesComponent>
+                                            <img
+                                                src={thirdMedal} alt={"medal of third best player"}
+                                                className={styles.podiumMedal}
+                                            />
+                                            {
+                                                playersPoints.length > 0 &&
+                                                <h1
+                                                    className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                                >
+                                                    {playersPoints[2].player?.name}
+                                                </h1>
+                                            }
+                                        </SparklesComponent>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <img
+                                                src={thirdMedal}
+                                                alt={"medal of third best player"}
+                                                className={styles.podiumMedal}
+                                            />
+                                            {
+                                                playersPoints.length > 0 &&
+
+                                                <h1
+                                                    className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                                >
+                                                    {playersPoints[2].player?.name}
+                                                </h1>
+                                            }
+                                        </>
+                                    )
+                                }
+                                <div
+                                    className={`${styles.playerName} ${thirdPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
+                                >
+                                    {playersPoints.length > 0 && (
+                                        <div
+                                            className={styles.player_info}
+                                        >
+                                            {playersPoints[2].player.picture
+                                                ?
+                                                <img
+                                                    src={playersPoints[2].player?.picture}
+
+                                                    alt={`avatar de ${playersPoints[2].player.name}`}
+                                                />
+                                                :
+                                                <img
+                                                    src={defaultAvatar}
+                                                    alt={`avatar de ${playersPoints[2].player.name}`}
+                                                />
+                                            }
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <div
+                                className={`${styles.secondPlayer} ${secondPlayerIsShown ? styles.appear : ''} ${moveSecondPlayer ? styles.move : ''} ${finalPodiumBackground ? styles.final : ''}`}
+                            >
+                                {secondIsSparkling ?
+                                    (
+                                        <SparklesComponent>
+                                            <img
+                                                src={secondMedal}
+                                                alt={"medal of second best player"}
+                                                className={styles.podiumMedal}
+                                            />
+                                            {
+                                                playersPoints.length > 0 &&
+                                                <h1
+                                                    className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                                >
+                                                    {playersPoints[1].player?.name}
+                                                </h1>
+                                            }
+                                        </SparklesComponent>
+                                    )
+                                    :
+                                    (
+                                        <>
+                                            <img
+                                                src={secondMedal}
+                                                alt={"medal of second best player"}
+                                                className={styles.podiumMedal}
+                                            />
+                                            {
+                                                playersPoints.length > 0 &&
+                                                <h1
+                                                    className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                                >
+                                                    {playersPoints[1].player?.name}
+                                                </h1>
+                                            }
+                                        </>
+                                    )
+                                }
+                                <div
+                                    className={`${styles.playerName} ${secondPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
+                                >
+                                    {playersPoints.length > 0 && (
+                                        <div
+                                            className={styles.player_info}
+                                        >
+                                            {
+                                                playersPoints[1].player.picture
+                                                    ?
+                                                    <img
+                                                        src={playersPoints[1].player?.picture}
+
+                                                        alt={`avatar de ${playersPoints[1].player.name}`}
+                                                    />
+                                                    :
+                                                    <img
+                                                        src={defaultAvatar}
+                                                        alt={`avatar de ${playersPoints[1].player.name}`}
+                                                    />
+                                            }
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            <div
+                                className={`${styles.firstPlayer} ${firstPlayerIsShown ? styles.appear : ''} ${moveFirstPlayer ? styles.move : ''}  ${finalPodiumBackground ? styles.final : ''}`}
+                            >
+                                {firstIsSparkling
+                                    ?
+                                    (<SparklesComponent>
+                                        <img
+                                            src={cup}
+                                            alt={"cup of the Catan king"}
+                                            className={styles.podiumMedal}
+                                        />
+                                        {
+                                            playersPoints.length > 0 &&
+                                            <h1
+                                                className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                            >
+                                                {playersPoints[0].player?.name}
+                                            </h1>
+                                        }
+                                    </SparklesComponent>)
+                                    :
+                                    (
+                                        <>
+                                            <img
+                                                src={cup}
+                                                alt={"cup of the Catan king"}
+                                                className={styles.podiumMedal}
+                                            />
+                                            {
+                                                playersPoints.length > 0 &&
+                                                <h1
+                                                    className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                                >
+                                                    {playersPoints[0].player?.name}
+                                                </h1>
+                                            }
+                                        </>
+                                    )
+                                }
+                                <div
+                                    className={`${styles.playerName} ${firstPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
+                                    {playersPoints.length > 0 && (
+                                        <div
+                                            className={styles.player_info}
+                                        >
+                                            {
+                                                playersPoints[0].player.picture
+                                                    ?
+                                                    <img
+                                                        src={playersPoints[0].player?.picture}
+                                                        alt={`avatar de ${playersPoints[0].player.name}`}
+                                                    />
+                                                    :
+                                                    <img
+                                                        src={defaultAvatar}
+                                                        alt={`avatar de ${playersPoints[0].player.name}`}
+                                                    />
+                                            }
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                            {
+                                spotLight
+                                    ?
+                                    (
+                                        <div
+                                            className={`${styles.lightCircleOff} ${darkBackground ? styles.lightCircleOn : ''} ${moveFirstPlayer ? styles.move : ""}`}>
+                                        </div>
+                                    )
+                                    :
+                                    null
+                            }
+                        </motion.div>
+                    )
+                }
+            </AnimatePresence>
         </div>
     )
 }

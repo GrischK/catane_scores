@@ -382,7 +382,7 @@ export default function NewGame({refreshGamesList}: any) {
                     </motion.div>
                     <CloseIcon
                         onClick={handleCloseModal}
-                        className={styles.close_modal_icon}
+                        className={styles.add_players_close_modal_icon}
                     />
                 </Box>
             </Modal>

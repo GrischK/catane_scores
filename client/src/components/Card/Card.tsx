@@ -173,7 +173,7 @@ export default function Card({
                     </motion.div>
                     <CloseIcon
                         onClick={handleCloseModal}
-                        className={styles.close_modal_icon}
+                        className={styles.update_player_close_modal_icon}
                     />
                 </Box>
             </Modal>

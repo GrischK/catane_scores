@@ -60,14 +60,14 @@ h1 {
     margin-bottom: 3vh;
 }
 
-.close_modal_icon {
+.update_player_close_modal_icon {
     position: absolute;
     top: 10px;
     right: 10px;
     transition: scale 0.2s ease-in-out;
 }
 
-.close_modal_icon:hover {
+.update_player_close_modal_icon:hover {
     scale: 1.5;
     cursor: pointer;
 }
