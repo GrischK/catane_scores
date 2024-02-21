@@ -68,3 +68,11 @@ export const range = (start: number, end?: number, step = 1) => {
     }
     return output;
 };
+
+// Check if first letter is vowel or includes part of Ionut firstname
+export const isFirstLetterVowel = (word: string) => {
+    if (word.includes('Ion') || word.includes('Yon')) {
+        return
+    }
+    return /^[aeiou]/i.test(word);
+};
