@@ -110,15 +110,27 @@
 }
 
 .firstPlayer.final {
-  background:var(--bg-red)
+  background: rgb(240,77,77);
+  background: linear-gradient(45deg, rgba(240,77,77,1) 20%, rgba(244,176,176,1) 40%, rgba(241,208,208,1) 50%, rgba(244,176,176,1) 60%, rgba(240,77,77,1) 80%);
+  animation: gradient 10s ease infinite;
+  background-size: 300% 300%;
+  /*background:var(--bg-red)*/
 }
 
 .secondPlayer.final {
-  background:var(--bg-green)
+  background: rgb(45,196,15);
+  background: linear-gradient(45deg, rgba(45,196,15,1) 20%, rgba(191,250,179,1) 40%, rgba(230,252,226,1) 50%, rgba(191,250,179,1) 60%, rgba(45,196,15,1) 80%);
+  animation: gradient 12s ease infinite;
+  background-size: 300% 300%;
+  /*background:var(--bg-green)*/
 }
 
 .thirdPlayer.final {
-  background:var(--bg-blue)
+  background: rgb(91,161,252);
+  background: linear-gradient(45deg, rgba(91,161,252,1) 20%, rgba(184,215,255,1) 40%, rgba(222,237,255,1) 50%, rgba(184,215,255,1) 60%, rgba(91,161,252,1) 80%);
+  animation: gradient 14s ease infinite;
+  background-size: 300% 300%;
+  /*background:var(--bg-blue)*/
 }
 
 .playerName {
