@@ -1,51 +1,59 @@
 import styles from './RankingPage.module.css';
 import React, {useEffect, useRef, useState} from "react";
+import {useGamesQuery} from "../../gql/generated/schema";
 import ConfettiExplosion from 'react-confetti-explosion';
+import Ranking from "../../components/Ranking/Ranking"
+import {ThemeProvider} from '@mui/material/styles';
+import SparklesComponent from "../../components/SparklesComponent/SparklesComponent";
+import {PlayersPoints} from "../../interfaces/playersListPage.interface";
 import cheer from '../../assets/sounds/cheer.mp3'
 import trumpets from '../../assets/sounds/fanfare_trumpets.mp3'
 import tadaa from '../../assets/sounds/tadaa.mp3'
-import {useGamesQuery} from "../../gql/generated/schema";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import thirdMedal from "../../assets/images/medal_3.png"
 import secondMedal from "../../assets/images/medal_2.png"
 import cup from "../../assets/images/cup.png"
-import Ranking from "../../components/Ranking/Ranking"
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import {IconButton} from "@mui/material";
-import {ThemeProvider} from '@mui/material/styles';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {motion} from "framer-motion";
 import {blueTheme} from "../../utils/stylesVariantes";
-import {PlayersPoints} from "../../interfaces/playersListPage.interface";
-import Sparkles from "../../components/Sparkles/Sparkles";
 
 export default function RankingPage() {
+    // Show 3rd player
     const [thirdPlayerIsShown, setThirdPlayerIsShown] = useState(false)
     const [moveThirdPlayer, setMoveThirdPlayer] = useState(false)
     const [thirdPlayerNameIsShown, setThirdPlayerNameIsShown] = useState(false)
 
+    // Show 2nd player
     const [secondPlayerIsShown, setSecondPlayerIsShown] = useState(false)
     const [moveSecondPlayer, setMoveSecondPlayer] = useState(false)
     const [secondPlayerNameIsShown, setSecondPlayerNameIsShown] = useState(false)
 
+    // Show 1st player
     const [firstPlayerIsShown, setFirstPlayerIsShown] = useState(false)
     const [moveFirstPlayer, setMoveFirstPlayer] = useState(false)
     const [firstPlayerNameIsShown, setFirstPlayerNameIsShown] = useState(false)
 
+    // Manage dark background & spotlight
     const [darkBackground, setDarkBackground] = useState(false)
     const [spotLight, setSpotLight] = useState(false);
 
+    // Confetti explosion
     const [isExploding, setIsExploding] = useState(false);
 
-    const [mutedSounds, setMutedSounds] = useState(false);
-
+    // Manage sparkles
     const [firstIsSparkling, setFirstIsSparkling] = useState(false)
     const [secondIsSparkling, setSecondIsSparkling] = useState(false)
     const [thirdIsSparkling, setThirdIsSparkling] = useState(false)
 
+    // Change background at podium animation end
     const [newBackground, setNewBackground] = useState(false)
     const [finalPodiumBackground, setFinalPodiumBackground] = useState(false)
+
+    // Manage sounds
+    const [mutedSounds, setMutedSounds] = useState(false);
     const cheersSoundRef = useRef(new Audio(cheer));
     const trumpetsSoundRef = useRef(new Audio(trumpets));
     const tadaaSound1Ref = useRef(new Audio(tadaa));
@@ -55,12 +63,11 @@ export default function RankingPage() {
     tadaaSound2Ref.current.volume = 0.5
     tadaaSound3Ref.current.volume = 0.6
 
-    const {data, refetch} = useGamesQuery()
-    const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
-
+    // Manage steps
     const [step, setStep] = useState(1)
 
-    const [mysteriousTextIsShown, setMysteriousTextIsShown] = useState(false);
+    const {data, refetch} = useGamesQuery()
+    const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
 
     useEffect(() => {
         if (data) {
@@ -95,6 +102,7 @@ export default function RankingPage() {
         if (step === 2) {
             const timers: any[] = [];
 
+            // Manage 3rd player timers
             const thirdPlayerTimer = setTimeout(() => {
                 setThirdPlayerIsShown(true)
                 tadaaSound1Ref.current.play();
@@ -109,7 +117,9 @@ export default function RankingPage() {
                 setThirdIsSparkling(true)
             }, 5200);
 
-            timers.push(thirdPlayerTimer, moveThirdPlayerTimer, thirdPlayerNameTimer);
+            timers.push(thirdPlayerTimer, thirdPlayerNameTimer, moveThirdPlayerTimer, thirdPlayerSparkles);
+
+            // Manage 2nd player timers
             const secondPlayerTimer = setTimeout(() => {
                 setSecondPlayerIsShown(true)
                 // tadaaSound1Ref.current.currentTime = 0;
@@ -125,6 +135,9 @@ export default function RankingPage() {
                 setSecondIsSparkling(true)
             }, 9200);
 
+            timers.push(secondPlayerTimer, secondPlayerNameTimer, moveSecondPlayerTimer, secondPlayerSparkles);
+
+            // Manage 1st player timers
             const firstPlayerTimer = setTimeout(() => {
                 setFirstPlayerIsShown(true)
                 // tadaaSound2Ref.current.currentTime = 0;
@@ -139,30 +152,39 @@ export default function RankingPage() {
             const firstPlayerSparkles = setTimeout(() => {
                 setFirstIsSparkling(true)
             }, 13200);
-            timers.push(firstPlayerTimer, moveFirstPlayerTimer, firstPlayerNameTimer);
 
+            timers.push(firstPlayerTimer, firstPlayerNameTimer, moveFirstPlayerTimer, firstPlayerSparkles);
+
+            // Manage dark background & spotlight timers
             const darkBackground = setTimeout(() => {
                 setDarkBackground(true)
             }, 10000);
             const light = setTimeout(() => {
                 setSpotLight(true);
-
             }, 10500);
             const removeDarkBackground = setTimeout(() => {
                 setDarkBackground(false);
             }, 14000);
-            timers.push(secondPlayerTimer, moveSecondPlayerTimer, secondPlayerNameTimer, light, removeDarkBackground, darkBackground, thirdPlayerSparkles, firstPlayerSparkles, secondPlayerSparkles);
 
+            timers.push(darkBackground, light, removeDarkBackground);
+
+            // Manage confetti timers
             const confettiTimer = setTimeout(() => {
                 setIsExploding(true);
             }, 11000);
 
+            timers.push(confettiTimer);
+
+            // Manage 1st player sounds timers
             const cheersPlay = setTimeout(() => {
                 trumpetsSoundRef.current.play();
                 cheersSoundRef.current.play();
             }, 10700)
 
-            const changeBackgourndTimer = setTimeout(() => {
+            timers.push(cheersPlay);
+
+            // Manage final background timer
+            const changeBackgroundTimer = setTimeout(() => {
                 setNewBackground(true)
             }, 14000)
 
@@ -170,11 +192,7 @@ export default function RankingPage() {
                 setFinalPodiumBackground(true)
             }, 14000)
 
-            const mysteriousTextTimer = setTimeout(() => {
-                setMysteriousTextIsShown(true)
-            }, 1000)
-
-            timers.push(cheersPlay, confettiTimer, mysteriousTextTimer, changeBackgourndTimer, finalPodiumBackground);
+            timers.push(changeBackgroundTimer, finalPodiumBackground);
 
             return () => {
                 timers.forEach(timer => clearTimeout(timer));
@@ -206,7 +224,9 @@ export default function RankingPage() {
             {step === 1 && (
                 <div>
                     <Ranking/>
-                    <div className={styles.goTo_podium}>
+                    <div
+                        className={styles.goTo_podium}
+                    >
                         <ThemeProvider
                             theme={blueTheme}
                         >
@@ -223,7 +243,8 @@ export default function RankingPage() {
                 </div>)
             }
             {step === 2 && (
-                <div className={`${styles.newRanking_container} ${newBackground ? `${styles.updated}` : ''} `}
+                <div
+                    className={`${styles.newRanking_container} ${newBackground ? `${styles.updated}` : ''} `}
                 >
                     <motion.div
                         initial={{opacity: 0}}
@@ -231,11 +252,21 @@ export default function RankingPage() {
                         transition={{duration: 2.5}}
                         className={styles.title}
                     >
-                        <img src={cup} alt={'cup'} style={{height: '3vh'}}/>
-                        <Sparkles>
-                            <h1>Podium</h1>
-                        </Sparkles>
-                        <img src={cup} alt={'cup'} style={{height: '3vh'}}/>
+                        <img
+                            src={cup}
+                            alt={'cup'}
+                            style={{height: '3vh'}}
+                        />
+                        <SparklesComponent>
+                            <h1>
+                                Podium
+                            </h1>
+                        </SparklesComponent>
+                        <img
+                            src={cup}
+                            alt={'cup'}
+                            style={{height: '3vh'}}
+                        />
                     </motion.div>
                     <div
                         className={styles.mute_sound}
@@ -260,7 +291,6 @@ export default function RankingPage() {
                             </IconButton>
                         </ThemeProvider>
                     </div>
-
                     {isExploding &&
                         <ConfettiExplosion
                             className={`confetti`}
@@ -271,26 +301,32 @@ export default function RankingPage() {
                         className={`${styles.thirdPlayer} ${thirdPlayerIsShown ? styles.appear : ''} ${moveThirdPlayer ? styles.move : ''} ${finalPodiumBackground ? styles.final : ''} `}
                     >
                         {thirdIsSparkling ? (
-                                <Sparkles>
-                                    <img src={thirdMedal} alt={"medal of third best player"}
-                                         className={styles.podiumMedal}/>
+                                <SparklesComponent>
+                                    <img
+                                        src={thirdMedal} alt={"medal of third best player"}
+                                        className={styles.podiumMedal}
+                                    />
                                     {playersPoints.length > 0 &&
-
-                                        <h1 className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                        <h1
+                                            className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                         >
                                             {playersPoints[2].player?.name}
                                         </h1>
                                     }
-                                </Sparkles>
+                                </SparklesComponent>
                             )
                             :
                             (
                                 <>
-                                    <img src={thirdMedal} alt={"medal of third best player"}
-                                         className={styles.podiumMedal}/>
+                                    <img
+                                        src={thirdMedal}
+                                        alt={"medal of third best player"}
+                                        className={styles.podiumMedal}
+                                    />
                                     {playersPoints.length > 0 &&
 
-                                        <h1 className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
+                                        <h1
+                                            className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                         >
                                             {playersPoints[2].player?.name}
                                         </h1>
@@ -298,16 +334,20 @@ export default function RankingPage() {
                                 </>
                             )
                         }
-
-
                         <div
                             className={`${styles.playerName} ${thirdPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
                         >
                             {playersPoints.length > 0 && (
-                                <div className={styles.player_info}>
-                                    {playersPoints[2].player.picture ?
-                                        <img src={playersPoints[2].player?.picture}
-                                             alt={`avatar de ${playersPoints[2].player.name}`}/>
+                                <div
+                                    className={styles.player_info}
+                                >
+                                    {playersPoints[2].player.picture
+                                        ?
+                                        <img
+                                            src={playersPoints[2].player?.picture}
+
+                                            alt={`avatar de ${playersPoints[2].player.name}`}
+                                        />
                                         :
                                         <img
                                             src={defaultAvatar}
@@ -323,9 +363,12 @@ export default function RankingPage() {
                     >
                         {secondIsSparkling ?
                             (
-                                <Sparkles>
-                                    <img src={secondMedal} alt={"medal of second best player"}
-                                         className={styles.podiumMedal}/>
+                                <SparklesComponent>
+                                    <img
+                                        src={secondMedal}
+                                        alt={"medal of second best player"}
+                                        className={styles.podiumMedal}
+                                    />
                                     {playersPoints.length > 0 &&
                                         <h1
                                             className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
@@ -333,13 +376,16 @@ export default function RankingPage() {
                                             {playersPoints[1].player?.name}
                                         </h1>
                                     }
-                                </Sparkles>
+                                </SparklesComponent>
                             )
                             :
                             (
                                 <>
-                                    <img src={secondMedal} alt={"medal of second best player"}
-                                         className={styles.podiumMedal}/>
+                                    <img
+                                        src={secondMedal}
+                                        alt={"medal of second best player"}
+                                        className={styles.podiumMedal}
+                                    />
                                     {playersPoints.length > 0 &&
                                         <h1
                                             className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
@@ -350,16 +396,24 @@ export default function RankingPage() {
                                 </>
                             )
                         }
-
                         <div
-                            className={`${styles.playerName} ${secondPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
+                            className={`${styles.playerName} ${secondPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
+                        >
                             {playersPoints.length > 0 && (
-                                <div className={styles.player_info}>
+                                <div
+                                    className={styles.player_info}
+                                >
                                     {playersPoints[1].player.picture ?
-                                        <img src={playersPoints[1].player?.picture}
-                                             alt={`avatar de ${playersPoints[1].player.name}`}/>
+                                        <img
+                                            src={playersPoints[1].player?.picture}
+
+                                            alt={`avatar de ${playersPoints[1].player.name}`}
+                                        />
                                         :
-                                        <img src={defaultAvatar} alt={`avatar de ${playersPoints[1].player.name}`}/>
+                                        <img
+                                            src={defaultAvatar}
+                                            alt={`avatar de ${playersPoints[1].player.name}`}
+                                        />
                                     }
                                 </div>
                             )}
@@ -370,8 +424,11 @@ export default function RankingPage() {
                     >
                         {firstIsSparkling
                             ?
-                            (<Sparkles>
-                                <img src={cup} alt={"cup of the Catan king"} className={styles.podiumMedal}
+                            (<SparklesComponent>
+                                <img
+                                    src={cup}
+                                    alt={"cup of the Catan king"}
+                                    className={styles.podiumMedal}
                                 />
                                 {playersPoints.length > 0 &&
                                     <h1
@@ -380,11 +437,14 @@ export default function RankingPage() {
                                         {playersPoints[0].player?.name}
                                     </h1>
                                 }
-                            </Sparkles>)
+                            </SparklesComponent>)
                             :
                             (
                                 <>
-                                    <img src={cup} alt={"cup of the Catan king"} className={styles.podiumMedal}
+                                    <img
+                                        src={cup}
+                                        alt={"cup of the Catan king"}
+                                        className={styles.podiumMedal}
                                     />
                                     {playersPoints.length > 0 &&
                                         <h1
@@ -404,8 +464,9 @@ export default function RankingPage() {
                                 >
                                     {playersPoints[0].player.picture ?
 
-                                        <img src={playersPoints[0].player?.picture}
-                                             alt={`avatar de ${playersPoints[0].player.name}`}
+                                        <img
+                                            src={playersPoints[0].player?.picture}
+                                            alt={`avatar de ${playersPoints[0].player.name}`}
                                         />
                                         :
                                         <img
@@ -417,10 +478,15 @@ export default function RankingPage() {
                             )}
                         </div>
                     </div>
-                    {spotLight ? (
-                        <div
-                            className={`${styles.lightCircleOff} ${darkBackground ? styles.lightCircleOn : ''} ${moveFirstPlayer ? styles.move : ""}`}>
-                        </div>) : null
+                    {spotLight
+                        ?
+                        (
+                            <div
+                                className={`${styles.lightCircleOff} ${darkBackground ? styles.lightCircleOn : ''} ${moveFirstPlayer ? styles.move : ""}`}>
+                            </div>
+                        )
+                        :
+                        null
                     }
                 </div>
             )}

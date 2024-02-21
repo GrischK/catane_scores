@@ -1,11 +1,18 @@
 import styles from "./ColoredInput.module.css"
-import {useEffect} from "react";
 import {ColoredInputProps} from "../../interfaces/coloredInput.interface"
+import {useEffect} from "react";
 
-export default function ColoredInput({label, bgColor, onClick, value, onChange, type='text'}: ColoredInputProps) {
+export default function ColoredInput({
+                                         label,
+                                         bgColor,
+                                         onClick,
+                                         value,
+                                         onChange,
+                                         type = 'text'
+                                     }: ColoredInputProps) {
+
     const coloredInputClassName = `${styles.colored_input} ${styles[`${bgColor}_input`]} ${styles[`${label}_input`]}`;
     const formattedLabel = inputText(label);
-
 
     useEffect(() => {
         if (value !== '') {
@@ -20,7 +27,9 @@ export default function ColoredInput({label, bgColor, onClick, value, onChange, 
     }
 
     return (
-        <div className={styles.input_container}>
+        <div
+            className={styles.input_container}
+        >
             <input
                 id={label}
                 className={`${coloredInputClassName} ${
@@ -32,8 +41,12 @@ export default function ColoredInput({label, bgColor, onClick, value, onChange, 
                 value={value || ""}
                 onChange={onChange}
             />
-            <label htmlFor={label} className={styles.input_label}>{formattedLabel}</label>
+            <label
+                htmlFor={label}
+                className={styles.input_label}
+            >
+                {formattedLabel}
+            </label>
         </div>
-
     )
 }

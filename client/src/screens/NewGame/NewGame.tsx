@@ -1,22 +1,22 @@
 import React, {useEffect, useRef, useState} from "react";
 import styles from './NewGame.module.css';
-import {
-    Alert, Box, Modal,
-    Snackbar, Typography
-} from "@mui/material";
+import {GameInterface} from "../../interfaces/newGamePage.interface";
 import {
     useCreateGameWithScoresMutation, User, useUsersByIdsQuery,
     useUsersQuery
 } from "../../gql/generated/schema";
-import defaultAvatar from "../../assets/images/default_avatar.png";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
-import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
+import {motion} from "framer-motion";
 import {buttonTransition, createGameButtonVariants, inputVariants} from "../../utils/animationVariants";
 import {newGameModalStyle} from "../../utils/stylesVariantes";
-import {GameInterface} from "../../interfaces/newGamePage.interface";
 import CloseIcon from "@mui/icons-material/Close";
+import {
+    Alert, Box, Modal,
+    Snackbar, Typography
+} from "@mui/material";
+import defaultAvatar from "../../assets/images/default_avatar.png";
 
 export default function NewGame({refreshGamesList}: any) {
     const {data} = useUsersQuery();
@@ -99,7 +99,6 @@ export default function NewGame({refreshGamesList}: any) {
         setSuccessOpen(false)
         setWarningOpen(false)
     };
-
 
     const handleModal = () => {
         setShowPlayersList(prevState => !prevState)

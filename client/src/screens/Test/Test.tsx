@@ -1,5 +1,5 @@
 import styles from "../Test/Test.module.css"
-import Sparkles from "../../components/Sparkles/Sparkles";
+import Sparkles from "../../components/SparklesComponent/SparklesComponent";
 
 export default function Test() {
 

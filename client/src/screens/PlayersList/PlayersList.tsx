@@ -1,5 +1,6 @@
 import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './PlayersList.module.css';
+import {PlayerInterface, PlayersPoints} from "../../interfaces/playersListPage.interface";
 import {
     useCreateUserMutation,
     useDeleteUserMutation, useGamesQuery,
@@ -9,16 +10,15 @@ import {Alert, IconButton, Snackbar} from "@mui/material";
 import Card from "../../components/Card/Card";
 import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
 import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import MysteriousText from "../../components/MysteriousText";
-import {motion} from "framer-motion";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
-import ArrowLeft from '@mui/icons-material/ArrowDownward';
 import {ThemeProvider} from '@mui/material/styles';
+import {motion} from "framer-motion";
+import ArrowLeft from '@mui/icons-material/ArrowDownward';
+import Box from '@mui/material/Box';
 import {buttonTransition} from "../../utils/animationVariants";
 import {blueTheme} from "../../utils/stylesVariantes";
-import {PlayerInterface, PlayersPoints} from "../../interfaces/playersListPage.interface";
 
 export default function PlayersList() {
     const [newPlayerAvatar, setNewPlayerAvatar] = useState("");
@@ -38,6 +38,7 @@ export default function PlayersList() {
 
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
     const [step, setStep] = useState(1)
+    const {data, refetch, loading} = useUsersQuery();
 
     useEffect(() => {
         if (gamesData) {
@@ -90,8 +91,6 @@ export default function PlayersList() {
         setIsPlayerUpdated(true)
     };
 
-    const {data, refetch, loading} = useUsersQuery();
-
     const [createNewPlayer] = useCreateUserMutation({
         onCompleted: () => refetch()
     });
@@ -126,7 +125,7 @@ export default function PlayersList() {
                     setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
                 });
         }
-        console.log(playerId)
+        // console.log(playerId)
     };
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -141,9 +140,13 @@ export default function PlayersList() {
         <>
             {step === 1 &&
                 (
-                    <div className={styles.players_list_container} id="players_list">
+                    <div
+                        className={styles.players_list_container} id="players_list"
+                    >
                         {loading ?
-                            <Box sx={{display: 'flex', alignItem: 'center', height: '100vh', justifyContent: 'center'}}>
+                            <Box
+                                sx={{display: 'flex', alignItem: 'center', height: '100vh', justifyContent: 'center'}}
+                            >
                                 <CircularProgress/>
                             </Box>
                             :
@@ -223,11 +226,14 @@ export default function PlayersList() {
                                 autoHideDuration={6000}
                                 onClose={handleClose}
                             >
-                                <Alert onClose={handleClose} severity="error" sx={{
-                                    width: '100%', borderRadius: '2vh',
-                                    overflow: 'hidden',
-                                    border: '3px solid black'
-                                }}>
+                                <Alert
+                                    onClose={handleClose}
+                                    severity="error"
+                                    sx={{
+                                        width: '100%', borderRadius: '2vh',
+                                        overflow: 'hidden',
+                                        border: '3px solid black'
+                                    }}>
                                     {errorMessage}
                                 </Alert>
                             </Snackbar>
@@ -237,7 +243,9 @@ export default function PlayersList() {
             }
             {step === 2 &&
                 (
-                    <div className={styles.add_player_container}>
+                    <div
+                        className={styles.add_player_container}
+                    >
                         <div
                             className={styles.back_button}
                         >
@@ -285,7 +293,9 @@ export default function PlayersList() {
                                 )
                             }
                         />
-                        <RandomAvatar onChange={setNewPlayerAvatar}/>
+                        <RandomAvatar
+                            onChange={setNewPlayerAvatar}
+                        />
                         <motion.div
                             whileHover={{scale: 1.05}}
                             transition={buttonTransition}
@@ -297,18 +307,20 @@ export default function PlayersList() {
                                 Créer le Cataneur
                             </ColoredButton>
                         </motion.div>
-
                         {errorMessage &&
                             <Snackbar
                                 open={open}
                                 autoHideDuration={6000}
                                 onClose={handleClose}
                             >
-                                <Alert onClose={handleClose} severity="error" sx={{
-                                    width: '100%', borderRadius: '2vh',
-                                    overflow: 'hidden',
-                                    border: '3px solid black'
-                                }}>
+                                <Alert
+                                    onClose={handleClose}
+                                    severity="error"
+                                    sx={{
+                                        width: '100%', borderRadius: '2vh',
+                                        overflow: 'hidden',
+                                        border: '3px solid black'
+                                    }}>
                                     {errorMessage}
                                 </Alert>
                             </Snackbar>
@@ -322,11 +334,14 @@ export default function PlayersList() {
                     autoHideDuration={6000}
                     onClose={handleClose}
                 >
-                    <Alert onClose={handleClose} severity="success" sx={{
-                        width: '100%', borderRadius: '2vh',
-                        overflow: 'hidden',
-                        border: '3px solid black'
-                    }}>
+                    <Alert
+                        onClose={handleClose}
+                        severity="success"
+                        sx={{
+                            width: '100%', borderRadius: '2vh',
+                            overflow: 'hidden',
+                            border: '3px solid black'
+                        }}>
                         {successMessage}
                     </Alert>
                 </Snackbar>

@@ -1,16 +1,13 @@
 import Sparkle from "../Sparkle/SparkleInstance";
 import {generateSparkle, range, useRandomInterval} from "../../utils/functions";
-import React, {ReactNode} from "react";
-import styles from "./Sparkles.module.css";
-
-interface SparklesComponentProps {
-    children: ReactNode,
-    color?: string
-}
+import React from "react";
+import styles from "./SparklesComponent.module.css";
+import {SparklesComponentProps} from "../../interfaces/SparklesComponent.interface";
 
 const defaultColor = 'hsl(50deg, 100%, 50%)';
 
-export default function Sparkles({color = defaultColor, children}: SparklesComponentProps) {
+export default function SparklesComponent({color = defaultColor, children}: SparklesComponentProps) {
+
     const [sparkles, setSparkles] = React.useState(() => {
         return range(3).map(() => generateSparkle(color));
     });
@@ -29,7 +26,6 @@ export default function Sparkles({color = defaultColor, children}: SparklesCompo
         50, 600
     );
 
-    console.log(sparkles)
     return (
         <span
             className={styles.wrapper}

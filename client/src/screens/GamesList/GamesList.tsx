@@ -1,10 +1,10 @@
 import React, {MouseEventHandler, useEffect, useState} from "react";
 import styles from './GamesList.module.css';
 import {useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
-import {motion} from "framer-motion";
 import MysteriousText from "../../components/MysteriousText";
 import Pagination from "../../components/Pagination/Pagination";
 import {Alert, Snackbar} from "@mui/material";
+import {motion} from "framer-motion";
 
 export default function GamesList({gamesListRefreshed}: any) {
     const {data, refetch} = useGamesQuery()
