@@ -71,7 +71,7 @@ export default function GamesList({gamesListRefreshed}: any) {
                 className={styles.players_list_title}
             >
                 <MysteriousText
-                    colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                    colorsList={["#ffd903", "#FFED85", "#5FF141", "#2dc40f"]}
                 >
                     Les joutes Catanistiques
                 </MysteriousText>

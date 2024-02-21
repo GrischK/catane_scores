@@ -163,7 +163,7 @@ export default function PlayersList() {
                                         <MysteriousText
                                             colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
                                         >
-                                            Cataneurs fous recensés
+                                            Les Cataneurs fous
                                         </MysteriousText>
                                     </motion.h1>
                                 }
@@ -274,7 +274,7 @@ export default function PlayersList() {
                                     className={styles.players_list_title}
                                 >
                                     <MysteriousText
-                                        colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                                        colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#87BAFD", "#FFED85"]}
                                     >
                                         Nouveau Cataneur
                                     </MysteriousText>

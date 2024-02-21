@@ -3,11 +3,11 @@ import React, {useEffect, useRef, useState} from "react";
 import {PlayersPoints} from "../../interfaces/ranking.interface";
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import defaultAvatar from "../../assets/images/default_avatar.png";
+import trumpet from "../../assets/images/trumpet.png"
 import {useGamesQuery} from "../../gql/generated/schema";
 import ConfettiExplosion from 'react-confetti-explosion';
 import {ThemeProvider} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
-import trumpet from "../../assets/images/trumpet.png"
 import {blueTheme} from "../../utils/stylesVariantes";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {motion, useInView} from 'framer-motion';
@@ -150,7 +150,7 @@ export default function Ranking() {
                         className={styles.players_list_title}
                     >
                         <MysteriousText
-                            colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                            colorsList={["#f04d4d", "#F58F8F", "#ffd903","#FFED85", "#5ba1fc", "#87BAFD"]}
                         >
                             Trône du Catane
                         </MysteriousText>
