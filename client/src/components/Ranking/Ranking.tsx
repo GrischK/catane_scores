@@ -12,7 +12,11 @@ import {blueTheme} from "../../utils/stylesVariantes";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {motion, useInView} from 'framer-motion';
 
-export default function Ranking() {
+interface RankingProps {
+    playersData: PlayersPoints[],
+}
+
+export default function Ranking({playersData}: RankingProps) {
     const {data, refetch} = useGamesQuery()
 
     const ref = useRef(null)
@@ -299,6 +303,42 @@ export default function Ranking() {
                                 }
                                 </span>
                             </motion.div>
+                        )
+                    )
+                }
+            </div>
+            <div
+                style={{display: 'flex', gap: '2vw'}}
+            >
+                {
+                    playersData.map((p, index) => (
+                            <div
+                                key={index}
+                                style={{padding: '10px', border: '1px solid red'}}
+                            >
+                                {p.player.name}
+                                <p>
+                                    {p.participationCount} participations
+                                </p>
+                                <p>
+                                    {p.victoryCount} victoires
+                                </p>
+                                <p>
+                                    points de victoire {p.victoryCount * 3}
+                                </p>
+                                <p>
+                                    points de participation {p.participationCount ? (p.participationCount * 0.25) : ""}
+                                </p>
+                                <p>
+                                    % de
+                                    victoire {p.participationCount ? (p.victoryCount / p.participationCount) * 100 : ""}
+                                </p>
+                                <p>
+                                    points de
+                                    régularité {p.participationCount ? ((p.victoryCount / p.participationCount) / 2 * 100) : ""}
+                                </p>
+
+                            </div>
                         )
                     )
                 }

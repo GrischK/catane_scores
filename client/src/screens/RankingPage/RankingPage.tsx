@@ -14,7 +14,7 @@ import thirdMedal from "../../assets/images/medal_3.png"
 import secondMedal from "../../assets/images/medal_2.png"
 import cup from "../../assets/images/cup.png"
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import {IconButton} from "@mui/material";
+import {dividerClasses, IconButton} from "@mui/material";
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {motion, AnimatePresence} from "framer-motion";
@@ -108,7 +108,6 @@ export default function RankingPage() {
                         }
                     });
                 }
-                console.log(game)
             });
             updatedPlayersPoints.sort((a, b) => b.victoryCount - a.victoryCount);
 
@@ -117,6 +116,8 @@ export default function RankingPage() {
             console.table(updatedPlayersPoints)
         }
     }, [data]);
+
+    console.log(playersPoints)
 
     useEffect(() => {
         if (step === 2) {
@@ -251,7 +252,22 @@ export default function RankingPage() {
                             exit={{opacity: 0}}
                             transition={{duration: 0.5}}
                         >
-                            <Ranking/>
+                            <Ranking
+                                playersData={playersPoints}
+                            />
+                            {/*<div>*/}
+                            {/*    {*/}
+                            {/*        playersPoints.map((p) => (*/}
+                            {/*            <div>*/}
+                            {/*                {p.player.name}*/}
+                            {/*                <p>Participations</p>*/}
+                            {/*                {p.participationCount}*/}
+                            {/*                <p>Victoires</p>*/}
+                            {/*                {p.victoryCount}*/}
+                            {/*            </div>*/}
+                            {/*        ))*/}
+                            {/*    }*/}
+                            {/*</div>*/}
                             <div
                                 className={styles.goTo_podium}
                             >
