@@ -171,10 +171,13 @@ export default function Card({
                             Modifier
                         </ColoredButton>
                     </motion.div>
-                    <CloseIcon
-                        onClick={handleCloseModal}
+                    <div
                         className={styles.update_player_close_modal_icon}
-                    />
+                    >
+                        <CloseIcon
+                            onClick={handleCloseModal}
+                        />
+                    </div>
                 </Box>
             </Modal>
             <Modal

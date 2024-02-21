@@ -272,19 +272,6 @@ export default function RankingPage() {
                             <Ranking
                                 playersData={playersPoints}
                             />
-                            {/*<div>*/}
-                            {/*    {*/}
-                            {/*        playersPoints.map((p) => (*/}
-                            {/*            <div>*/}
-                            {/*                {p.player.name}*/}
-                            {/*                <p>Participations</p>*/}
-                            {/*                {p.participationCount}*/}
-                            {/*                <p>Victoires</p>*/}
-                            {/*                {p.victoryCount}*/}
-                            {/*            </div>*/}
-                            {/*        ))*/}
-                            {/*    }*/}
-                            {/*</div>*/}
                             <div
                                 className={styles.goTo_podium}
                             >
