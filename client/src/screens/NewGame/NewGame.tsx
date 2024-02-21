@@ -16,6 +16,7 @@ import MysteriousText from "../../components/MysteriousText";
 import {buttonTransition, createGameButtonVariants, inputVariants} from "../../utils/animationVariants";
 import {newGameModalStyle} from "../../utils/stylesVariantes";
 import {GameInterface} from "../../interfaces/newGamePage.interface";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function NewGame({refreshGamesList}: any) {
     const {data} = useUsersQuery();
@@ -347,6 +348,10 @@ export default function NewGame({refreshGamesList}: any) {
                             OK
                         </ColoredButton>
                     </motion.div>
+                    <CloseIcon
+                        onClick={handleCloseModal}
+                        className={styles.close_modal_icon}
+                    />
                 </Box>
             </Modal>
             {errorMessage &&

@@ -14,6 +14,7 @@ import {buttonTransition} from "../../utils/animationVariants";
 import {modalStyle, style} from "../../utils/stylesVariantes";
 import {CardProps} from "../../interfaces/card.interface";
 import {PlayerInterface} from "../../interfaces/playersListPage.interface";
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function Card({
                                  playerName,
@@ -140,6 +141,10 @@ export default function Card({
                             Modifier
                         </ColoredButton>
                     </motion.div>
+                    <CloseIcon
+                        onClick={handleCloseModal}
+                        className={styles.close_modal_icon}
+                    />
                 </Box>
             </Modal>
             <Modal

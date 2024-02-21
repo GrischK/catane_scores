@@ -29,8 +29,9 @@ export default function GameCard({game, index, onClickDeleteFunction, dataGameId
         >
             <div className={`${styles.gameCard_container} ${flip ? styles.gameCard_container_flipped : ''}`}>
                 <div className={styles.gameCard_front}>
-                    <div className={styles.gameCard_front_info_container}
-                         onClick={handleFlip}
+                    <div
+                        className={styles.gameCard_front_info_container}
+                        onClick={handleFlip}
                     >
                         <p className={styles.gameCard_game_info}>
                             {game.date && <span>Le {game.date}</span>}
