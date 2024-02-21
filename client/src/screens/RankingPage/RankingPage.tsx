@@ -8,13 +8,17 @@ import SparklesComponent from "../../components/SparklesComponent/SparklesCompon
 import {PlayersPoints} from "../../interfaces/playersListPage.interface";
 import cheer from '../../assets/sounds/cheer.mp3'
 import trumpets from '../../assets/sounds/fanfare_trumpets.mp3'
+import sillyTrumpet from '../../assets/sounds/silly-trumpet.mp3'
+import lessSillyTrumpet from '../../assets/sounds/less-silly-trumpet.mp3'
+import moreClaps from '../../assets/sounds/moreclaps.mp3'
+import soloClap from '../../assets/sounds/solo-clap.mp3'
 import tadaa from '../../assets/sounds/tadaa.mp3'
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import thirdMedal from "../../assets/images/medal_3.png"
 import secondMedal from "../../assets/images/medal_2.png"
 import cup from "../../assets/images/cup.png"
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import {dividerClasses, IconButton} from "@mui/material";
+import {IconButton} from "@mui/material";
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {motion, AnimatePresence} from "framer-motion";
@@ -59,10 +63,20 @@ export default function RankingPage() {
     const tadaaSound1Ref = useRef(new Audio(tadaa));
     const tadaaSound2Ref = useRef(new Audio(tadaa));
     const tadaaSound3Ref = useRef(new Audio(tadaa));
+    const sillyTrumpetSoundRef = useRef(new Audio(sillyTrumpet))
+    const soloClapSoundRef = useRef(new Audio(soloClap))
+    const lessSillytTrumpetSoundRed = useRef(new Audio(lessSillyTrumpet))
+    const moreClapsSoundRef = useRef(new Audio(moreClaps))
+
     tadaaSound1Ref.current.volume = 0.4
     tadaaSound2Ref.current.volume = 0.5
     tadaaSound3Ref.current.volume = 0.6
-
+    sillyTrumpetSoundRef.current.volume = 0.4
+    soloClapSoundRef.current.volume = 0.5
+    lessSillytTrumpetSoundRed.current.volume = 0.5
+    moreClapsSoundRef.current.volume = 0.5
+    trumpetsSoundRef.current.volume = 0.8
+    cheersSoundRef.current.volume = 0.8
     // Manage steps
     const [step, setStep] = useState(1)
 
@@ -126,7 +140,8 @@ export default function RankingPage() {
             // Manage 3rd player timers
             const thirdPlayerTimer = setTimeout(() => {
                 setThirdPlayerIsShown(true)
-                tadaaSound1Ref.current.play();
+                sillyTrumpetSoundRef.current.play();
+                soloClapSoundRef.current.play()
             }, 1000);
             const thirdPlayerNameTimer = setTimeout(() => {
                 setThirdPlayerNameIsShown(true)
@@ -144,7 +159,8 @@ export default function RankingPage() {
             const secondPlayerTimer = setTimeout(() => {
                 setSecondPlayerIsShown(true)
                 // tadaaSound1Ref.current.currentTime = 0;
-                tadaaSound2Ref.current.play();
+                lessSillytTrumpetSoundRed.current.play();
+                moreClapsSoundRef.current.play();
             }, 5000);
             const secondPlayerNameTimer = setTimeout(() => {
                 setSecondPlayerNameIsShown(true)
@@ -159,10 +175,11 @@ export default function RankingPage() {
             timers.push(secondPlayerTimer, secondPlayerNameTimer, moveSecondPlayerTimer, secondPlayerSparkles);
 
             // Manage 1st player timers
+            const firstPlayerEntrySoundTimer = setTimeout(() => {
+                tadaaSound3Ref.current.play();
+            }, 8980);
             const firstPlayerTimer = setTimeout(() => {
                 setFirstPlayerIsShown(true)
-                // tadaaSound2Ref.current.currentTime = 0;
-                tadaaSound3Ref.current.play();
             }, 9000);
             const firstPlayerNameTimer = setTimeout(() => {
                 setFirstPlayerNameIsShown(true)
@@ -174,7 +191,7 @@ export default function RankingPage() {
                 setFirstIsSparkling(true)
             }, 13200);
 
-            timers.push(firstPlayerTimer, firstPlayerNameTimer, moveFirstPlayerTimer, firstPlayerSparkles);
+            timers.push(firstPlayerEntrySoundTimer, firstPlayerTimer, firstPlayerNameTimer, moveFirstPlayerTimer, firstPlayerSparkles);
 
             // Manage dark background & spotlight timers
             const darkBackground = setTimeout(() => {

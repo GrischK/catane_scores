@@ -155,7 +155,7 @@ export default function NewGame({refreshGamesList}: any) {
             >
                 {mysteriousTextIsShown &&
                     <MysteriousText
-                        colorsList={["#f04d4d", "#F58F8F", "#ffd903","#FFED85", "#5ba1fc", "#87BAFD"]}
+                        colorsList={["#f04d4d", "#F58F8F", "#ffd903", "#FFED85", "#5ba1fc", "#87BAFD"]}
                     >Ajouter une
                         Catanerie
                     </MysteriousText>
@@ -380,10 +380,14 @@ export default function NewGame({refreshGamesList}: any) {
                             OK
                         </ColoredButton>
                     </motion.div>
-                    <CloseIcon
-                        onClick={handleCloseModal}
+                    <div
                         className={styles.add_players_close_modal_icon}
-                    />
+                    >
+                        <CloseIcon
+                            onClick={handleCloseModal}
+
+                        />
+                    </div>
                 </Box>
             </Modal>
             {errorMessage &&
