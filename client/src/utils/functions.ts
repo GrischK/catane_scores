@@ -33,14 +33,14 @@ export const useRandomInterval = (callback: () => void, minDelay: number, maxDel
     }, [callback]);
 
     React.useEffect(() => {
-            const handleTick = () => {
-                const nextTickAt = random(minDelay, maxDelay);
-                timeoutId.current = window.setTimeout(() => {
-                    savedCallback.current();
-                    handleTick();
-                }, nextTickAt);
-            };
-            handleTick();
+        const handleTick = () => {
+            const nextTickAt = random(minDelay, maxDelay);
+            timeoutId.current = window.setTimeout(() => {
+                savedCallback.current();
+                handleTick();
+            }, nextTickAt);
+        };
+        handleTick();
         return () => {
             if (timeoutId.current !== null) {
                 window.clearTimeout(timeoutId.current);
@@ -84,11 +84,41 @@ export const calculateTotalPoint = (data: PlayersPoints) => {
     const victoryPoints = data.victoryCount * 3;
     const participationPoints = data.participationCount ? (data.participationCount * 0.25) : 0;
     const victoryPercentage = data.participationCount ? (data.victoryCount / data.participationCount) * 100 : 0;
-    if(victoryPercentage - Math.floor(victoryPercentage)>=0.5){
+    if (victoryPercentage - Math.floor(victoryPercentage) >= 0.5) {
         roundedVictoryPercentage = Math.ceil(victoryPercentage);
-    }else{
+    } else {
         roundedVictoryPercentage = Math.floor(victoryPercentage)
     }
     const regularityPoints = roundedVictoryPercentage / 2;
-    return victoryPoints+participationPoints+regularityPoints
+    return victoryPoints + participationPoints + regularityPoints
+}
+
+// Return points detail for one player
+export const pointsDetails = (data: PlayersPoints) => {
+    let roundedVictoryPercentage
+    const participationCount = data.participationCount;
+    const victoryCount = data.victoryCount;
+    const victoryPoints = data.victoryCount * 3;
+    const participationPoints = data.participationCount ? (data.participationCount * 0.25) : 0;
+    const victoryPercentage = data.participationCount ? (data.victoryCount / data.participationCount) * 100 : 0;
+    if (victoryPercentage - Math.floor(victoryPercentage) >= 0.5) {
+        roundedVictoryPercentage = Math.ceil(victoryPercentage);
+    } else {
+        roundedVictoryPercentage = Math.floor(victoryPercentage)
+    }
+    const regularityPoints = roundedVictoryPercentage / 2;
+    const total = victoryPoints + participationPoints + regularityPoints;
+    if (participationCount) {
+        return {
+            participationCount: participationCount,
+            victoryCount: victoryCount,
+            victoryPoints: victoryPoints,
+            participationPoints: participationPoints,
+            roundedVictoryPercentage: roundedVictoryPercentage,
+            regularityPoints: regularityPoints,
+            total: total,
+        };
+    } else {
+
+    }
 }

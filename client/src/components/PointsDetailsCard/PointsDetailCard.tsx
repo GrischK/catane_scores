@@ -1,19 +1,17 @@
 import React, {useState} from "react";
-import {PlayersPoints} from "../../interfaces/ranking.interface";
-import {calculateTotalPoint, isFirstLetterVowel} from "../../utils/functions";
+import {PointsDetailCardProps} from "../../interfaces/pointsDetailCard.interface";
+import {isFirstLetterVowel, pointsDetails} from "../../utils/functions";
 import styles from "./PointsDetailCard.module.css";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import {newGameModalStyle} from "../../utils/stylesVariantes";
 import {Box, Modal, Typography} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-interface PointsDetailCardProps {
-    data: PlayersPoints,
-}
-
 export default function PointsDetailCard({data}: PointsDetailCardProps) {
     const [openModal, setOpenModal] = useState(false);
     const handleModal = () => setOpenModal(!openModal);
+
+    const pointsInfoDetails = pointsDetails(data)
 
     return (
         <>
@@ -37,12 +35,14 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                     {data.player?.name}
                 </h1>
                 <span>
-                    {
-                        calculateTotalPoint(data) <= 1
-                            ?
-                            `${calculateTotalPoint(data)} point`
-                            :
-                            `${calculateTotalPoint(data)} points`
+                    {pointsInfoDetails &&
+                        (
+                            pointsInfoDetails.total <= 1
+                                ?
+                                `${pointsInfoDetails.total} point`
+                                :
+                                `${pointsInfoDetails.total} points`
+                        )
                     }
                 </span>
             </div>
@@ -71,41 +71,50 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                                 <p>Statistiques de {data.player.name}</p>
                         }
                     </Typography>
-                    <p>
-                        {data.participationCount} participations ⚔️
-                    </p>
-                    <p>
-                        {data.victoryCount} victoires 🏆
-                    </p>
-                    <br/>
-                    <p>
-                        <strong>
-                            Points
-                        </strong>
-                        &nbsp;de victoire {data.victoryCount * 3} 🎯
-                    </p>
-                    <p>
-                        <strong>
-                            Points
-                        </strong>
-                        &nbsp;de
-                        participation {data.participationCount ? (data.participationCount * 0.25) : ""} 🙏
-                    </p>
-                    <p>
-                        {data.participationCount ? (data.victoryCount / data.participationCount) * 100 : ""} % de taux
-                        de victoire 🔥
-                    </p>
-                    <p>
-                        <strong>
-                            Points
-                        </strong>
-                        &nbsp;de
-                        régularité {data.participationCount ? ((data.victoryCount / data.participationCount) / 2 * 100) : ""} 🧠
-                    </p>
-                    <br/>
-                    <strong>
-                        Total des points : {calculateTotalPoint(data)} 🎉
-                    </strong>
+                    {
+                        pointsInfoDetails &&
+                        (
+                            <>
+                                <p>
+                                    {pointsInfoDetails.participationCount} participations ⚔️
+                                </p>
+                                <p>
+                                    {pointsInfoDetails.victoryCount} victoires 🏆
+                                </p>
+                                <br/>
+                                <p>
+                                    <strong>
+                                        Points
+                                    </strong>
+                                    &nbsp;de victoire {pointsInfoDetails.victoryPoints} 🎯
+                                </p>
+                                <p>
+                                    <strong>
+                                        Points
+                                    </strong>
+                                    &nbsp;de
+                                    participation {pointsInfoDetails.participationPoints} 🙏
+                                </p>
+                                <p>
+                                    {pointsInfoDetails.roundedVictoryPercentage} %
+                                    de taux
+                                    de victoire 🔥
+                                </p>
+                                <p>
+                                    <strong>
+                                        Points
+                                    </strong>
+                                    &nbsp;de
+                                    régularité {pointsInfoDetails.regularityPoints} 🧠
+                                </p>
+                                <br/>
+                                <strong>
+                                    Total des points : {pointsInfoDetails.total} 🎉
+                                </strong>
+                            </>
+                        )
+                    }
+
                     <CloseIcon
                         onClick={handleModal}
                     />
