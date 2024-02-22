@@ -13,10 +13,16 @@ function App() {
     const location = useLocation();
 
     const [gamesListRefreshed, setGamesListRefreshed] = useState(false);
+    const [rankingRefreshed, setRankingRefreshed] = useState(false);
 
     // Fonction de rappel pour rafraîchir la liste des jeux
     const refreshGamesList = () => {
         setGamesListRefreshed(!gamesListRefreshed);
+    };
+
+    // Fonction de rappel pour rafraîchir le classement
+    const refreshRanking = () => {
+        setRankingRefreshed(!rankingRefreshed);
     };
 
     return (
@@ -26,12 +32,12 @@ function App() {
                     <Route path="/" element={<HomePage/>}/>
                     <Route
                         path="/new_game"
-                        element={<NavBar buttonColor={'#f04d4d'}><NewGame refreshGamesList={refreshGamesList}/></NavBar>}
+                        element={<NavBar buttonColor={'#f04d4d'}><NewGame refreshGamesList={refreshGamesList} refreshRanking={refreshRanking}/></NavBar>}
                     />
                     <Route path="/games_list"
                            element={<NavBar buttonColor={'#2dc40f'}><GamesList gamesListRefreshed={gamesListRefreshed}/></NavBar>}/>
                     <Route path="/players_list" element={<NavBar buttonColor={'#ffd903'}><PlayersList/></NavBar>}/>
-                    <Route path="/ranking" element={<NavBar buttonColor={'#5ba1fc'}><NewRanking/></NavBar>}/>
+                    <Route path="/ranking" element={<NavBar buttonColor={'#5ba1fc'}><NewRanking rankingRefreshed={rankingRefreshed}/></NavBar>}/>
                     <Route path="/test" element={<NavBar buttonColor={'#5ba1fc'}><Test/></NavBar>}/>
                 </Routes>
             </AnimatePresence>

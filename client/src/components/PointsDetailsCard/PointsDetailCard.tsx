@@ -6,7 +6,6 @@ import defaultAvatar from "../../assets/images/default_avatar.png";
 import {newGameModalStyle} from "../../utils/stylesVariantes";
 import {Box, Modal, Typography} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import {playerRankingDetails} from "../Ranking/Ranking";
 
 interface PointsDetailCardProps {
     data: PlayersPoints,
@@ -39,11 +38,11 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                 </h1>
                 <span>
                     {
-                        data.victoryCount === 1
+                        data.victoryCount <= 1
                             ?
-                            `${data.victoryCount} point`
+                            `${calculateTotalPoint(data)} point`
                             :
-                            `${data.victoryCount} points`
+                            `${calculateTotalPoint(data)} points`
                     }
                 </span>
             </div>
@@ -78,6 +77,7 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                     <p>
                         {data.victoryCount} victoires 🏆
                     </p>
+                    <br/>
                     <p>
                         <strong>
                             Points
@@ -102,6 +102,7 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                         &nbsp;de
                         régularité {data.participationCount ? ((data.victoryCount / data.participationCount) / 2 * 100) : ""} 🧠
                     </p>
+                    <br/>
                     <strong>
                         Total des points : {calculateTotalPoint(data)} 🎉
                     </strong>

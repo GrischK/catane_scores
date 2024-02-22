@@ -5,8 +5,9 @@ import MysteriousText from "../../components/MysteriousText";
 import Pagination from "../../components/Pagination/Pagination";
 import {Alert, Snackbar} from "@mui/material";
 import {motion} from "framer-motion";
+import {gamesListProps} from "../../interfaces/gamesListe.interface";
 
-export default function GamesList({gamesListRefreshed}: any) {
+export default function GamesList({gamesListRefreshed}: gamesListProps) {
     const {data, refetch} = useGamesQuery()
     const [successMessage, setSuccessMessage] = useState("");
     const [successOpen, setSuccessOpen] = React.useState(false);

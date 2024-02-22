@@ -80,9 +80,15 @@ export const isFirstLetterVowel = (word: string) => {
 
 // Calculate total score for one player
 export const calculateTotalPoint = (data: PlayersPoints) => {
+    let roundedVictoryPercentage
     const victoryPoints = data.victoryCount * 3;
     const participationPoints = data.participationCount ? (data.participationCount * 0.25) : 0;
     const victoryPercentage = data.participationCount ? (data.victoryCount / data.participationCount) * 100 : 0;
-    const regularityPoints = victoryPercentage / 2;
+    if(victoryPercentage - Math.floor(victoryPercentage)>=0.5){
+        roundedVictoryPercentage = Math.ceil(victoryPercentage);
+    }else{
+        roundedVictoryPercentage = Math.floor(victoryPercentage)
+    }
+    const regularityPoints = roundedVictoryPercentage / 2;
     return victoryPoints+participationPoints+regularityPoints
 }

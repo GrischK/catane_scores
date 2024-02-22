@@ -6,6 +6,7 @@ import Ranking from "../../components/Ranking/Ranking"
 import {ThemeProvider} from '@mui/material/styles';
 import SparklesComponent from "../../components/SparklesComponent/SparklesComponent";
 import {PlayersPoints} from "../../interfaces/playersListPage.interface";
+import {rankingPageProps} from "../../interfaces/rankingPage.interface";
 import cheer from '../../assets/sounds/cheer.mp3'
 import trumpets from '../../assets/sounds/fanfare_trumpets.mp3'
 import sillyTrumpet from '../../assets/sounds/silly-trumpet.mp3'
@@ -24,7 +25,7 @@ import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {motion, AnimatePresence} from "framer-motion";
 import {blueTheme} from "../../utils/stylesVariantes";
 
-export default function RankingPage() {
+export default function RankingPage({rankingRefreshed}:rankingPageProps) {
     // Show 3rd player
     const [thirdPlayerIsShown, setThirdPlayerIsShown] = useState(false)
     const [moveThirdPlayer, setMoveThirdPlayer] = useState(false)
@@ -82,6 +83,10 @@ export default function RankingPage() {
 
     const {data, refetch} = useGamesQuery()
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
+
+    useEffect(() => {
+        refetch()
+    }, [rankingRefreshed]);
 
     useEffect(() => {
         if (data) {

@@ -4,7 +4,6 @@ import {PlayersPoints} from "../../interfaces/ranking.interface";
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import trumpet from "../../assets/images/trumpet.png"
-import {useGamesQuery} from "../../gql/generated/schema";
 import ConfettiExplosion from 'react-confetti-explosion';
 import {ThemeProvider} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
@@ -26,9 +25,6 @@ export interface playerRankingDetails {
 export default function Ranking({playersData}: RankingProps) {
     const ref = useRef(null)
     const isInView = useInView(ref)
-
-    const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
-
     const [showArrowButton, setShowArrowButton] = useState(false)
     const [mysteriousTextIsShown, setMysteriousTextIsShown] = useState(false)
 
@@ -59,10 +55,7 @@ export default function Ranking({playersData}: RankingProps) {
     };
 
     totalPointsArray.sort(comparer);
-
-    console.log('total point array')
     console.log(totalPointsArray)
-
     useEffect(() => {
         const timers: any[] = [];
 
@@ -100,6 +93,7 @@ export default function Ranking({playersData}: RankingProps) {
     const [scrollY, setScrollY] = useState(0);
 
     useEffect(() => {
+        // Initialize scroll to top to avoid bug with confetti
         window.history.scrollRestoration = 'manual'
 
         function handleScroll() {
