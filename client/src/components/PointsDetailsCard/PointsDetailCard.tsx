@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {PlayersPoints} from "../../interfaces/ranking.interface";
-import {isFirstLetterVowel} from "../../utils/functions";
-import styles from "../../screens/NewGame/NewGame.module.css";
+import {calculateTotalPoint, isFirstLetterVowel} from "../../utils/functions";
+import styles from "./PointsDetailCard.module.css";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import {newGameModalStyle} from "../../utils/stylesVariantes";
 import {Box, Modal, Typography} from "@mui/material";
@@ -19,6 +19,7 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
         <>
             <div
                 onClick={handleModal}
+                className={styles.points_card_details_container}
             >
                 {data.player.picture
                     ?
@@ -90,12 +91,12 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                         points de
                         régularité {data.participationCount ? ((data.victoryCount / data.participationCount) / 2 * 100) : ""}
                     </p>
+                    <p>points total : {calculateTotalPoint(data)}</p>
                     <CloseIcon
                         onClick={handleModal}
                     />
                 </Box>
             </Modal>
         </>
-
     )
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import {PlayersPoints} from "../interfaces/ranking.interface";
 
 export const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
 
@@ -76,3 +77,12 @@ export const isFirstLetterVowel = (word: string) => {
     }
     return /^[aeiou]/i.test(word);
 };
+
+// Calculate total score for one player
+export const calculateTotalPoint = (data: PlayersPoints) => {
+    const victoryPoints = data.victoryCount * 3;
+    const participationPoints = data.participationCount ? (data.participationCount * 0.25) : 0;
+    const victoryPercentage = data.participationCount ? (data.victoryCount / data.participationCount) * 100 : 0;
+    const regularityPoints = victoryPercentage / 2;
+    return victoryPoints+participationPoints+regularityPoints
+}
