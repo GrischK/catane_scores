@@ -1,12 +1,12 @@
-import styles from './RankingPage.module.css';
 import React, {useEffect, useRef, useState} from "react";
+import {PlayersPoints} from "../../interfaces/playersListPage.interface";
+import {rankingPageProps} from "../../interfaces/rankingPage.interface";
 import {useGamesQuery} from "../../gql/generated/schema";
 import ConfettiExplosion from 'react-confetti-explosion';
 import Ranking from "../../components/Ranking/Ranking"
 import {ThemeProvider} from '@mui/material/styles';
 import SparklesComponent from "../../components/SparklesComponent/SparklesComponent";
-import {PlayersPoints} from "../../interfaces/playersListPage.interface";
-import {rankingPageProps} from "../../interfaces/rankingPage.interface";
+import styles from './RankingPage.module.css';
 import cheer from '../../assets/sounds/cheer.mp3'
 import trumpets from '../../assets/sounds/fanfare_trumpets.mp3'
 import sillyTrumpet from '../../assets/sounds/silly-trumpet.mp3'
@@ -131,12 +131,8 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
             updatedPlayersPoints.sort((a, b) => b.victoryCount - a.victoryCount);
 
             setPlayersPoints(updatedPlayersPoints);
-
-            console.table(updatedPlayersPoints)
         }
     }, [data]);
-
-    console.log(playersPoints)
 
     useEffect(() => {
         if (step === 2) {

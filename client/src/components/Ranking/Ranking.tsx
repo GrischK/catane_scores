@@ -1,6 +1,6 @@
-import styles from './Ranking.module.css';
 import React, {useEffect, useRef, useState} from "react";
 import {PlayersPoints} from "../../interfaces/ranking.interface";
+import styles from './Ranking.module.css';
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import trumpet from "../../assets/images/trumpet.png"
@@ -8,10 +8,10 @@ import ConfettiExplosion from 'react-confetti-explosion';
 import {ThemeProvider} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
 import PointsDetailCard from "../PointsDetailsCard/PointsDetailCard";
+import {calculateTotalPoint} from "../../utils/functions";
 import {motion, useInView} from 'framer-motion';
 import {blueTheme} from "../../utils/stylesVariantes";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import {calculateTotalPoint} from "../../utils/functions";
 
 interface RankingProps {
     playersData: PlayersPoints[],
@@ -55,7 +55,6 @@ export default function Ranking({playersData}: RankingProps) {
     };
 
     totalPointsArray.sort(comparer);
-    console.log(totalPointsArray)
     useEffect(() => {
         const timers: any[] = [];
 
@@ -277,19 +276,6 @@ export default function Ranking({playersData}: RankingProps) {
                     )
                 }
             </div>
-            {/*<div*/}
-            {/*    style={{display: 'flex', gap: '2vw'}}*/}
-            {/*>*/}
-            {/*    {*/}
-            {/*        playersData.map((p, index) => (*/}
-            {/*                <PointsDetailCard*/}
-            {/*                    key={index}*/}
-            {/*                    data={p}*/}
-            {/*                />*/}
-            {/*            )*/}
-            {/*        )*/}
-            {/*    }*/}
-            {/*</div>*/}
         </div>
     )
 }

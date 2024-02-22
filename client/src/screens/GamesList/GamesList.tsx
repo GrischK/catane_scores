@@ -1,11 +1,11 @@
 import React, {MouseEventHandler, useEffect, useState} from "react";
+import {gamesListProps} from "../../interfaces/gamesListe.interface";
 import styles from './GamesList.module.css';
 import {useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
 import MysteriousText from "../../components/MysteriousText";
 import Pagination from "../../components/Pagination/Pagination";
 import {Alert, Snackbar} from "@mui/material";
 import {motion} from "framer-motion";
-import {gamesListProps} from "../../interfaces/gamesListe.interface";
 
 export default function GamesList({gamesListRefreshed}: gamesListProps) {
     const {data, refetch} = useGamesQuery()
@@ -62,7 +62,9 @@ export default function GamesList({gamesListRefreshed}: gamesListProps) {
     };
 
     return (
-        <div className={styles.games_list_wrapper}>
+        <div
+            className={styles.games_list_wrapper}
+        >
             <motion.h1
                 initial={{x: '-100vw'}}
                 animate={{x: 1}}
@@ -84,15 +86,31 @@ export default function GamesList({gamesListRefreshed}: gamesListProps) {
                 onClickDeleteGame={onClickDeleteGame}
             />
             {successMessage &&
-                <Snackbar open={successOpen} autoHideDuration={6000} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="success" sx={{width: '100%'}}>
+                <Snackbar
+                    open={successOpen}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity="success"
+                        sx={{width: '100%'}}
+                    >
                         {successMessage}
                     </Alert>
                 </Snackbar>
             }
             {errorMessage &&
-                <Snackbar open={errorOpen} autoHideDuration={6000} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity="error" sx={{width: '100%'}}>
+                <Snackbar
+                    open={errorOpen}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity="error"
+                        sx={{width: '100%'}}
+                    >
                         {errorMessage}
                     </Alert>
                 </Snackbar>

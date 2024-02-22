@@ -1,8 +1,8 @@
-import styles from './Card.module.css';
 import React from 'react';
 import {MouseEventHandler, useState} from "react";
 import {CardProps} from "../../interfaces/card.interface";
 import {PlayerInterface} from "../../interfaces/playersListPage.interface";
+import styles from './Card.module.css';
 import defaultAvatar from '../../assets/images/default_avatar.png';
 import {useUpdateUserMutation} from "../../gql/generated/schema";
 import RandomAvatar from "../RandomAvatar/RandomAvatar";

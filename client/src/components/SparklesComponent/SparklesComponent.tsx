@@ -1,8 +1,8 @@
 import Sparkle from "../Sparkle/SparkleInstance";
 import {generateSparkle, range, useRandomInterval} from "../../utils/functions";
 import React from "react";
-import styles from "./SparklesComponent.module.css";
 import {SparklesComponentProps} from "../../interfaces/SparklesComponent.interface";
+import styles from "./SparklesComponent.module.css";
 
 const defaultColor = 'hsl(50deg, 100%, 50%)';
 

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import styles from './HomePage.module.css';
-import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import MysteriousText from "../../components/MysteriousText";
+import styles from './HomePage.module.css';
+import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import {NavLink} from "react-router-dom";
 import {motion} from "framer-motion"
 import {buttonTransition, crownTransition} from "../../utils/animationVariants";

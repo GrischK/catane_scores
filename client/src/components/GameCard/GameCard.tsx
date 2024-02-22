@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import styles from "./GameCard.module.css"
 import {GameCardProps} from "../../interfaces/gameCard.interface";
+import styles from "./GameCard.module.css"
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
 import ColoredButton from "../ColoredButton/ColoredButton";

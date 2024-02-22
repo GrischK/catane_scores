@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import styles from './NewGame.module.css';
 import {GameInterface} from "../../interfaces/newGamePage.interface";
 import {
     useCreateGameWithScoresMutation, User, useUsersByIdsQuery,
@@ -8,14 +7,15 @@ import {
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
 import MysteriousText from "../../components/MysteriousText";
-import {motion} from "framer-motion";
-import {buttonTransition, createGameButtonVariants, inputVariants} from "../../utils/animationVariants";
-import {newGameModalStyle} from "../../utils/stylesVariantes";
-import CloseIcon from "@mui/icons-material/Close";
 import {
     Alert, Box, Modal,
     Snackbar, Typography
 } from "@mui/material";
+import {motion} from "framer-motion";
+import {buttonTransition, createGameButtonVariants, inputVariants} from "../../utils/animationVariants";
+import {newGameModalStyle} from "../../utils/stylesVariantes";
+import CloseIcon from "@mui/icons-material/Close";
+import styles from './NewGame.module.css';
 import defaultAvatar from "../../assets/images/default_avatar.png";
 
 export default function NewGame({refreshGamesList}: any) {
@@ -35,12 +35,12 @@ export default function NewGame({refreshGamesList}: any) {
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [warningMessage, setWarningMessage] = useState("");
-    const [open, setOpen] = React.useState(false);
-    const [successOpen, setSuccessOpen] = React.useState(false);
-    const [warningOpen, setWarningOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [successOpen, setSuccessOpen] = useState(false);
+    const [warningOpen, setWarningOpen] = useState(false);
 
-    const [mysteriousTextIsShown, setMysteriousTextIsShown] = React.useState(false);
-    const [openModal, setOpenModal] = React.useState(false);
+    const [mysteriousTextIsShown, setMysteriousTextIsShown] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
     const handleCloseModal = () => setOpenModal(false);
     const [showNewGameForm, setShowNewGameForm] = useState(false)
 

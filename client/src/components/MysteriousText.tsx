@@ -1,6 +1,6 @@
 import React from "react";
-import {animated, useSprings} from "react-spring";
 import {ReactNode} from "react";
+import {animated, useSprings} from "react-spring";
 
 interface MysteriousTextProps {
     children: ReactNode;
