@@ -28,6 +28,14 @@ export const modalStyle = {
     justifyContent: 'center'
 };
 
+export const pointsDetailsModalStyle =
+    {
+        ...modalStyle,
+        flexDirection: 'column',
+        gap: '2vh',
+        paddingTop: '2vh'
+    }
+
 export const newGameModalStyle =
     {
         ...modalStyle,

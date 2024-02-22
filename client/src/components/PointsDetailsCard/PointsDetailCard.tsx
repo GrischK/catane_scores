@@ -3,11 +3,11 @@ import {PointsDetailCardProps} from "../../interfaces/pointsDetailCard.interface
 import {isFirstLetterVowel, pointsDetails} from "../../utils/functions";
 import styles from "./PointsDetailCard.module.css";
 import defaultAvatar from "../../assets/images/default_avatar.png";
-import {newGameModalStyle} from "../../utils/stylesVariantes";
+import {newGameModalStyle, pointsDetailsModalStyle} from "../../utils/stylesVariantes";
 import {Box, Modal, Typography} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-export default function PointsDetailCard({data}: PointsDetailCardProps) {
+export default function PointsDetailCard({data, rank}: PointsDetailCardProps) {
     const [openModal, setOpenModal] = useState(false);
     const handleModal = () => setOpenModal(!openModal);
 
@@ -52,16 +52,17 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 disableScrollLock={true}
-                className={styles.new_game_players_modal}
+                className={styles.points_details_modal}
             >
                 <Box
-                    id={styles.update_player_modal}
-                    sx={newGameModalStyle}
+                    id={styles.points_details_modal_box}
+                    sx={pointsDetailsModalStyle}
                 >
                     <Typography
                         id="modal-modal-title"
                         variant="h6"
                         component="h2"
+                        className={styles.points_details_modal_header}
                     >
                         {
                             isFirstLetterVowel(data.player.name)
@@ -70,6 +71,11 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                                 :
                                 <p>Statistiques de {data.player.name}</p>
                         }
+                        <span
+                            className={styles.modal_info_player_rank}
+                        >
+                            {rank}ème
+                        </span>
                     </Typography>
                     {
                         pointsInfoDetails &&
@@ -86,26 +92,25 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                                     <strong>
                                         Points
                                     </strong>
-                                    &nbsp;de victoire {pointsInfoDetails.victoryPoints} 🎯
+                                    &nbsp;de victoire : {pointsInfoDetails.victoryPoints} 🎯
                                 </p>
                                 <p>
                                     <strong>
                                         Points
                                     </strong>
-                                    &nbsp;de
-                                    participation {pointsInfoDetails.participationPoints} 🙏
+                                    &nbsp;de participation : {pointsInfoDetails.participationPoints} 🙏
                                 </p>
                                 <p>
-                                    {pointsInfoDetails.roundedVictoryPercentage} %
-                                    de taux
-                                    de victoire 🔥
+                                    <strong>
+                                        {pointsInfoDetails.roundedVictoryPercentage} %
+                                    </strong>
+                                    &nbsp; de taux de victoire 🔥
                                 </p>
                                 <p>
                                     <strong>
                                         Points
                                     </strong>
-                                    &nbsp;de
-                                    régularité {pointsInfoDetails.regularityPoints} 🧠
+                                    &nbsp;de régularité : {pointsInfoDetails.regularityPoints} 🧠
                                 </p>
                                 <br/>
                                 <strong>
@@ -114,10 +119,13 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                             </>
                         )
                     }
-
-                    <CloseIcon
-                        onClick={handleModal}
-                    />
+                    <div
+                        className={styles.points_details_modal_close_icon}
+                    >
+                        <CloseIcon
+                            onClick={handleModal}
+                        />
+                    </div>
                 </Box>
             </Modal>
         </>

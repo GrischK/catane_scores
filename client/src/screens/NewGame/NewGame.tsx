@@ -385,7 +385,6 @@ export default function NewGame({refreshGamesList}: any) {
                     >
                         <CloseIcon
                             onClick={handleCloseModal}
-
                         />
                     </div>
                 </Box>

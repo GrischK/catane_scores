@@ -49,6 +49,7 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20vh;
 }
 
 .king_of_catan::after {
@@ -67,6 +68,7 @@ html {
   gap: 5vh;
   padding-bottom: 2vh;
   overflow: hidden;
+  padding-top: 4vh;
 }
 
 .trumpet_left, .trumpet_right {

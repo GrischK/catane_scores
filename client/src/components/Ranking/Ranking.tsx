@@ -179,37 +179,43 @@ export default function Ranking({playersData}: RankingProps) {
                         >
                             {totalPointsArray[0].playerInfo.player.picture
                                 ?
-                                <PointsDetailCard
-                                    key={1}
-                                    data={totalPointsArray[0].playerInfo}
-                                />
+                                <motion.div
+                                    whileHover={{y: '-2vh'}}
+                                    style={{position: 'relative', cursor: 'pointer'}}
+                                >
+                                    <PointsDetailCard
+                                        key={1}
+                                        data={totalPointsArray[0].playerInfo}
+                                    />
+                                    <motion.div
+                                        initial={{opacity: 0, scale: 0.3, y: '-1000%', x: '-50%'}}
+                                        animate={{opacity: 1, scale: 1, y: '-320%', x: '-50%'}}
+                                        transition={{
+                                            delay: 1,
+                                            duration: 0.7,
+                                            ease: [0, 0.71, 0.2, 1.01],
+                                            type: "spring",
+                                            damping: 10,
+                                            stiffness: 50,
+                                        }}
+                                        style={{position: 'absolute', left: '50%', transform: 'translateX(-50%)'}}
+                                    >
+                                        <Crown
+                                            style={{
+                                                width: "90px",
+                                                height: "90px",
+                                                zIndex: "1000",
+                                                fill: "#ffd903",
+                                            }}
+                                        />
+                                    </motion.div>
+                                </motion.div>
                                 :
                                 <img
                                     src={defaultAvatar}
                                     alt={`avatar de ${totalPointsArray[0].playerInfo.player.name}`}
                                 />
                             }
-                            <motion.div
-                                initial={{opacity: 0, scale: 0.3, y: '-1000%', x: 0}}
-                                animate={{opacity: 1, scale: 1, y: '-320%', x: 0}}
-                                transition={{
-                                    delay: 1,
-                                    duration: 0.7,
-                                    ease: [0, 0.71, 0.2, 1.01],
-                                    type: "spring",
-                                    damping: 10,
-                                    stiffness: 50,
-                                }}
-                            >
-                                <Crown
-                                    style={{
-                                        width: "90px",
-                                        height: "90px",
-                                        zIndex: "1000",
-                                        fill: "#ffd903",
-                                    }}
-                                />
-                            </motion.div>
                         </div>
                     )}
                 {showArrowButton &&
@@ -267,10 +273,17 @@ export default function Ranking({playersData}: RankingProps) {
                                 className={styles.player_info}
                                 key={p.playerInfo.player.id}
                             >
-                                <PointsDetailCard
-                                    key={index + 2}
-                                    data={p.playerInfo}
-                                />
+                                <span>{index + 2}ème</span>
+                                <motion.div
+                                    whileHover={{y: '-2vh'}}
+                                    style={{cursor: 'pointer'}}
+                                >
+                                    <PointsDetailCard
+                                        key={index + 2}
+                                        rank={index + 2}
+                                        data={p.playerInfo}
+                                    />
+                                </motion.div>
                             </motion.div>
                         )
                     )
