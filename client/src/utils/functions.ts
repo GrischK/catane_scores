@@ -1,5 +1,7 @@
 import React from "react";
 import {PlayersPoints} from "../interfaces/ranking.interface";
+import {GamesQuery} from "../gql/generated/schema";
+import {playerRankingDetails} from "../components/Ranking/Ranking";
 
 export const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
 
@@ -121,4 +123,79 @@ export const pointsDetails = (data: PlayersPoints) => {
     } else {
 
     }
+}
+
+// Get participation & victory account for ranking
+export const getPlayersPoints = (data: GamesQuery) => {
+    if (data) {
+        const updatedPlayersPoints: PlayersPoints[] = [];
+        data.games.forEach((game) => {
+            if (game.scores && game.scores.length > 0) {
+                const sortedScores = [...game.scores];
+                sortedScores.sort((a, b) => b.score - a.score);
+                const firstPlayer = sortedScores[0].player;
+
+                const playerIndex = updatedPlayersPoints.findIndex(
+                    (p) => p.player?.name === firstPlayer.name
+                );
+
+                if (playerIndex !== -1) {
+                    updatedPlayersPoints[playerIndex].victoryCount += 1;
+                } else {
+                    updatedPlayersPoints.push({
+                        player: firstPlayer,
+                        victoryCount: 1,
+                    });
+                }
+
+                game.scores.forEach((score) => {
+                    const playerIndex = updatedPlayersPoints.findIndex(
+                        (p) => p.player?.name === score.player.name
+                    );
+
+                    if (playerIndex !== -1) {
+                        updatedPlayersPoints[playerIndex].participationCount =
+                            (updatedPlayersPoints[playerIndex].participationCount ?? 0) + 1;
+                    } else {
+                        updatedPlayersPoints.push({
+                            player: score.player,
+                            victoryCount: 0,
+                            participationCount: 1,
+                        });
+                    }
+                });
+            }
+        });
+        updatedPlayersPoints.sort((a, b) => b.victoryCount - a.victoryCount);
+
+        return updatedPlayersPoints
+    }
+}
+
+// Get podium
+export const getFinalRanking = (playersData: PlayersPoints[]) => {
+    const totalPointsArray: playerRankingDetails[] = [];
+
+    playersData.forEach((player) => {
+        const totalPoints = calculateTotalPoint(player)
+        const playerData = {
+            playerInfo: player,
+            totalScore: totalPoints
+        }
+
+        // Check if player already exists in array
+        const existingIndex = totalPointsArray.findIndex(item => item.playerInfo.player.name === player.player.name);
+
+        // Add player to ranking array if doesn't exists
+        if (existingIndex === -1) {
+            totalPointsArray.push(playerData);
+        }
+    })
+
+    const comparer = (a: playerRankingDetails, b: playerRankingDetails) => {
+        if (a.totalScore === b.totalScore) return 0;
+        return a.totalScore > b.totalScore ? -1 : 1;
+    };
+
+    return totalPointsArray.sort(comparer); //TODO just return the 3 first players
 }

@@ -3,7 +3,7 @@ import {PlayersPoints} from "../../interfaces/playersListPage.interface";
 import {rankingPageProps} from "../../interfaces/rankingPage.interface";
 import {useGamesQuery} from "../../gql/generated/schema";
 import ConfettiExplosion from 'react-confetti-explosion';
-import Ranking from "../../components/Ranking/Ranking"
+import Ranking, {playerRankingDetails} from "../../components/Ranking/Ranking"
 import {ThemeProvider} from '@mui/material/styles';
 import SparklesComponent from "../../components/SparklesComponent/SparklesComponent";
 import styles from './RankingPage.module.css';
@@ -24,8 +24,9 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {motion, AnimatePresence} from "framer-motion";
 import {blueTheme} from "../../utils/stylesVariantes";
+import {getFinalRanking, getPlayersPoints} from "../../utils/functions";
 
-export default function RankingPage({rankingRefreshed}:rankingPageProps) {
+export default function RankingPage({rankingRefreshed}: rankingPageProps) {
     // Show 3rd player
     const [thirdPlayerIsShown, setThirdPlayerIsShown] = useState(false)
     const [moveThirdPlayer, setMoveThirdPlayer] = useState(false)
@@ -83,6 +84,7 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
 
     const {data, refetch} = useGamesQuery()
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
+    const [podiumRanking, setPodiumRanking]=useState<playerRankingDetails[]>()
 
     useEffect(() => {
         refetch()
@@ -90,49 +92,19 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
 
     useEffect(() => {
         if (data) {
-            const updatedPlayersPoints: PlayersPoints[] = [];
-            data.games.forEach((game) => {
-                if (game.scores && game.scores.length > 0) {
-                    const sortedScores = [...game.scores];
-                    sortedScores.sort((a, b) => b.score - a.score);
-                    const firstPlayer = sortedScores[0].player;
-
-                    const playerIndex = updatedPlayersPoints.findIndex(
-                        (p) => p.player?.name === firstPlayer.name
-                    );
-
-                    if (playerIndex !== -1) {
-                        updatedPlayersPoints[playerIndex].victoryCount += 1;
-                    } else {
-                        updatedPlayersPoints.push({
-                            player: firstPlayer,
-                            victoryCount: 1,
-                        });
-                    }
-
-                    game.scores.forEach((score) => {
-                        const playerIndex = updatedPlayersPoints.findIndex(
-                            (p) => p.player?.name === score.player.name
-                        );
-
-                        if (playerIndex !== -1) {
-                            updatedPlayersPoints[playerIndex].participationCount =
-                                (updatedPlayersPoints[playerIndex].participationCount ?? 0) + 1;
-                        } else {
-                            updatedPlayersPoints.push({
-                                player: score.player,
-                                victoryCount: 0,
-                                participationCount: 1,
-                            });
-                        }
-                    });
-                }
-            });
-            updatedPlayersPoints.sort((a, b) => b.victoryCount - a.victoryCount);
-
-            setPlayersPoints(updatedPlayersPoints);
+            const playersPointsData = getPlayersPoints(data)
+            if (playersPointsData) {
+                setPlayersPoints(playersPointsData);
+            }
         }
     }, [data]);
+
+    useEffect(()=>{
+        const getPodiumRanking = getFinalRanking(playersPoints);
+        setPodiumRanking(getPodiumRanking)
+    },[playersPoints])
+
+    console.log(playersPoints)
 
     useEffect(() => {
         if (step === 2) {
@@ -368,11 +340,11 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
                                                 className={styles.podiumMedal}
                                             />
                                             {
-                                                playersPoints.length > 0 &&
+                                                podiumRanking && podiumRanking.length > 0 &&
                                                 <h1
                                                     className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                                 >
-                                                    {playersPoints[2].player?.name}
+                                                    {podiumRanking[2].playerInfo.player.name}
                                                 </h1>
                                             }
                                         </SparklesComponent>
@@ -386,12 +358,12 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
                                                 className={styles.podiumMedal}
                                             />
                                             {
-                                                playersPoints.length > 0 &&
+                                                podiumRanking && podiumRanking.length > 0 &&
 
                                                 <h1
                                                     className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                                 >
-                                                    {playersPoints[2].player?.name}
+                                                    {podiumRanking[2].playerInfo.player.name}
                                                 </h1>
                                             }
                                         </>
@@ -400,21 +372,21 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
                                 <div
                                     className={`${styles.playerName} ${thirdPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
                                 >
-                                    {playersPoints.length > 0 && (
+                                    {podiumRanking && podiumRanking.length > 0 && (
                                         <div
                                             className={styles.player_info}
                                         >
-                                            {playersPoints[2].player.picture
+                                            {podiumRanking[2].playerInfo.player.picture
                                                 ?
                                                 <img
-                                                    src={playersPoints[2].player?.picture}
+                                                    src={podiumRanking[2].playerInfo.player.picture}
 
-                                                    alt={`avatar de ${playersPoints[2].player.name}`}
+                                                    alt={`avatar de ${podiumRanking[2].playerInfo.player.name}`}
                                                 />
                                                 :
                                                 <img
                                                     src={defaultAvatar}
-                                                    alt={`avatar de ${playersPoints[2].player.name}`}
+                                                    alt={`avatar de ${podiumRanking[2].playerInfo.player.name}`}
                                                 />
                                             }
                                         </div>
@@ -433,11 +405,11 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
                                                 className={styles.podiumMedal}
                                             />
                                             {
-                                                playersPoints.length > 0 &&
+                                                podiumRanking && podiumRanking.length > 0 &&
                                                 <h1
                                                     className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                                 >
-                                                    {playersPoints[1].player?.name}
+                                                    {podiumRanking[1].playerInfo.player.name}
                                                 </h1>
                                             }
                                         </SparklesComponent>
@@ -451,11 +423,11 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
                                                 className={styles.podiumMedal}
                                             />
                                             {
-                                                playersPoints.length > 0 &&
+                                                podiumRanking && podiumRanking.length > 0 &&
                                                 <h1
                                                     className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                                 >
-                                                    {playersPoints[1].player?.name}
+                                                    {podiumRanking[1].playerInfo.player.name}
                                                 </h1>
                                             }
                                         </>
@@ -464,22 +436,22 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
                                 <div
                                     className={`${styles.playerName} ${secondPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
                                 >
-                                    {playersPoints.length > 0 && (
+                                    {podiumRanking && podiumRanking.length > 0 &&(
                                         <div
                                             className={styles.player_info}
                                         >
                                             {
-                                                playersPoints[1].player.picture
+                                                podiumRanking[1].playerInfo.player.picture
                                                     ?
                                                     <img
-                                                        src={playersPoints[1].player?.picture}
+                                                        src={podiumRanking[1].playerInfo.player.picture}
 
-                                                        alt={`avatar de ${playersPoints[1].player.name}`}
+                                                        alt={`avatar de ${podiumRanking[1].playerInfo.player.name}`}
                                                     />
                                                     :
                                                     <img
                                                         src={defaultAvatar}
-                                                        alt={`avatar de ${playersPoints[1].player.name}`}
+                                                        alt={`avatar de ${podiumRanking[1].playerInfo.player.name}`}
                                                     />
                                             }
                                         </div>
@@ -498,11 +470,11 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
                                             className={styles.podiumMedal}
                                         />
                                         {
-                                            playersPoints.length > 0 &&
+                                            podiumRanking && podiumRanking.length > 0 &&
                                             <h1
                                                 className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                             >
-                                                {playersPoints[0].player?.name}
+                                                {podiumRanking[0].playerInfo.player.name}
                                             </h1>
                                         }
                                     </SparklesComponent>)
@@ -515,11 +487,11 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
                                                 className={styles.podiumMedal}
                                             />
                                             {
-                                                playersPoints.length > 0 &&
+                                                podiumRanking && podiumRanking.length > 0 &&
                                                 <h1
                                                     className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                                 >
-                                                    {playersPoints[0].player?.name}
+                                                    {podiumRanking[0].playerInfo.player.name}
                                                 </h1>
                                             }
                                         </>
@@ -527,21 +499,21 @@ export default function RankingPage({rankingRefreshed}:rankingPageProps) {
                                 }
                                 <div
                                     className={`${styles.playerName} ${firstPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
-                                    {playersPoints.length > 0 && (
+                                    {podiumRanking && podiumRanking.length > 0 && (
                                         <div
                                             className={styles.player_info}
                                         >
                                             {
-                                                playersPoints[0].player.picture
+                                                podiumRanking[0].playerInfo.player.picture
                                                     ?
                                                     <img
-                                                        src={playersPoints[0].player?.picture}
-                                                        alt={`avatar de ${playersPoints[0].player.name}`}
+                                                        src={podiumRanking[0].playerInfo.player.picture}
+                                                        alt={`avatar de ${podiumRanking[0].playerInfo.player.name}`}
                                                     />
                                                     :
                                                     <img
                                                         src={defaultAvatar}
-                                                        alt={`avatar de ${playersPoints[0].player.name}`}
+                                                        alt={`avatar de ${podiumRanking[0].playerInfo.player.name}`}
                                                     />
                                             }
                                         </div>

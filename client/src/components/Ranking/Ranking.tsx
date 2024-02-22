@@ -8,12 +8,13 @@ import ConfettiExplosion from 'react-confetti-explosion';
 import {ThemeProvider} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
 import PointsDetailCard from "../PointsDetailsCard/PointsDetailCard";
-import {calculateTotalPoint} from "../../utils/functions";
+import {getFinalRanking} from "../../utils/functions";
 import {motion, useInView} from 'framer-motion';
 import {blueTheme} from "../../utils/stylesVariantes";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
-interface RankingProps {
+// TODO Export interfaces outside
+export interface RankingProps {
     playersData: PlayersPoints[],
 }
 
@@ -31,30 +32,8 @@ export default function Ranking({playersData}: RankingProps) {
     const [isExploding, setIsExploding] = React.useState(false);
     const [hasExploded, setHasExploded] = useState(false);
 
-    const totalPointsArray: playerRankingDetails[] = [];
+    const totalPointsArray = getFinalRanking(playersData)
 
-    playersData.forEach((player) => {
-        const totalPoints = calculateTotalPoint(player)
-        const playerData = {
-            playerInfo: player,
-            totalScore: totalPoints
-        }
-
-        // Check if player already exists in array
-        const existingIndex = totalPointsArray.findIndex(item => item.playerInfo.player.name === player.player.name);
-
-        // Add player to ranking array if doesn't exists
-        if (existingIndex === -1) {
-            totalPointsArray.push(playerData);
-        }
-    })
-
-    const comparer = (a: playerRankingDetails, b: playerRankingDetails) => {
-        if (a.totalScore === b.totalScore) return 0;
-        return a.totalScore > b.totalScore ? -1 : 1;
-    };
-
-    totalPointsArray.sort(comparer);
     useEffect(() => {
         const timers: any[] = [];
 
