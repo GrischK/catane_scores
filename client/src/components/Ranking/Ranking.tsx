@@ -12,19 +12,18 @@ import PointsDetailCard from "../PointsDetailsCard/PointsDetailCard";
 import {motion, useInView} from 'framer-motion';
 import {blueTheme} from "../../utils/stylesVariantes";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import {calculateTotalPoint} from "../../utils/functions";
 
 interface RankingProps {
     playersData: PlayersPoints[],
 }
 
 export interface playerRankingDetails {
-    playerInfo : PlayersPoints,
-    totalScore : number,
+    playerInfo: PlayersPoints,
+    totalScore: number,
 }
 
 export default function Ranking({playersData}: RankingProps) {
-    const {data, refetch} = useGamesQuery()
-
     const ref = useRef(null)
     const isInView = useInView(ref)
 
@@ -38,44 +37,31 @@ export default function Ranking({playersData}: RankingProps) {
 
     const totalPointsArray: playerRankingDetails[] = [];
 
-    const comparer = (a:playerRankingDetails, b:playerRankingDetails) => {
+    playersData.forEach((player) => {
+        const totalPoints = calculateTotalPoint(player)
+        const playerData = {
+            playerInfo: player,
+            totalScore: totalPoints
+        }
+
+        // Check if player already exists in array
+        const existingIndex = totalPointsArray.findIndex(item => item.playerInfo.player.name === player.player.name);
+
+        // Add player to ranking array if doesn't exists
+        if (existingIndex === -1) {
+            totalPointsArray.push(playerData);
+        }
+    })
+
+    const comparer = (a: playerRankingDetails, b: playerRankingDetails) => {
         if (a.totalScore === b.totalScore) return 0;
         return a.totalScore > b.totalScore ? -1 : 1;
     };
 
     totalPointsArray.sort(comparer);
 
+    console.log('total point array')
     console.log(totalPointsArray)
-
-    useEffect(() => {
-        if (data) {
-            const updatedPlayersPoints: PlayersPoints[] = [];
-            data.games.forEach((game) => {
-                if (game.scores && game.scores.length > 0) {
-                    const sortedScores = [...game.scores];
-                    sortedScores.sort((a, b) => b.score - a.score);
-                    const firstPlayer = sortedScores[0].player;
-
-                    const playerIndex = updatedPlayersPoints.findIndex(
-                        (p) => p.player?.name === firstPlayer.name
-                    );
-
-                    if (playerIndex !== -1) {
-                        updatedPlayersPoints[playerIndex].victoryCount += 1;
-                    } else {
-                        updatedPlayersPoints.push({
-                            player: firstPlayer,
-                            victoryCount: 1,
-                        });
-                    }
-                }
-                window.history.scrollRestoration = 'manual'
-            });
-            updatedPlayersPoints.sort((a, b) => b.victoryCount - a.victoryCount);
-
-            setPlayersPoints(updatedPlayersPoints);
-        }
-    }, [data]);
 
     useEffect(() => {
         const timers: any[] = [];
@@ -114,6 +100,8 @@ export default function Ranking({playersData}: RankingProps) {
     const [scrollY, setScrollY] = useState(0);
 
     useEffect(() => {
+        window.history.scrollRestoration = 'manual'
+
         function handleScroll() {
             setScrollY(window.scrollY)
         }
@@ -191,29 +179,23 @@ export default function Ranking({playersData}: RankingProps) {
                     stiffness: 100,
                 }}
             >
-                {playersPoints.length > 0 &&
+                {totalPointsArray.length > 0 &&
                     (
                         <div
                             className={styles.player_info}
                         >
-                            {playersPoints[0].player.picture
+                            {totalPointsArray[0].playerInfo.player.picture
                                 ?
-                                <img
-                                    src={playersPoints[0].player?.picture}
-                                    alt={`avatar de ${playersPoints[0].player.name}`}
+                                <PointsDetailCard
+                                    key={1}
+                                    data={totalPointsArray[0].playerInfo}
                                 />
                                 :
                                 <img
                                     src={defaultAvatar}
-                                    alt={`avatar de ${playersPoints[0].player.name}`}
+                                    alt={`avatar de ${totalPointsArray[0].playerInfo.player.name}`}
                                 />
                             }
-                            <h1>
-                                {playersPoints[0].player?.name}
-                            </h1>
-                            <span>
-                                {`Points : ${playersPoints[0].victoryCount}`}
-                            </span>
                             <motion.div
                                 initial={{opacity: 0, scale: 0.3, y: '-1000%', x: 0}}
                                 animate={{opacity: 1, scale: 1, y: '-320%', x: 0}}
@@ -272,9 +254,9 @@ export default function Ranking({playersData}: RankingProps) {
                 id={"rest_of_players"}
                 ref={ref}
             >
-                {playersPoints.length > 0 &&
+                {totalPointsArray.length > 0 &&
                     (
-                        playersPoints.slice(1).map((p, index) =>
+                        totalPointsArray.slice(1).map((p, index) =>
                             <motion.div
                                 initial={{
                                     opacity: 0,
@@ -290,54 +272,30 @@ export default function Ranking({playersData}: RankingProps) {
                                     delay: isInView ? index * 0.2 : 0, // délai seulement si dans la vue
                                 }}
                                 className={styles.player_info}
-                                key={p.player.id}
+                                key={p.playerInfo.player.id}
                             >
-                                <span>
-                                    {index + 2}ème
-                                </span>
-                                {p.player.picture
-                                    ?
-                                    <img
-                                        src={p.player?.picture}
-                                        alt={`avatar de ${p.player.name}`}
-                                    />
-                                    :
-                                    <img
-                                        src={defaultAvatar}
-                                        alt={`avatar de ${p.player.name}`}
-                                    />
-                                }
-                                <h1>
-                                    {p.player?.name}
-                                </h1>
-                                <span>
-                                {
-                                    p.victoryCount === 1
-                                        ?
-                                        `${p.victoryCount} point`
-                                        :
-                                        `${p.victoryCount} points`
-                                }
-                                </span>
+                                <PointsDetailCard
+                                    key={index + 2}
+                                    data={p.playerInfo}
+                                />
                             </motion.div>
                         )
                     )
                 }
             </div>
-            <div
-                style={{display: 'flex', gap: '2vw'}}
-            >
-                {
-                    playersData.map((p, index) => (
-                            <PointsDetailCard
-                                key={index}
-                                data={p}
-                                totalPointsArray={totalPointsArray}
-                            />
-                        )
-                    )
-                }
-            </div>
+            {/*<div*/}
+            {/*    style={{display: 'flex', gap: '2vw'}}*/}
+            {/*>*/}
+            {/*    {*/}
+            {/*        playersData.map((p, index) => (*/}
+            {/*                <PointsDetailCard*/}
+            {/*                    key={index}*/}
+            {/*                    data={p}*/}
+            {/*                />*/}
+            {/*            )*/}
+            {/*        )*/}
+            {/*    }*/}
+            {/*</div>*/}
         </div>
     )
 }

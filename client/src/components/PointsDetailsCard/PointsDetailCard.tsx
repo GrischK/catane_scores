@@ -10,26 +10,11 @@ import {playerRankingDetails} from "../Ranking/Ranking";
 
 interface PointsDetailCardProps {
     data: PlayersPoints,
-    totalPointsArray: playerRankingDetails[]
 }
 
-export default function PointsDetailCard({data, totalPointsArray}: PointsDetailCardProps) {
+export default function PointsDetailCard({data}: PointsDetailCardProps) {
     const [openModal, setOpenModal] = useState(false);
     const handleModal = () => setOpenModal(!openModal);
-
-    const totalPoints = calculateTotalPoint(data)
-    const playerData = {
-        playerInfo: data,
-        totalScore: totalPoints
-    }
-
-    // Check if player already exists in array
-    const existingIndex = totalPointsArray.findIndex(item => item.playerInfo.player.name === data.player.name);
-
-    // Add player to ranking array if doesn't exists
-    if (existingIndex === -1) {
-        totalPointsArray.push(playerData);
-    }
 
     return (
         <>
@@ -88,26 +73,38 @@ export default function PointsDetailCard({data, totalPointsArray}: PointsDetailC
                         }
                     </Typography>
                     <p>
-                        {data.participationCount} participations
+                        {data.participationCount} participations ⚔️
                     </p>
                     <p>
-                        {data.victoryCount} victoires
+                        {data.victoryCount} victoires 🏆
                     </p>
                     <p>
-                        points de victoire {data.victoryCount * 3}
+                        <strong>
+                            Points
+                        </strong>
+                        &nbsp;de victoire {data.victoryCount * 3} 🎯
                     </p>
                     <p>
-                        points de participation {data.participationCount ? (data.participationCount * 0.25) : ""}
+                        <strong>
+                            Points
+                        </strong>
+                        &nbsp;de
+                        participation {data.participationCount ? (data.participationCount * 0.25) : ""} 🙏
                     </p>
                     <p>
-                        % de
-                        victoire {data.participationCount ? (data.victoryCount / data.participationCount) * 100 : ""}
+                        {data.participationCount ? (data.victoryCount / data.participationCount) * 100 : ""} % de taux
+                        de victoire 🔥
                     </p>
                     <p>
-                        points de
-                        régularité {data.participationCount ? ((data.victoryCount / data.participationCount) / 2 * 100) : ""}
+                        <strong>
+                            Points
+                        </strong>
+                        &nbsp;de
+                        régularité {data.participationCount ? ((data.victoryCount / data.participationCount) / 2 * 100) : ""} 🧠
                     </p>
-                    <p>points total : {calculateTotalPoint(data)}</p>
+                    <strong>
+                        Total des points : {calculateTotalPoint(data)} 🎉
+                    </strong>
                     <CloseIcon
                         onClick={handleModal}
                     />

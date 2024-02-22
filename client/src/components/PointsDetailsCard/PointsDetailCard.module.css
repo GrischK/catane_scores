@@ -1,3 +1,13 @@
+.points_card_details_container:hover {
+  cursor: pointer;
+  transform: translateY(-2vh);
+}
+
 .points_card_details_container img {
-  width: 5vw;
+  width: 200px;
+  height: 200px;
+}
+
+strong {
+  font-weight: bold;
 }
