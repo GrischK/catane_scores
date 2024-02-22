@@ -65,6 +65,7 @@ html {
 .ranking {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 5vh;
   padding-bottom: 2vh;
   overflow: hidden;

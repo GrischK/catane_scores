@@ -149,10 +149,8 @@ export default function PointsDetailCard({data, rank}: PointsDetailCardProps) {
                                                         Points de participation :
                                                     </strong>
                                                     <span>
-                                                        &nbsp;Nombre de victoires x 0.25. Attribue quelques points pour
+                                                        &nbsp;Nombre de participations x 0.25. Attribue quelques points pour
                                                         récompenser la confrontation aux autres Cataneurs.
-                                                        Théoriquement, plus on Catanise, plus on a de chances de voir
-                                                        son taux de victoire diminuer.
                                                     </span>
                                                 </span>
                                                 <span>
@@ -174,8 +172,17 @@ export default function PointsDetailCard({data, rank}: PointsDetailCardProps) {
                                                     </strong>
                                                     <span>
                                                         &nbsp;Taux de victoire x 0.5. Permet de valoriser la performance du
-                                                        Cataneur lorsqu'il joue. Ainsi un Cataneur qui gagne souvent
-                                                        lorsqu'il joue (même rarement), gagnera des points.
+                                                        Cataneur lorsqu'il joue.
+                                                    </span>
+                                                </span>
+                                                <span>
+                                                    <strong
+                                                        style={{textDecoration: 'underline'}}
+                                                    >
+                                                        Total des points  :
+                                                    </strong>
+                                                    <span>
+                                                        &nbsp;Points de victoire + points de participation + points de performance.
                                                     </span>
                                                 </span>
                                             </Typography>
