@@ -38,7 +38,7 @@ export default function PointsDetailCard({data}: PointsDetailCardProps) {
                 </h1>
                 <span>
                     {
-                        data.victoryCount <= 1
+                        calculateTotalPoint(data) <= 1
                             ?
                             `${calculateTotalPoint(data)} point`
                             :
