@@ -186,6 +186,7 @@ export default function Ranking({playersData}: RankingProps) {
                                     <PointsDetailCard
                                         key={1}
                                         data={totalPointsArray[0].playerInfo}
+                                        rank={1}
                                     />
                                     <motion.div
                                         initial={{opacity: 0, scale: 0.3, y: '-1000%', x: '-50%'}}

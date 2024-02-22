@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import {PointsDetailCardProps} from "../../interfaces/pointsDetailCard.interface";
 import {isFirstLetterVowel, pointsDetails} from "../../utils/functions";
+import Tooltip from '@mui/material/Tooltip';
 import styles from "./PointsDetailCard.module.css";
 import defaultAvatar from "../../assets/images/default_avatar.png";
-import {newGameModalStyle, pointsDetailsModalStyle} from "../../utils/stylesVariantes";
+import {pointsDetailsModalStyle, tooltipStyle} from "../../utils/stylesVariantes";
 import {Box, Modal, Typography} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
 export default function PointsDetailCard({data, rank}: PointsDetailCardProps) {
     const [openModal, setOpenModal] = useState(false);
@@ -74,7 +76,12 @@ export default function PointsDetailCard({data, rank}: PointsDetailCardProps) {
                         <span
                             className={styles.modal_info_player_rank}
                         >
-                            {rank}ème
+                            {rank !== 1
+                                ?
+                                <p>{rank}ème</p>
+                                :
+                                <p>👑 Monarque du Catane 👑</p>
+                            }
                         </span>
                     </Typography>
                     {
@@ -110,12 +117,74 @@ export default function PointsDetailCard({data, rank}: PointsDetailCardProps) {
                                     <strong>
                                         Points
                                     </strong>
-                                    &nbsp;de régularité : {pointsInfoDetails.regularityPoints} 🧠
+                                    &nbsp;de performance : {pointsInfoDetails.regularityPoints} 🧠
                                 </p>
+
                                 <br/>
                                 <strong>
                                     Total des points : {pointsInfoDetails.total} 🎉
                                 </strong>
+                                <Tooltip
+                                    sx={tooltipStyle}
+                                    title={
+                                        <React.Fragment>
+                                            <Typography
+                                                color="inherit"
+                                                sx={{display: 'flex', flexDirection: 'column', gap: '2vh'}}
+                                            >
+                                                <span>
+                                                    <strong
+                                                        style={{textDecoration: 'underline'}}
+                                                    >
+                                                        Points de victoire :
+                                                    </strong>
+                                                    <span>
+                                                        &nbsp;Nombre de victoires x 3.
+                                                    </span>
+                                                </span>
+                                                <span>
+                                                    <strong
+                                                        style={{textDecoration: 'underline'}}
+                                                    >
+                                                        Points de participation :
+                                                    </strong>
+                                                    <span>
+                                                        &nbsp;Nombre de victoires x 0.25. Attribue quelques points pour
+                                                        récompenser la confrontation aux autres Cataneurs.
+                                                        Théoriquement, plus on Catanise, plus on a de chances de voir
+                                                        son taux de victoire diminuer.
+                                                    </span>
+                                                </span>
+                                                <span>
+                                                    <strong
+                                                        style={{textDecoration: 'underline'}}
+                                                    >
+                                                        Taux de victoire :
+                                                    </strong>
+                                                    <span>
+                                                        &nbsp;Nombre de victoires / nombre de participations. Sert à calculer
+                                                        les points de performance.
+                                                    </span>
+                                                </span>
+                                                <span>
+                                                    <strong
+                                                        style={{textDecoration: 'underline'}}
+                                                    >
+                                                        Points de performance :
+                                                    </strong>
+                                                    <span>
+                                                        &nbsp;Taux de victoire x 0.5. Permet de valoriser la performance du
+                                                        Cataneur lorsqu'il joue. Ainsi un Cataneur qui gagne souvent
+                                                        lorsqu'il joue (même rarement), gagnera des points.
+                                                    </span>
+                                                </span>
+                                            </Typography>
+                                        </React.Fragment>
+                                    }>
+                                    <InfoRoundedIcon
+                                        color={'primary'}
+                                    />
+                                </Tooltip>
                             </>
                         )
                     }
