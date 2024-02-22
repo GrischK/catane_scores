@@ -8,13 +8,18 @@ import {useGamesQuery} from "../../gql/generated/schema";
 import ConfettiExplosion from 'react-confetti-explosion';
 import {ThemeProvider} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
+import PointsDetailCard from "../PointsDetailsCard/PointsDetailCard";
+import {motion, useInView} from 'framer-motion';
 import {blueTheme} from "../../utils/stylesVariantes";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import {motion, useInView} from 'framer-motion';
-import PointsDetailCard from "../PointsDetailsCard/PointsDetailCard";
 
 interface RankingProps {
     playersData: PlayersPoints[],
+}
+
+export interface playerRankingDetails {
+    playerInfo : PlayersPoints,
+    totalScore : number,
 }
 
 export default function Ranking({playersData}: RankingProps) {
@@ -30,6 +35,17 @@ export default function Ranking({playersData}: RankingProps) {
 
     const [isExploding, setIsExploding] = React.useState(false);
     const [hasExploded, setHasExploded] = useState(false);
+
+    const totalPointsArray: playerRankingDetails[] = [];
+
+    const comparer = (a:playerRankingDetails, b:playerRankingDetails) => {
+        if (a.totalScore === b.totalScore) return 0;
+        return a.totalScore > b.totalScore ? -1 : 1;
+    };
+
+    totalPointsArray.sort(comparer);
+
+    console.log(totalPointsArray)
 
     useEffect(() => {
         if (data) {
@@ -316,6 +332,7 @@ export default function Ranking({playersData}: RankingProps) {
                             <PointsDetailCard
                                 key={index}
                                 data={p}
+                                totalPointsArray={totalPointsArray}
                             />
                         )
                     )

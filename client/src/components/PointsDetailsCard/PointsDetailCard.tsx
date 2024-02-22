@@ -6,14 +6,30 @@ import defaultAvatar from "../../assets/images/default_avatar.png";
 import {newGameModalStyle} from "../../utils/stylesVariantes";
 import {Box, Modal, Typography} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import {playerRankingDetails} from "../Ranking/Ranking";
 
 interface PointsDetailCardProps {
-    data: PlayersPoints
+    data: PlayersPoints,
+    totalPointsArray: playerRankingDetails[]
 }
 
-export default function PointsDetailCard({data}: PointsDetailCardProps) {
+export default function PointsDetailCard({data, totalPointsArray}: PointsDetailCardProps) {
     const [openModal, setOpenModal] = useState(false);
     const handleModal = () => setOpenModal(!openModal);
+
+    const totalPoints = calculateTotalPoint(data)
+    const playerData = {
+        playerInfo: data,
+        totalScore: totalPoints
+    }
+
+    // Check if player already exists in array
+    const existingIndex = totalPointsArray.findIndex(item => item.playerInfo.player.name === data.player.name);
+
+    // Add player to ranking array if doesn't exists
+    if (existingIndex === -1) {
+        totalPointsArray.push(playerData);
+    }
 
     return (
         <>
