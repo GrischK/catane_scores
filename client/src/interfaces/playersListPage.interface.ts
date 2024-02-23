@@ -7,5 +7,6 @@ export interface PlayerInterface {
 
 export interface PlayersPoints {
     player: User;
-    playerTotalPoints: number;
+    victoryCount: number;
+    participationCount?: number;
 }

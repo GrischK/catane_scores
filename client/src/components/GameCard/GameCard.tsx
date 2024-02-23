@@ -1,15 +1,17 @@
 import React, {useState} from "react";
-import styles from "./GameCard.module.css"
 import {GameCardProps} from "../../interfaces/gameCard.interface";
+import styles from "./GameCard.module.css"
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
 import ColoredButton from "../ColoredButton/ColoredButton";
+import AspectRatioRoundedIcon from '@mui/icons-material/AspectRatioRounded';
 import {Box, IconButton, Modal} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import {modalStyle} from "../../utils/stylesVariantes";
 import {buttonTransition} from "../../utils/animationVariants";
 import {motion} from "framer-motion";
+import {yellow} from "@mui/material/colors";
 
 export default function GameCard({game, index, onClickDeleteFunction, dataGameId}: GameCardProps) {
     const [flip, setFlip] = useState(false);

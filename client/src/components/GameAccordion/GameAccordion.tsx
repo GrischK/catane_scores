@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./GameAccordion.module.css"
 import {GameAccordionProps} from "../../interfaces/gameAccordion.interface";
+import styles from "./GameAccordion.module.css"
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import Cup from "../../assets/images/cup.png";
 import AccordionDetails from '@mui/material/AccordionDetails';

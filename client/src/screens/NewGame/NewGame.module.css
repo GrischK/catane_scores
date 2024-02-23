@@ -145,7 +145,7 @@ input[type="date"] {
   border-radius: 1vh;
   padding: 1vh;
   box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px;
-  transition: transform 0.2s, box-shadow 0.1s ease-in-out,border-color 0.2s ease-in-out, outline 0.1s;
+  transition: transform 0.2s, box-shadow 0.1s ease-in-out, border-color 0.2s ease-in-out, outline 0.1s;
 }
 
 .game_player_wrapper:hover {

@@ -1,13 +1,18 @@
-import styles from './RankingPage.module.css';
 import React, {useEffect, useRef, useState} from "react";
+import {PlayersPoints} from "../../interfaces/playersListPage.interface";
+import {rankingPageProps} from "../../interfaces/rankingPage.interface";
 import {useGamesQuery} from "../../gql/generated/schema";
 import ConfettiExplosion from 'react-confetti-explosion';
-import Ranking from "../../components/Ranking/Ranking"
+import Ranking, {playerRankingDetails} from "../../components/Ranking/Ranking"
 import {ThemeProvider} from '@mui/material/styles';
 import SparklesComponent from "../../components/SparklesComponent/SparklesComponent";
-import {PlayersPoints} from "../../interfaces/playersListPage.interface";
+import styles from './RankingPage.module.css';
 import cheer from '../../assets/sounds/cheer.mp3'
 import trumpets from '../../assets/sounds/fanfare_trumpets.mp3'
+import sillyTrumpet from '../../assets/sounds/silly-trumpet.mp3'
+import lessSillyTrumpet from '../../assets/sounds/less-silly-trumpet.mp3'
+import moreClaps from '../../assets/sounds/moreclaps.mp3'
+import soloClap from '../../assets/sounds/solo-clap.mp3'
 import tadaa from '../../assets/sounds/tadaa.mp3'
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import thirdMedal from "../../assets/images/medal_3.png"
@@ -19,8 +24,9 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
 import {motion, AnimatePresence} from "framer-motion";
 import {blueTheme} from "../../utils/stylesVariantes";
+import {getFinalRanking, getPlayersPoints} from "../../utils/functions";
 
-export default function RankingPage() {
+export default function RankingPage({rankingRefreshed}: rankingPageProps) {
     // Show 3rd player
     const [thirdPlayerIsShown, setThirdPlayerIsShown] = useState(false)
     const [moveThirdPlayer, setMoveThirdPlayer] = useState(false)
@@ -59,44 +65,46 @@ export default function RankingPage() {
     const tadaaSound1Ref = useRef(new Audio(tadaa));
     const tadaaSound2Ref = useRef(new Audio(tadaa));
     const tadaaSound3Ref = useRef(new Audio(tadaa));
+    const sillyTrumpetSoundRef = useRef(new Audio(sillyTrumpet))
+    const soloClapSoundRef = useRef(new Audio(soloClap))
+    const lessSillytTrumpetSoundRed = useRef(new Audio(lessSillyTrumpet))
+    const moreClapsSoundRef = useRef(new Audio(moreClaps))
+
     tadaaSound1Ref.current.volume = 0.4
     tadaaSound2Ref.current.volume = 0.5
     tadaaSound3Ref.current.volume = 0.6
-
+    sillyTrumpetSoundRef.current.volume = 0.4
+    soloClapSoundRef.current.volume = 0.5
+    lessSillytTrumpetSoundRed.current.volume = 0.5
+    moreClapsSoundRef.current.volume = 0.5
+    trumpetsSoundRef.current.volume = 0.8
+    cheersSoundRef.current.volume = 0.8
     // Manage steps
     const [step, setStep] = useState(1)
 
     const {data, refetch} = useGamesQuery()
     const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
+    const [podiumRanking, setPodiumRanking]=useState<playerRankingDetails[]>()
+
+    useEffect(() => {
+        refetch()
+    }, [rankingRefreshed]);
 
     useEffect(() => {
         if (data) {
-            const updatedPlayersPoints: PlayersPoints[] = [];
-            data.games.forEach((game) => {
-                if (game.scores && game.scores.length > 0) {
-                    const sortedScores = [...game.scores];
-                    sortedScores.sort((a, b) => b.score - a.score);
-                    const firstPlayer = sortedScores[0].player;
-
-                    const playerIndex = updatedPlayersPoints.findIndex(
-                        (p) => p.player?.name === firstPlayer.name
-                    );
-
-                    if (playerIndex !== -1) {
-                        updatedPlayersPoints[playerIndex].playerTotalPoints += 1;
-                    } else {
-                        updatedPlayersPoints.push({
-                            player: firstPlayer,
-                            playerTotalPoints: 1,
-                        });
-                    }
-                }
-            });
-            updatedPlayersPoints.sort((a, b) => b.playerTotalPoints - a.playerTotalPoints);
-
-            setPlayersPoints(updatedPlayersPoints);
+            const playersPointsData = getPlayersPoints(data)
+            if (playersPointsData) {
+                setPlayersPoints(playersPointsData);
+            }
         }
     }, [data]);
+
+    useEffect(()=>{
+        const getPodiumRanking = getFinalRanking(playersPoints);
+        setPodiumRanking(getPodiumRanking)
+    },[playersPoints])
+
+    console.log(playersPoints)
 
     useEffect(() => {
         if (step === 2) {
@@ -105,7 +113,8 @@ export default function RankingPage() {
             // Manage 3rd player timers
             const thirdPlayerTimer = setTimeout(() => {
                 setThirdPlayerIsShown(true)
-                tadaaSound1Ref.current.play();
+                sillyTrumpetSoundRef.current.play();
+                soloClapSoundRef.current.play()
             }, 1000);
             const thirdPlayerNameTimer = setTimeout(() => {
                 setThirdPlayerNameIsShown(true)
@@ -123,7 +132,8 @@ export default function RankingPage() {
             const secondPlayerTimer = setTimeout(() => {
                 setSecondPlayerIsShown(true)
                 // tadaaSound1Ref.current.currentTime = 0;
-                tadaaSound2Ref.current.play();
+                lessSillytTrumpetSoundRed.current.play();
+                moreClapsSoundRef.current.play();
             }, 5000);
             const secondPlayerNameTimer = setTimeout(() => {
                 setSecondPlayerNameIsShown(true)
@@ -138,10 +148,11 @@ export default function RankingPage() {
             timers.push(secondPlayerTimer, secondPlayerNameTimer, moveSecondPlayerTimer, secondPlayerSparkles);
 
             // Manage 1st player timers
+            const firstPlayerEntrySoundTimer = setTimeout(() => {
+                tadaaSound3Ref.current.play();
+            }, 8980);
             const firstPlayerTimer = setTimeout(() => {
                 setFirstPlayerIsShown(true)
-                // tadaaSound2Ref.current.currentTime = 0;
-                tadaaSound3Ref.current.play();
             }, 9000);
             const firstPlayerNameTimer = setTimeout(() => {
                 setFirstPlayerNameIsShown(true)
@@ -153,7 +164,7 @@ export default function RankingPage() {
                 setFirstIsSparkling(true)
             }, 13200);
 
-            timers.push(firstPlayerTimer, firstPlayerNameTimer, moveFirstPlayerTimer, firstPlayerSparkles);
+            timers.push(firstPlayerEntrySoundTimer, firstPlayerTimer, firstPlayerNameTimer, moveFirstPlayerTimer, firstPlayerSparkles);
 
             // Manage dark background & spotlight timers
             const darkBackground = setTimeout(() => {
@@ -208,6 +219,10 @@ export default function RankingPage() {
             tadaaSound3Ref.current.muted = false;
             cheersSoundRef.current.muted = false;
             trumpetsSoundRef.current.muted = false;
+            sillyTrumpetSoundRef.current.muted = false;
+            soloClapSoundRef.current.muted = false;
+            lessSillytTrumpetSoundRed.current.muted = false;
+            moreClapsSoundRef.current.muted = false;
             setMutedSounds(false)
         } else {
             tadaaSound1Ref.current.muted = true;
@@ -215,6 +230,10 @@ export default function RankingPage() {
             tadaaSound3Ref.current.muted = true;
             cheersSoundRef.current.muted = true;
             trumpetsSoundRef.current.muted = true;
+            sillyTrumpetSoundRef.current.muted = true;
+            soloClapSoundRef.current.muted = true;
+            lessSillytTrumpetSoundRed.current.muted = true;
+            moreClapsSoundRef.current.muted = true;
             setMutedSounds(true)
         }
     }
@@ -231,7 +250,9 @@ export default function RankingPage() {
                             exit={{opacity: 0}}
                             transition={{duration: 0.5}}
                         >
-                            <Ranking/>
+                            <Ranking
+                                playersData={playersPoints}
+                            />
                             <div
                                 className={styles.goTo_podium}
                             >
@@ -327,11 +348,11 @@ export default function RankingPage() {
                                                 className={styles.podiumMedal}
                                             />
                                             {
-                                                playersPoints.length > 0 &&
+                                                podiumRanking && podiumRanking.length > 0 &&
                                                 <h1
                                                     className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                                 >
-                                                    {playersPoints[2].player?.name}
+                                                    {podiumRanking[2].playerInfo.player.name}
                                                 </h1>
                                             }
                                         </SparklesComponent>
@@ -345,12 +366,12 @@ export default function RankingPage() {
                                                 className={styles.podiumMedal}
                                             />
                                             {
-                                                playersPoints.length > 0 &&
+                                                podiumRanking && podiumRanking.length > 0 &&
 
                                                 <h1
                                                     className={`${styles.playerNameTitle} ${thirdPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                                 >
-                                                    {playersPoints[2].player?.name}
+                                                    {podiumRanking[2].playerInfo.player.name}
                                                 </h1>
                                             }
                                         </>
@@ -359,21 +380,21 @@ export default function RankingPage() {
                                 <div
                                     className={`${styles.playerName} ${thirdPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
                                 >
-                                    {playersPoints.length > 0 && (
+                                    {podiumRanking && podiumRanking.length > 0 && (
                                         <div
                                             className={styles.player_info}
                                         >
-                                            {playersPoints[2].player.picture
+                                            {podiumRanking[2].playerInfo.player.picture
                                                 ?
                                                 <img
-                                                    src={playersPoints[2].player?.picture}
+                                                    src={podiumRanking[2].playerInfo.player.picture}
 
-                                                    alt={`avatar de ${playersPoints[2].player.name}`}
+                                                    alt={`avatar de ${podiumRanking[2].playerInfo.player.name}`}
                                                 />
                                                 :
                                                 <img
                                                     src={defaultAvatar}
-                                                    alt={`avatar de ${playersPoints[2].player.name}`}
+                                                    alt={`avatar de ${podiumRanking[2].playerInfo.player.name}`}
                                                 />
                                             }
                                         </div>
@@ -392,11 +413,11 @@ export default function RankingPage() {
                                                 className={styles.podiumMedal}
                                             />
                                             {
-                                                playersPoints.length > 0 &&
+                                                podiumRanking && podiumRanking.length > 0 &&
                                                 <h1
                                                     className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                                 >
-                                                    {playersPoints[1].player?.name}
+                                                    {podiumRanking[1].playerInfo.player.name}
                                                 </h1>
                                             }
                                         </SparklesComponent>
@@ -410,11 +431,11 @@ export default function RankingPage() {
                                                 className={styles.podiumMedal}
                                             />
                                             {
-                                                playersPoints.length > 0 &&
+                                                podiumRanking && podiumRanking.length > 0 &&
                                                 <h1
                                                     className={`${styles.playerNameTitle} ${secondPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                                 >
-                                                    {playersPoints[1].player?.name}
+                                                    {podiumRanking[1].playerInfo.player.name}
                                                 </h1>
                                             }
                                         </>
@@ -423,22 +444,22 @@ export default function RankingPage() {
                                 <div
                                     className={`${styles.playerName} ${secondPlayerNameIsShown ? styles.playerNameIsShown : ''}`}
                                 >
-                                    {playersPoints.length > 0 && (
+                                    {podiumRanking && podiumRanking.length > 0 &&(
                                         <div
                                             className={styles.player_info}
                                         >
                                             {
-                                                playersPoints[1].player.picture
+                                                podiumRanking[1].playerInfo.player.picture
                                                     ?
                                                     <img
-                                                        src={playersPoints[1].player?.picture}
+                                                        src={podiumRanking[1].playerInfo.player.picture}
 
-                                                        alt={`avatar de ${playersPoints[1].player.name}`}
+                                                        alt={`avatar de ${podiumRanking[1].playerInfo.player.name}`}
                                                     />
                                                     :
                                                     <img
                                                         src={defaultAvatar}
-                                                        alt={`avatar de ${playersPoints[1].player.name}`}
+                                                        alt={`avatar de ${podiumRanking[1].playerInfo.player.name}`}
                                                     />
                                             }
                                         </div>
@@ -457,11 +478,11 @@ export default function RankingPage() {
                                             className={styles.podiumMedal}
                                         />
                                         {
-                                            playersPoints.length > 0 &&
+                                            podiumRanking && podiumRanking.length > 0 &&
                                             <h1
                                                 className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                             >
-                                                {playersPoints[0].player?.name}
+                                                {podiumRanking[0].playerInfo.player.name}
                                             </h1>
                                         }
                                     </SparklesComponent>)
@@ -474,11 +495,11 @@ export default function RankingPage() {
                                                 className={styles.podiumMedal}
                                             />
                                             {
-                                                playersPoints.length > 0 &&
+                                                podiumRanking && podiumRanking.length > 0 &&
                                                 <h1
                                                     className={`${styles.playerNameTitle} ${firstPlayerNameIsShown ? styles.playerNameTitleIsShown : ''}`}
                                                 >
-                                                    {playersPoints[0].player?.name}
+                                                    {podiumRanking[0].playerInfo.player.name}
                                                 </h1>
                                             }
                                         </>
@@ -486,21 +507,21 @@ export default function RankingPage() {
                                 }
                                 <div
                                     className={`${styles.playerName} ${firstPlayerNameIsShown ? styles.playerNameIsShown : ''}`}>
-                                    {playersPoints.length > 0 && (
+                                    {podiumRanking && podiumRanking.length > 0 && (
                                         <div
                                             className={styles.player_info}
                                         >
                                             {
-                                                playersPoints[0].player.picture
+                                                podiumRanking[0].playerInfo.player.picture
                                                     ?
                                                     <img
-                                                        src={playersPoints[0].player?.picture}
-                                                        alt={`avatar de ${playersPoints[0].player.name}`}
+                                                        src={podiumRanking[0].playerInfo.player.picture}
+                                                        alt={`avatar de ${podiumRanking[0].playerInfo.player.name}`}
                                                     />
                                                     :
                                                     <img
                                                         src={defaultAvatar}
-                                                        alt={`avatar de ${playersPoints[0].player.name}`}
+                                                        alt={`avatar de ${podiumRanking[0].playerInfo.player.name}`}
                                                     />
                                             }
                                         </div>

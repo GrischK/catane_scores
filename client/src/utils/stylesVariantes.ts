@@ -28,6 +28,14 @@ export const modalStyle = {
     justifyContent: 'center'
 };
 
+export const pointsDetailsModalStyle =
+    {
+        ...modalStyle,
+        flexDirection: 'column',
+        gap: '2vh',
+        paddingTop: '2vh'
+    }
+
 export const newGameModalStyle =
     {
         ...modalStyle,
@@ -35,6 +43,14 @@ export const newGameModalStyle =
         gap: '2vh'
     }
 
+export const tooltipStyle =
+    {
+        position: 'absolute',
+        left: '10px',
+        top: '10px',
+        fontSize: '15px',
+        cursor: 'pointer'
+    }
 
 export const theme = createTheme({
     palette: {

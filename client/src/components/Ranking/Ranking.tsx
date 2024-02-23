@@ -1,60 +1,42 @@
-import styles from './Ranking.module.css';
 import React, {useEffect, useRef, useState} from "react";
 import {PlayersPoints} from "../../interfaces/ranking.interface";
+import styles from './Ranking.module.css';
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
+import {ReactComponent as LaurelCrown} from "../../assets/images/laurel_crown.svg";
 import defaultAvatar from "../../assets/images/default_avatar.png";
+import {ReactComponent as FlagBase} from "../../assets/images/flag_base.svg";
+import {ReactComponent as FlagBody} from "../../assets/images/flag_body.svg";
+import {ReactComponent as FlagBottom} from "../../assets/images/flag_bottom.svg";
 import trumpet from "../../assets/images/trumpet.png"
-import {useGamesQuery} from "../../gql/generated/schema";
 import ConfettiExplosion from 'react-confetti-explosion';
 import {ThemeProvider} from '@mui/material/styles';
 import MysteriousText from "../MysteriousText";
+import PointsDetailCard from "../PointsDetailsCard/PointsDetailCard";
+import {getFinalRanking} from "../../utils/functions";
+import {motion, useInView} from 'framer-motion';
 import {blueTheme} from "../../utils/stylesVariantes";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import {motion, useInView} from 'framer-motion';
 
-export default function Ranking() {
-    const {data, refetch} = useGamesQuery()
+// TODO Export interfaces outside
+export interface RankingProps {
+    playersData: PlayersPoints[],
+}
 
+export interface playerRankingDetails {
+    playerInfo: PlayersPoints,
+    totalScore: number,
+}
+
+export default function Ranking({playersData}: RankingProps) {
     const ref = useRef(null)
     const isInView = useInView(ref)
-
-    const [playersPoints, setPlayersPoints] = useState<PlayersPoints[]>([])
-
     const [showArrowButton, setShowArrowButton] = useState(false)
     const [mysteriousTextIsShown, setMysteriousTextIsShown] = useState(false)
 
     const [isExploding, setIsExploding] = React.useState(false);
     const [hasExploded, setHasExploded] = useState(false);
 
-    useEffect(() => {
-        if (data) {
-            const updatedPlayersPoints: PlayersPoints[] = [];
-            data.games.forEach((game) => {
-                if (game.scores && game.scores.length > 0) {
-                    const sortedScores = [...game.scores];
-                    sortedScores.sort((a, b) => b.score - a.score);
-                    const firstPlayer = sortedScores[0].player;
-
-                    const playerIndex = updatedPlayersPoints.findIndex(
-                        (p) => p.player?.name === firstPlayer.name
-                    );
-
-                    if (playerIndex !== -1) {
-                        updatedPlayersPoints[playerIndex].playerTotalPoints += 1;
-                    } else {
-                        updatedPlayersPoints.push({
-                            player: firstPlayer,
-                            playerTotalPoints: 1,
-                        });
-                    }
-                }
-                window.history.scrollRestoration = 'manual'
-            });
-            updatedPlayersPoints.sort((a, b) => b.playerTotalPoints - a.playerTotalPoints);
-
-            setPlayersPoints(updatedPlayersPoints);
-        }
-    }, [data]);
+    const totalPointsArray = getFinalRanking(playersData)
 
     useEffect(() => {
         const timers: any[] = [];
@@ -74,7 +56,7 @@ export default function Ranking() {
 
         const arrowButtonTimer = setTimeout(() => {
             setShowArrowButton(true)
-        }, 2500)
+        }, 4000)
 
         const mysteriousTextTimer = setTimeout(() => {
             setMysteriousTextIsShown(true)
@@ -93,6 +75,9 @@ export default function Ranking() {
     const [scrollY, setScrollY] = useState(0);
 
     useEffect(() => {
+        // Initialize scroll to top to avoid bug with confetti
+        window.history.scrollRestoration = 'manual'
+
         function handleScroll() {
             setScrollY(window.scrollY)
         }
@@ -150,7 +135,7 @@ export default function Ranking() {
                         className={styles.players_list_title}
                     >
                         <MysteriousText
-                            colorsList={["#f04d4d", "#F58F8F", "#ffd903","#FFED85", "#5ba1fc", "#87BAFD"]}
+                            colorsList={["#f04d4d", "#F58F8F", "#ffd903", "#FFED85", "#5ba1fc", "#87BAFD"]}
                         >
                             Trône du Catane
                         </MysteriousText>
@@ -170,49 +155,102 @@ export default function Ranking() {
                     stiffness: 100,
                 }}
             >
-                {playersPoints.length > 0 &&
+                {totalPointsArray.length > 0 &&
                     (
                         <div
                             className={styles.player_info}
                         >
-                            {playersPoints[0].player.picture
+                            {totalPointsArray[0].playerInfo.player.picture
                                 ?
-                                <img
-                                    src={playersPoints[0].player?.picture}
-                                    alt={`avatar de ${playersPoints[0].player.name}`}
-                                />
+                                <motion.div
+                                    whileHover={{y: '-2vh'}}
+                                    style={{position: 'relative', cursor: 'pointer'}}
+                                >
+                                    <PointsDetailCard
+                                        key={1}
+                                        data={totalPointsArray[0].playerInfo}
+                                        rank={1}
+                                        displayInfo={false}
+                                    />
+                                    <motion.div
+                                        initial={{opacity: 0, scale: 0.3, y: '-1000%', x: '-50%'}}
+                                        animate={{opacity: 1, scale: 1, y: '-280%', x: '-50%'}}
+                                        transition={{
+                                            delay: 1,
+                                            duration: 0.7,
+                                            ease: [0, 0.71, 0.2, 1.01],
+                                            type: "spring",
+                                            damping: 10,
+                                            stiffness: 50,
+                                        }}
+                                        style={{position: 'absolute', left: '50%', transform: 'translateX(-50%)'}}
+                                    >
+                                        <Crown
+                                            style={{
+                                                width: "90px",
+                                                height: "90px",
+                                                zIndex: "1000",
+                                                fill: "#ffd903",
+                                            }}
+                                        />
+                                    </motion.div>
+                                </motion.div>
                                 :
                                 <img
                                     src={defaultAvatar}
-                                    alt="user picture"
+                                    alt={`avatar de ${totalPointsArray[0].playerInfo.player.name}`}
                                 />
                             }
-                            <h1>
-                                {playersPoints[0].player?.name}
-                            </h1>
-                            <span>
-                                {`Points : ${playersPoints[0].playerTotalPoints}`}
-                            </span>
+                            <FlagBase/>
                             <motion.div
-                                initial={{opacity: 0, scale: 0.3, y: '-1000%', x: 0}}
-                                animate={{opacity: 1, scale: 1, y: '-320%', x: 0}}
+                                style={{overflow: 'hidden'}}
+                                initial={{height: 0, y: '-3px'}}
+                                animate={{height: 100}}
                                 transition={{
-                                    delay: 1,
-                                    duration: 0.7,
+                                    duration: 0.6,
+                                    delay: 3,
                                     ease: [0, 0.71, 0.2, 1.01],
-                                    type: "spring",
-                                    damping: 10,
-                                    stiffness: 50,
+                                    scale: {
+                                        type: "spring",
+                                        damping: 5,
+                                        stiffness: 100,
+                                        restDelta: 0.001
+                                    }
                                 }}
                             >
-                                <Crown
-                                    style={{
-                                        width: "90px",
-                                        height: "90px",
-                                        zIndex: "1000",
-                                        fill: "#ffd903",
-                                    }}
-                                />
+                                <div className={styles.king_of_catan_info}>
+                                    <p>
+                                        {totalPointsArray[0].playerInfo.player.name}
+                                    </p>
+                                    <p>
+                                        {totalPointsArray[0].totalScore}
+                                    </p>
+                                </div>
+
+                                <FlagBody/>
+                            </motion.div>
+                            <motion.div
+                                initial={{
+                                    y: '-3px',
+                                    height: 0,
+                                    overflow: 'hidden',
+                                    rotateX: 180,
+                                    transformStyle: 'preserve-3d',
+                                    transformOrigin: 'top'
+                                }}
+                                animate={{y: '-5px', height: 83, overflow: 'unset', rotateX: 0}}
+                                transition={{
+                                    duration: 1.3,
+                                    delay: 3.3,
+                                    ease: [0, 0.71, 0.2, 1.01],
+                                    scale: {
+                                        type: "spring",
+                                        damping: 5,
+                                        stiffness: 100,
+                                        restDelta: 0.001
+                                    }
+                                }}>
+                                <FlagBottom/>
                             </motion.div>
                         </div>
                     )}
@@ -251,9 +289,9 @@ export default function Ranking() {
                 id={"rest_of_players"}
                 ref={ref}
             >
-                {playersPoints.length > 0 &&
+                {totalPointsArray.length > 0 &&
                     (
-                        playersPoints.slice(1).map((p, index) =>
+                        totalPointsArray.slice(1).map((p, index) =>
                             <motion.div
                                 initial={{
                                     opacity: 0,
@@ -269,34 +307,26 @@ export default function Ranking() {
                                     delay: isInView ? index * 0.2 : 0, // délai seulement si dans la vue
                                 }}
                                 className={styles.player_info}
-                                key={p.player.id}
+                                key={p.playerInfo.player.id}
                             >
-                                <span>
+                                <span
+                                    style={{position: 'relative'}}
+                                >
                                     {index + 2}ème
-                                </span>
-                                {p.player.picture
-                                    ?
-                                    <img
-                                        src={p.player?.picture}
-                                        alt={`avatar de ${p.player.name}`}
+                                    <LaurelCrown
+                                        className={styles.laurel_crown_icon}
                                     />
-                                    :
-                                    <img
-                                        src={defaultAvatar}
-                                        alt="user picture"
-                                    />
-                                }
-                                <h1>
-                                    {p.player?.name}
-                                </h1>
-                                <span>
-                                {p.playerTotalPoints === 1
-                                    ?
-                                    `${p.playerTotalPoints} point`
-                                    :
-                                    `${p.playerTotalPoints} points`
-                                }
                                 </span>
+                                <motion.div
+                                    whileHover={{y: '-2vh'}}
+                                    style={{cursor: 'pointer'}}
+                                >
+                                    <PointsDetailCard
+                                        key={index + 2}
+                                        rank={index + 2}
+                                        data={p.playerInfo}
+                                    />
+                                </motion.div>
                             </motion.div>
                         )
                     )

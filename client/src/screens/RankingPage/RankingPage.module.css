@@ -225,4 +225,5 @@
   position: fixed;
   top: 1.3vh;
   left: 7vh;
+  z-index: 2;
 }

@@ -1,12 +1,11 @@
 import React, {MouseEventHandler, useEffect, useState} from "react";
-import styles from './PlayersList.module.css';
 import {PlayerInterface, PlayersPoints} from "../../interfaces/playersListPage.interface";
+import styles from './PlayersList.module.css';
 import {
     useCreateUserMutation,
     useDeleteUserMutation, useGamesQuery,
     useUsersQuery
 } from "../../gql/generated/schema";
-import {Alert, IconButton, Snackbar} from "@mui/material";
 import Card from "../../components/Card/Card";
 import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -14,6 +13,7 @@ import MysteriousText from "../../components/MysteriousText";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
 import {ThemeProvider} from '@mui/material/styles';
+import {Alert, IconButton, Snackbar} from "@mui/material";
 import {motion} from "framer-motion";
 import ArrowLeft from '@mui/icons-material/ArrowDownward';
 import Box from '@mui/material/Box';
@@ -54,16 +54,16 @@ export default function PlayersList() {
                     );
 
                     if (playerIndex !== -1) {
-                        updatedPlayersPoints[playerIndex].playerTotalPoints += 1;
+                        updatedPlayersPoints[playerIndex].victoryCount += 1;
                     } else {
                         updatedPlayersPoints.push({
                             player: firstPlayer,
-                            playerTotalPoints: 1,
+                            victoryCount: 1,
                         } as PlayersPoints);
                     }
                 }
             });
-            updatedPlayersPoints.sort((a, b) => b.playerTotalPoints - a.playerTotalPoints);
+            updatedPlayersPoints.sort((a, b) => b.victoryCount - a.victoryCount);
 
             setPlayersPoints(updatedPlayersPoints);
         }
@@ -125,7 +125,6 @@ export default function PlayersList() {
                     setErrorMessage("Impossible de supprimer l'utilisateur en raison de parties enregistrées.");
                 });
         }
-        // console.log(playerId)
     };
 
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -195,7 +194,7 @@ export default function PlayersList() {
                                                         playerName={user.name}
                                                         playerAvatar={user.picture}
                                                         gamesCounter={user.games?.length}
-                                                        playerRank={(playersPoints.find((player) => player.player.name === user.name) || {}).playerTotalPoints || 0}
+                                                        playerRank={(playersPoints.find((player) => player.player.name === user.name) || {}).victoryCount || 0}
                                                         userId={user.id}
                                                         onClickDeleteFunction={onClickDeletePlayer}
                                                         refreshPlayersList={refreshPlayersList}

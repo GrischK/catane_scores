@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import styles from './HomePage.module.css';
-import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import MysteriousText from "../../components/MysteriousText";
+import styles from './HomePage.module.css';
+import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import {NavLink} from "react-router-dom";
 import {motion} from "framer-motion"
 import {buttonTransition, crownTransition} from "../../utils/animationVariants";
@@ -14,18 +14,25 @@ export default function HomePage() {
     const [displayText, setDisplayText] = useState(false)
 
     useEffect(() => {
-        setTimeout(() => {
+        const timers: any[] = [];
+        const button1Timer = setTimeout(() => {
             setControl1(true)
-        }, 200);
-        setTimeout(() => {
+        }, 500);
+        const button2Timer = setTimeout(() => {
             setControl2(true)
-        }, 400);
-        setTimeout(() => {
+        }, 700);
+        const button3Timer = setTimeout(() => {
             setControl3(true)
-        }, 600);
-        setTimeout(() => {
+        }, 900);
+        const titleTimer = setTimeout(() => {
             setDisplayText(true)
         }, 2000);
+
+        timers.push(button1Timer, button2Timer, button3Timer, titleTimer)
+
+        return () => {
+            timers.forEach((timer) => clearTimeout(timer));
+        };
     }, []);
 
     return (
