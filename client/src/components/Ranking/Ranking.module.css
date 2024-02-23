@@ -52,6 +52,24 @@ html {
   gap: 1vh;
 }
 
+.king_of_catan_info {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+}
+
+.king_of_catan_info p:nth-child(1) {
+  font-family: 'Zeyada', cursive;
+  font-size: 5vh;
+  font-weight: normal;
+}
+
 .king_of_catan::after {
   content: "";
   position: absolute;
