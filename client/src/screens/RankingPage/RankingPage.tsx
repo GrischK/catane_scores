@@ -219,6 +219,10 @@ export default function RankingPage({rankingRefreshed}: rankingPageProps) {
             tadaaSound3Ref.current.muted = false;
             cheersSoundRef.current.muted = false;
             trumpetsSoundRef.current.muted = false;
+            sillyTrumpetSoundRef.current.muted = false;
+            soloClapSoundRef.current.muted = false;
+            lessSillytTrumpetSoundRed.current.muted = false;
+            moreClapsSoundRef.current.muted = false;
             setMutedSounds(false)
         } else {
             tadaaSound1Ref.current.muted = true;
@@ -226,6 +230,10 @@ export default function RankingPage({rankingRefreshed}: rankingPageProps) {
             tadaaSound3Ref.current.muted = true;
             cheersSoundRef.current.muted = true;
             trumpetsSoundRef.current.muted = true;
+            sillyTrumpetSoundRef.current.muted = true;
+            soloClapSoundRef.current.muted = true;
+            lessSillytTrumpetSoundRed.current.muted = true;
+            moreClapsSoundRef.current.muted = true;
             setMutedSounds(true)
         }
     }

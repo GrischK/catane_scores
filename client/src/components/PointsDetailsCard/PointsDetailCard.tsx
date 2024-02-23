@@ -9,7 +9,7 @@ import {Box, Modal, Typography} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 
-export default function PointsDetailCard({data, rank}: PointsDetailCardProps) {
+export default function PointsDetailCard({data, rank, displayInfo=true}: PointsDetailCardProps) {
     const [openModal, setOpenModal] = useState(false);
     const handleModal = () => setOpenModal(!openModal);
 
@@ -33,10 +33,13 @@ export default function PointsDetailCard({data, rank}: PointsDetailCardProps) {
                         alt={`avatar de ${data.player.name}`}
                     />
                 }
-                <h1>
-                    {data.player?.name}
-                </h1>
-                <span>
+                {displayInfo &&
+                    <h1>
+                        {data.player?.name}
+                    </h1>
+                }
+                {displayInfo &&
+                    <span>
                     {pointsInfoDetails &&
                         (
                             pointsInfoDetails.total <= 1
@@ -46,7 +49,9 @@ export default function PointsDetailCard({data, rank}: PointsDetailCardProps) {
                                 `${pointsInfoDetails.total} points`
                         )
                     }
-                </span>
+                    </span>
+                }
+
             </div>
             <Modal
                 open={openModal}
