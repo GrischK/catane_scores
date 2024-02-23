@@ -4,6 +4,9 @@ import styles from './Ranking.module.css';
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import {ReactComponent as LaurelCrown} from "../../assets/images/laurel_crown.svg";
 import defaultAvatar from "../../assets/images/default_avatar.png";
+import {ReactComponent as FlagBase} from "../../assets/images/flag_base.svg";
+import {ReactComponent as FlagBody} from "../../assets/images/flag_body.svg";
+import {ReactComponent as FlagBottom} from "../../assets/images/flag_bottom.svg";
 import trumpet from "../../assets/images/trumpet.png"
 import ConfettiExplosion from 'react-confetti-explosion';
 import {ThemeProvider} from '@mui/material/styles';
@@ -218,6 +221,48 @@ export default function Ranking({playersData}: RankingProps) {
                                     alt={`avatar de ${totalPointsArray[0].playerInfo.player.name}`}
                                 />
                             }
+                            <FlagBase/>
+                            <motion.div
+                                style={{overflow: 'hidden'}}
+                                initial={{height: 0, y: '-3px'}}
+                                animate={{height: 100}}
+                                transition={{
+                                    duration: 0.6,
+                                    delay: 4,
+                                    ease: [0, 0.71, 0.2, 1.01],
+                                    scale: {
+                                        type: "spring",
+                                        damping: 5,
+                                        stiffness: 100,
+                                        restDelta: 0.001
+                                    }
+                                }}
+                            >
+                                <FlagBody/>
+                            </motion.div>
+                            <motion.div
+                                initial={{
+                                    y: '-3px',
+                                    height: 0,
+                                    overflow: 'hidden',
+                                    rotateX: 180,
+                                    transformStyle: 'preserve-3d',
+                                    transformOrigin: 'top'
+                                }}
+                                animate={{y: '-5px', height: 83, overflow: 'unset', rotateX: 0}}
+                                transition={{
+                                    duration: 1.3,
+                                    delay: 4.3,
+                                    ease: [0, 0.71, 0.2, 1.01],
+                                    scale: {
+                                        type: "spring",
+                                        damping: 5,
+                                        stiffness: 100,
+                                        restDelta: 0.001
+                                    }
+                                }}>
+                                <FlagBottom/>
+                            </motion.div>
                         </div>
                     )}
                 {showArrowButton &&
@@ -276,11 +321,11 @@ export default function Ranking({playersData}: RankingProps) {
                                 key={p.playerInfo.player.id}
                             >
                                 <span
-                                style={{position:'relative'}}
+                                    style={{position: 'relative'}}
                                 >
                                     {index + 2}ème
                                     <LaurelCrown
-                                    className={styles.laurel_crown_icon}
+                                        className={styles.laurel_crown_icon}
                                     />
                                 </span>
                                 <motion.div
