@@ -14,18 +14,25 @@ export default function HomePage() {
     const [displayText, setDisplayText] = useState(false)
 
     useEffect(() => {
-        setTimeout(() => {
+        const timers: any[] = [];
+        const button1Timer = setTimeout(() => {
             setControl1(true)
-        }, 200);
-        setTimeout(() => {
+        }, 500);
+        const button2Timer = setTimeout(() => {
             setControl2(true)
-        }, 400);
-        setTimeout(() => {
+        }, 700);
+        const button3Timer = setTimeout(() => {
             setControl3(true)
-        }, 600);
-        setTimeout(() => {
+        }, 900);
+        const titleTimer = setTimeout(() => {
             setDisplayText(true)
         }, 2000);
+
+        timers.push(button1Timer, button2Timer, button3Timer, titleTimer)
+
+        return () => {
+            timers.forEach((timer) => clearTimeout(timer));
+        };
     }, []);
 
     return (
