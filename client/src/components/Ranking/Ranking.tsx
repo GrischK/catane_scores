@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {PlayersPoints} from "../../interfaces/ranking.interface";
 import styles from './Ranking.module.css';
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
+import {ReactComponent as LaurelCrown} from "../../assets/images/laurel_crown.svg";
 import defaultAvatar from "../../assets/images/default_avatar.png";
 import trumpet from "../../assets/images/trumpet.png"
 import ConfettiExplosion from 'react-confetti-explosion';
@@ -274,7 +275,14 @@ export default function Ranking({playersData}: RankingProps) {
                                 className={styles.player_info}
                                 key={p.playerInfo.player.id}
                             >
-                                <span>{index + 2}ème</span>
+                                <span
+                                style={{position:'relative'}}
+                                >
+                                    {index + 2}ème
+                                    <LaurelCrown
+                                    className={styles.laurel_crown_icon}
+                                    />
+                                </span>
                                 <motion.div
                                     whileHover={{y: '-2vh'}}
                                     style={{cursor: 'pointer'}}
