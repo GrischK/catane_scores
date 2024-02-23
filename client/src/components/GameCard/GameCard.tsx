@@ -141,11 +141,6 @@ export default function GameCard({game, index, onClickDeleteFunction, dataGameId
                             }
                         </div>
                     ))}
-                    <ColoredButton
-                        bgColor={'yellow'}
-                    >
-                        <span>Voir plus</span>
-                    </ColoredButton>
                 </div>
             </div>
             <Modal
