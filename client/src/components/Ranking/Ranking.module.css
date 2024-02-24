@@ -70,6 +70,10 @@ html {
   font-weight: normal;
 }
 
+.king_of_catan_info p:nth-child(2) {
+  text-align: center;
+}
+
 .king_of_catan::after {
   content: "";
   position: absolute;

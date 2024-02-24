@@ -223,7 +223,7 @@ export default function Ranking({playersData}: RankingProps) {
                                         {totalPointsArray[0].playerInfo.player.name}
                                     </p>
                                     <p>
-                                        {totalPointsArray[0].totalScore}
+                                        {totalPointsArray[0].totalScore} points
                                     </p>
                                 </div>
 
@@ -236,7 +236,7 @@ export default function Ranking({playersData}: RankingProps) {
                                     overflow: 'hidden',
                                     rotateX: 180,
                                     transformStyle: 'preserve-3d',
-                                    transformOrigin: 'top'
+                                    transformOrigin: 'top',
                                 }}
                                 animate={{y: '-5px', height: 83, overflow: 'unset', rotateX: 0}}
                                 transition={{
