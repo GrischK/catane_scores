@@ -1,0 +1,13 @@
+.mysterious_text span {
+    font-size: 4rem;
+}
+
+@media (max-width: 426px) {
+    .mysterious_text {
+        padding: 2vw;
+    }
+
+    .mysterious_text span {
+        font-size: 3rem;
+    }
+}

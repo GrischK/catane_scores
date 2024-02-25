@@ -9,7 +9,7 @@ import {
 import Card from "../../components/Card/Card";
 import RandomAvatar from "../../components/RandomAvatar/RandomAvatar";
 import CircularProgress from '@mui/material/CircularProgress';
-import MysteriousText from "../../components/MysteriousText";
+import MysteriousText from "../../components/MysteriousText/MysteriousText";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
 import {ThemeProvider} from '@mui/material/styles';

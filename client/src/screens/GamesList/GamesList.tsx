@@ -2,7 +2,7 @@ import React, {MouseEventHandler, useEffect, useState} from "react";
 import {gamesListProps} from "../../interfaces/gamesListe.interface";
 import styles from './GamesList.module.css';
 import {useDeleteGameMutation, useGamesQuery} from "../../gql/generated/schema";
-import MysteriousText from "../../components/MysteriousText";
+import MysteriousText from "../../components/MysteriousText/MysteriousText";
 import Pagination from "../../components/Pagination/Pagination";
 import {Alert, Snackbar} from "@mui/material";
 import {motion} from "framer-motion";

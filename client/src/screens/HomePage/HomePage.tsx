@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
-import MysteriousText from "../../components/MysteriousText";
+import MysteriousText from "../../components/MysteriousText/MysteriousText";
 import styles from './HomePage.module.css';
 import {ReactComponent as Crown} from "../../assets/images/crown.svg"
 import {NavLink} from "react-router-dom";
@@ -43,11 +43,14 @@ export default function HomePage() {
                 className={styles.mysterious_text_container}
             >
                 {displayText &&
-                    <MysteriousText
-                        colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
-                    >
-                        Les Cataneurs Fous
-                    </MysteriousText>
+                    <h1>
+                        <MysteriousText
+                            colorsList={["#f04d4d", "#ffd903", "#5ba1fc", "#2dc40f"]}
+                        >
+                            Les Cataneurs Fous
+                        </MysteriousText>
+                    </h1>
+
                 }
             </div>
             <div
@@ -88,8 +91,8 @@ export default function HomePage() {
                             </ColoredButton>
                             <motion.div
                                 style={{position: "absolute"}}
-                                initial={{top: '-100vh', right: -3}}
-                                animate={{top: -24, right: -3}}
+                                initial={{opacity: 0, top: '-100vh', right: -3}}
+                                animate={{opacity: 1, top: -24, right: -3}}
                                 transition={
                                     crownTransition
                                 }

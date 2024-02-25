@@ -10,7 +10,7 @@ import {ReactComponent as FlagBottom} from "../../assets/images/flag_bottom.svg"
 import trumpet from "../../assets/images/trumpet.png"
 import ConfettiExplosion from 'react-confetti-explosion';
 import {ThemeProvider} from '@mui/material/styles';
-import MysteriousText from "../MysteriousText";
+import MysteriousText from "../MysteriousText/MysteriousText";
 import PointsDetailCard from "../PointsDetailsCard/PointsDetailCard";
 import {getFinalRanking} from "../../utils/functions";
 import {motion, useInView} from 'framer-motion';

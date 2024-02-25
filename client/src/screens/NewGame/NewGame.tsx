@@ -6,7 +6,7 @@ import {
 } from "../../gql/generated/schema";
 import ColoredButton from "../../components/ColoredButton/ColoredButton";
 import ColoredInput from "../../components/ColoredInput/ColoredInput";
-import MysteriousText from "../../components/MysteriousText";
+import MysteriousText from "../../components/MysteriousText/MysteriousText";
 import {
     Alert, Box, Modal,
     Snackbar, Typography

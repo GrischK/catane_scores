@@ -1,5 +1,6 @@
 import React from "react";
 import {ReactNode} from "react";
+import styles from "./MysteriousText.module.css"
 import {animated, useSprings} from "react-spring";
 
 interface MysteriousTextProps {
@@ -21,20 +22,19 @@ export default function MysteriousText({children, colorsList}: MysteriousTextPro
     );
 
     return (
-        <div className={"mysterious_text"}>
+        <div className={styles.mysterious_text}>
             {animations.map((animation, index) => (
                 <animated.span key={index} style={{
                     ...animation,
                     color: colors[Math.floor(Math.random() * colors.length)],
                     fontFamily: 'Indie Flower, cursive',
-                    fontSize: '4rem',
                     fontWeight: 'bolder',
                     margin: '2px',
                     marginTop: '5vh',
                     textShadow: '1px 1px 2px grey',
                     // WebkitTextStroke: '.5px black'
                 }}>
-                               {childText[index]}
+                    {childText[index]}
                 </animated.span>
             ))}
         </div>
