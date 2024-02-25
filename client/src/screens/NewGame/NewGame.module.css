@@ -1,177 +1,191 @@
 .new_game_container {
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  gap: 2vh;
-  padding: 10vh;
-  align-items: center;
-  overflow: hidden;
-  background: rgb(255, 255, 255);
-  background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-red));
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    padding: 10vh;
+    align-items: center;
+    overflow: hidden;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(121deg, rgba(255, 255, 255, 1) 52%, var(--bg-red));
 }
 
 .new_game_input > div, .new_game_multiselect > div > div {
-  background-color: white;
-  min-width: 2vw;
+    background-color: white;
+    min-width: 2vw;
 }
 
 .new_game_multiselect {
-  min-width: 30%;
+    min-width: 30%;
 }
 
 .new_game_players_item > .avatar_container {
-  display: flex;
-  min-height: 60px;
+    display: flex;
+    min-height: 60px;
 }
 
 .new_game_players_item img {
-  width: 60px;
-  height: 60px;
+    width: 60px;
+    height: 60px;
 }
 
 .avatar_title {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .new_game_players {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-column-gap: 2vh;
-  grid-row-gap: 2vh;
-  padding: 2vh;
-  border-radius: 1vh;
-  z-index: 1;
-  position: relative;
-  background: white;
-  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 2vh;
+    grid-row-gap: 2vh;
+    padding: 2vh;
+    border-radius: 1vh;
+    z-index: 1;
+    position: relative;
+    background: white;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
 }
 
 .players_list_container {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .players_list_label > span {
-  position: absolute;
-  z-index: 1;
-  top: 0.5rem;
-  left: 0.5rem;
-  transition: left 0.1s ease-in-out;
+    position: absolute;
+    z-index: 1;
+    top: 0.5rem;
+    left: 0.5rem;
+    transition: left 0.1s ease-in-out;
 }
 
 .players_list_label.players_selected {
-  outline-width: 3px;
+    outline-width: 3px;
 }
 
 .players_check_input {
-  position: absolute;
-  top: 0;
-  left: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .players_check_input:checked {
-  accent-color: var(--bg-red);
+    accent-color: var(--bg-red);
 }
 
 .choosePlayers {
-  background: white;
-  margin-top: 1rem;
-  position: relative;
-  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
-  border-radius: 1rem;
-  padding: 1rem;
+    background: white;
+    margin-top: 1rem;
+    position: relative;
+    box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);
+    border-radius: 1rem;
+    padding: 1rem;
 }
 
 .input_container {
-  display: flex;
-  width: 40vw;
-  max-width: 600px;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2vh;
-  padding: 2vh;
+    display: flex;
+    width: 40vw;
+    max-width: 600px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2vh;
+    padding: 2vh;
 }
 
 input[type="date"] {
-  color: grey;
+    color: grey;
 }
 
 .form_container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  width: 42vw;
-  height: 35vh;
-  transition: border 0.2s ease-in-out, background 0.2s ease-in;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    width: 42vw;
+    height: 35vh;
+    transition: border 0.2s ease-in-out, background 0.2s ease-in;
 }
 
 .create_game_button {
-  margin-top: 5vh;
+    margin-top: 5vh;
 }
 
 .form_container_appears {
-  box-sizing: border-box;
-  width: fit-content;
-  height: fit-content;
-  padding: 1vh 2vw;
-  border: 5px solid #000000;
-  border-radius: 2vh;
-  background: rgb(255, 255, 255);
-  box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px;
+    box-sizing: border-box;
+    width: fit-content;
+    height: fit-content;
+    padding: 1vh 2vw;
+    border: 5px solid #000000;
+    border-radius: 2vh;
+    background: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px;
 }
 
 .new_game_players_modal img {
-  width: 5vh;
+    width: 5vh;
 }
 
 .modal_players_container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: fit-content;
-  gap: 3vh;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: fit-content;
+    gap: 3vh;
 }
 
 .game_player_input {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .game_player_wrapper {
-  position: relative;
-  border: 2px solid black;
-  border-radius: 1vh;
-  padding: 1vh;
-  box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px;
-  transition: transform 0.2s, box-shadow 0.1s ease-in-out, border-color 0.2s ease-in-out, outline 0.1s;
+    position: relative;
+    border: 2px solid black;
+    border-radius: 1vh;
+    padding: 1vh;
+    box-shadow: rgba(0, 0, 0, 0.19) 0 10px 20px, rgba(0, 0, 0, 0.23) 0 12px 12px;
+    transition: transform 0.2s, box-shadow 0.1s ease-in-out, border-color 0.2s ease-in-out, outline 0.1s;
 }
 
 .game_player_wrapper:hover {
-  border-color: #f01f1f;
-  cursor: pointer;
-  transform: translateY(-0.5vh);
-  box-shadow: rgba(0, 0, 0, 0.4) 0 20px 40px, rgba(0, 0, 0, 0.18) 0 24px 24px;
+    border-color: #f01f1f;
+    cursor: pointer;
+    transform: translateY(-0.5vh);
+    box-shadow: rgba(0, 0, 0, 0.4) 0 20px 40px, rgba(0, 0, 0, 0.18) 0 24px 24px;
 }
 
 .game_player_wrapper > *:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .game_player_wrapper:has(input[type="checkbox"]:checked) {
-  border-color: #f01f1f;
-  outline: 3px solid #ffb9b9;
+    border-color: #f01f1f;
+    outline: 3px solid #ffb9b9;
 }
 
 .add_players_close_modal_icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  transition: scale 0.2s ease-in-out;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transition: scale 0.2s ease-in-out;
 }
 
 .add_players_close_modal_icon:hover {
-  scale: 1.5;
-  cursor: pointer;
+    scale: 1.5;
+    cursor: pointer;
+}
+
+@media (max-width: 431px) {
+    .add_players_modal_box {
+        width: 100vw;
+        height: 100vh;
+        padding: 1vh;
+    }
+
+    .new_game_players{
+        display: flex;
+        flex-direction: column;
+        box-shadow: none;
+    }
 }
