@@ -190,7 +190,7 @@ export default function PlayersList() {
                                                     key={index}
                                                 >
                                                     <Card
-                                                        key={index}
+                                                        key={user.id}
                                                         playerName={user.name}
                                                         playerAvatar={user.picture}
                                                         gamesCounter={user.games?.length}
